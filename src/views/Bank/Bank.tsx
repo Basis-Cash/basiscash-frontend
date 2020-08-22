@@ -14,7 +14,7 @@ import PageHeader from '../../components/PageHeader'
 
 import Farm from '../Farm'
 
-import FarmCards from './components/FarmCards'
+import FarmCards from './FarmCards'
 
 const Bank: React.FC = () => {
   const { path } = useRouteMatch()
@@ -26,14 +26,14 @@ const Bank: React.FC = () => {
         <>
           <Route exact path={path}>
             <PageHeader
-              icon={<img src={farmer} height="96" />}
-              subtitle="Earn YAM tokens by providing liquidity."
-              title="Select a farm."
+              icon={"🏦"}
+              title="Pick a Bank."
+              subtitle="Earn Basis Cash / Basis Shares by providing liquidity"
             />
             <FarmCards />
           </Route>
           <Route path={`${path}/:farmId`}>
-            <Farm />
+             <Farm />
           </Route>
         </>
       ) : (

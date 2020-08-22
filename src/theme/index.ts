@@ -1,4 +1,4 @@
-import { black, green, grey, red, white } from './colors'
+import { black, purple, teal, grey, red, white } from './colors'
 
 const theme = {
   borderRadius: 12,
@@ -10,9 +10,10 @@ const theme = {
       main: red[500],
     },
     secondary: {
-      main: green[500],
+      main: teal[200],
     },
     white,
+    teal,
   },
   siteWidth: 1200,
   spacing: {

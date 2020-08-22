@@ -18,7 +18,7 @@ const StyledLogo = styled.div`
 `
 
 const StyledText = styled.span`
-  color: ${props => props.theme.color.grey[600]};
+  color: ${props => props.theme.color.grey[100]};
   font-size: 18px;
   font-weight: 700;
   margin-left: ${props => props.theme.spacing[2]}px;

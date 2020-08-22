@@ -56,9 +56,9 @@ const Farm: React.FC = () => {
   return (
     <>
       <PageHeader
-        icon={icon}
+        icon={"🏦"}
         subtitle={`Deposit ${depositTokenName} and earn ${earnTokenName}`}
-        title={name}
+        title={'Pick a Bank'}
       />
       <StyledFarm>
         <StyledCardsWrapper>
@@ -78,7 +78,7 @@ const Farm: React.FC = () => {
         <div>
           <Button
             onClick={onRedeem}
-            text="Harvest & Withdraw"
+            text="Settle & Withdraw"
           />
         </div>
         <Spacer size="lg" />

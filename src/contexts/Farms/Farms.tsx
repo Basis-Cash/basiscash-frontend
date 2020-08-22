@@ -10,39 +10,21 @@ import Context from './context'
 import { Farm } from './types'
 
 const NAME_FOR_POOL: { [key: string]: string } = {
-  yfi_pool: 'YFI Farm',
-  eth_pool: 'Weth Homestead',
-  ampl_pool: 'Ample Soils',
-  ycrv_pool: 'Eternal Lands',
-  comp_pool: 'Compounding Hills',
-  link_pool: 'Marine Gardens',
-  lend_pool: 'Aave Agriculture',
-  snx_pool: 'Spartan Grounds',
-  mkr_pool: 'Maker Range',
+  ycrv_pool: 'yCRV to CASH',
+  bac_ycrv_pool: 'yCRV_CASH_LP to SHARES',
+  bas_ycrv_pool: 'yCRV_SHARES_LP to SHARES',
 }
 
 const ICON_FOR_POOL: { [key: string]: string } = {
-  yfi_pool: '🐋',
-  eth_pool: '🌎',
-  ampl_pool: '🌷',
-  comp_pool: '💸',
-  link_pool: '🔗',
-  lend_pool: '🏕️',
-  snx_pool: '⚔️',
-  mkr_pool: '🐮',
-  ycrv_pool: '🌈',
+  ycrv_pool: '🐋',
+  bac_ycrv_pool: '🌎',
+  bas_ycrv_pool: '🌷',
 }
 
 const SORT_FOR_POOL: { [key: string]: number } = {
-  yfi_pool: 0,
-  eth_pool: 1,
-  ampl_pool: 2,
-  comp_pool: 3,
-  ycrv_pool: 4,
-  link_pool: 5,
-  lend_pool: 6,
-  snx_pool: 7,
-  mkr_pool: 8,
+  ycrv_pool: 0,
+  bac_ycrv_pool: 1,
+  bas_ycrv_pool: 2,
 }
 
 const Farms: React.FC = ({ children }) => {

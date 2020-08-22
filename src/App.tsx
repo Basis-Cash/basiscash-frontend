@@ -15,6 +15,8 @@ import TransactionProvider from './contexts/Transactions'
 
 import Bank from './views/Bank'
 import Home from './views/Home'
+import Bond from './views/Bond'
+import Farm from './views/Farm'
 
 import theme from './theme'
 
@@ -30,6 +32,7 @@ const App: React.FC = () => {
             <Bank />
           </Route>
           <Route path="/bonds">
+            <Bond />
           </Route>
         </Switch>
       </Router>

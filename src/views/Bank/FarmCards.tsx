@@ -2,17 +2,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import Countdown, { CountdownRenderProps} from 'react-countdown'
 
-import Button from '../../../components/Button'
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import CardIcon from '../../../components/CardIcon'
-import Loader from '../../../components/Loader'
+import Button from '../../components/Button'
+import Card from '../../components/Card'
+import CardContent from '../../components/CardContent'
+import CardIcon from '../../components/CardIcon'
+import Loader from '../../components/Loader'
 
-import useFarms from '../../../hooks/useFarms'
+import useFarms from '../../hooks/useFarms'
 
-import { Farm } from '../../../contexts/Farms'
+import { Farm } from '../../contexts/Farms'
 
-import { getPoolStartTime } from '../../../yamUtils'
+import { getPoolStartTime } from '../../yamUtils'
 
 const FarmCards: React.FC = () => {
   const [farms] = useFarms()
@@ -39,10 +39,10 @@ const FarmCards: React.FC = () => {
           ))}
         </StyledRow>
       )) : (
-          <StyledLoadingWrapper>
-            <Loader text="Loading farms" />
-          </StyledLoadingWrapper>
-        )}
+        <StyledLoadingWrapper>
+          <Loader text="Loading bank" />
+        </StyledLoadingWrapper>
+      )}
     </StyledCards>
   )
 }
@@ -85,7 +85,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
       <Card>
         <CardContent>
           <StyledContent>
-            <CardIcon>{farm.icon}</CardIcon>
+            {/* <CardIcon>{farm.icon}</CardIcon> */}
+            <CardIcon>🏦</CardIcon>
             <StyledTitle>{farm.name}</StyledTitle>
             <StyledDetails>
               <StyledDetail>Deposit {farm.depositToken.toUpperCase()}</StyledDetail>
@@ -94,7 +95,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <Button
               disabled={!poolActive}
               text={poolActive ? 'Select' : undefined}
-              to={`/farms/${farm.id}`}
+              to={`/bank/${farm.id}`}
             >
               {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />}
             </Button>
@@ -159,7 +160,7 @@ const StyledCardWrapper = styled.div`
 `
 
 const StyledTitle = styled.h4`
-  color: ${props => props.theme.color.grey[600]};
+  color: ${props => props.theme.color.grey[200]};
   font-size: 24px;
   font-weight: 700;
   margin: ${props => props.theme.spacing[2]}px 0 0;
@@ -184,7 +185,7 @@ const StyledDetails = styled.div`
 `
 
 const StyledDetail = styled.div`
-  color: ${props => props.theme.color.grey[500]};
+  color: ${props => props.theme.color.grey[300]};
 `
 
 export default FarmCards
