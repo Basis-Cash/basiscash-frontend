@@ -1,8 +1,8 @@
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
+import { Fetcher, Route, Token, WETH } from '@uniswap/sdk';
 import { Configuration, defaultEthereumConfig } from './config';
 import { TokenStat } from './types';
-import { Fetcher, Route, Token, WETH } from '@uniswap/sdk';
 
 /**
  * An API module of Basis Cash contracts.
@@ -11,7 +11,7 @@ import { Fetcher, Route, Token, WETH } from '@uniswap/sdk';
 export class BasisCash {
   web3: Web3;
   config: Configuration;
-  contracts: {[name: string]: Contract}
+  contracts: { [name: string]: Contract };
 
   constructor(cfg: Configuration) {
     const { endpoint, deployments } = cfg;
@@ -21,9 +21,11 @@ export class BasisCash {
       ? Web3.providers.WebsocketProvider
       : Web3.providers.HttpProvider;
 
-    this.web3 = new Web3(new providerKind(endpoint, {
-      timeout: ethConfig.ethereumNodeTimeout,
-    }));
+    this.web3 = new Web3(
+      new providerKind(endpoint, {
+        timeout: ethConfig.ethereumNodeTimeout,
+      }),
+    );
 
     // loads contracts from deployments
     this.contracts = {};
@@ -42,8 +44,8 @@ export class BasisCash {
   /** @returns a list of Pool contracts (e.g. BACDAIPool, BACYFIPool) */
   bankContracts(): Contract[] {
     return Object.keys(this.contracts)
-      .filter(name => name.endsWith('Pool'))
-      .map(name => this.contracts[name]);
+      .filter((name) => name.endsWith('Pool'))
+      .map((name) => this.contracts[name]);
   }
 
   async getTokenStat(contract: Contract): Promise<TokenStat> {
@@ -52,9 +54,8 @@ export class BasisCash {
 
     const dai = new Token(chainId, daiAddress, 18);
     const token = isMockedPrice
-      ? WETH[chainId]  // display WETH price on development
+      ? WETH[chainId] // display WETH price on development
       : new Token(chainId, contract.options.address, 18);
-
 
     const priceInDAI = new Route([await Fetcher.fetchPairData(dai, token)], token);
     return {
@@ -65,7 +66,7 @@ export class BasisCash {
 
   private async getTokenSupply(contract: Contract): Promise<string> {
     try {
-      return balanceOf(await contract.methods.totalSupply().call())
+      return balanceOf(await contract.methods.totalSupply().call());
     } catch (err) {
       console.error(err);
       return 'Unknown';

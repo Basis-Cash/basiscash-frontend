@@ -1,28 +1,8 @@
 import { Deployments } from './deployments';
-import { ChainId, Token } from '@uniswap/sdk';
-
-const configurations: {[env: string]: Configuration} = {
-  development: {
-    endpoint: 'http://localhost:8545',
-    deployments: require('./deployments/deployments.local.json'),
-    uniswapConfig: {
-      daiAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-      chainId: ChainId.MAINNET,
-      isMockedPrice: true,
-    },
-  },
-  production: {
-    endpoint: 'http://localhost:8545',
-    deployments: require('./deployments/deployments.local.json'),
-    uniswapConfig: {
-      daiAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-      chainId: ChainId.MAINNET,
-      isMockedPrice: false,
-    },
-  },
-}
+import { ChainId } from '@uniswap/sdk';
 
 export type Configuration = {
+  chainId: number,
   endpoint: string,
   deployments: Deployments,
   config?: EthereumConfig,
@@ -44,8 +24,6 @@ type UniswapConfig = {
   isMockedPrice?: boolean;
 }
 
-export const defaultConfiguration = configurations[process.env.NODE_ENV];
-
 export const defaultEthereumConfig = {
   testing: false,
   autoGasMultiplier: 1.5,
@@ -53,4 +31,4 @@ export const defaultEthereumConfig = {
   defaultGas: "6000000",
   defaultGasPrice: "1000000000000",
   ethereumNodeTimeout: 10000,
-}
+};

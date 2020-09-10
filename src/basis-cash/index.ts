@@ -1,2 +1,1 @@
-export { BasisCash } from './BasisCash';
-export { defaultConfiguration } from './config';
+export { BasisCash as default } from './BasisCash';

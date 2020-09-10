@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
-import { BasisCash, defaultConfiguration } from '../../basis-cash';
+import BasisCash from '../../basis-cash';
+import config from '../../config';
 
 export interface BasisCashContext {
   basisCash?: BasisCash;
@@ -14,7 +15,7 @@ export const BasisCashProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (!basisCash) {
-      const basis = new BasisCash(defaultConfiguration);
+      const basis = new BasisCash(config);
       if (ethereum) {
         // wallet was unlocked at initialization
         basis.injectProvider(ethereum);
