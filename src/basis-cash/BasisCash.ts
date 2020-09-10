@@ -41,11 +41,11 @@ export class BasisCash {
     console.log('🔓 Wallet is unlocked');
   }
 
-  /** @returns a list of Pool contracts (e.g. BACDAIPool, BACYFIPool) */
-  bankContracts(): Contract[] {
+  /** @returns an object of Pool contracts (e.g. BACDAIPool, BACYFIPool) */
+  bankContracts(): { [name: string]: Contract } {
     return Object.keys(this.contracts)
       .filter((name) => name.endsWith('Pool'))
-      .map((name) => this.contracts[name]);
+      .reduce((prev, name) => ({ ...prev, [name]: this.contracts[name] }), {});
   }
 
   async getTokenStat(contract: Contract): Promise<TokenStat> {

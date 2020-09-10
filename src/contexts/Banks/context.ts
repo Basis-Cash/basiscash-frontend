@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Bank } from './types';
+import { Bank } from '../../basis-cash';
 
 export interface BanksContext {
   banks: Bank[];

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
 import styled from 'styled-components';
 
-import { Bank } from '../../contexts/Banks';
+import { Bank } from '../../basis-cash';
 import { getPoolStartTime } from '../../yamUtils';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -55,6 +55,7 @@ interface BankCardProps {
 
 const BankCard: React.FC<BankCardProps> = ({ bank }) => {
   const [startTime, setStartTime] = useState(0);
+  // TODO: alert if not unlocked
 
   const getStartTime = useCallback(async () => {
     const startTime = await getPoolStartTime(bank.contract);
@@ -87,12 +88,11 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
       <Card>
         <CardContent>
           <StyledContent>
-            {/* <CardIcon>{bank.icon}</CardIcon> */}
-            <CardIcon>🏦</CardIcon>
+            <CardIcon>{bank.icon}</CardIcon>
             <StyledTitle>{bank.name}</StyledTitle>
             <StyledDetails>
-              <StyledDetail>Deposit {bank.depositToken.toUpperCase()}</StyledDetail>
-              <StyledDetail>Earn {bank.earnToken.toUpperCase()}</StyledDetail>
+              <StyledDetail>Deposit {bank.depositTokenName.toUpperCase()}</StyledDetail>
+              <StyledDetail>Earn {`Basis ${bank.earnTokenName}`}</StyledDetail>
             </StyledDetails>
             <Button
               disabled={!poolActive}

@@ -16,46 +16,24 @@ import useRedeem from '../../hooks/useRedeem';
 import { getContract } from '../../utils/erc20';
 
 const Bank: React.FC = () => {
-  const { bankId } = useParams()
-  const {
-    contract,
-    depositToken,
+  const { bankId } = useParams();
+  const { contract, depositTokenName, depositTokenAddress, earnTokenName, icon } = useBank(
+    bankId,
+  );
+
+  useEffect(() => window.scrollTo(0, 0));
+
+  const { ethereum } = useWallet();
+  const tokenContract = useMemo(() => getContract(ethereum as provider, depositTokenAddress), [
+    ethereum,
     depositTokenAddress,
-    earnToken,
-    name,
-    icon,
-  } = useBank(bankId) || {
-    depositToken: '',
-    depositTokenAddress: '',
-    earnToken: '',
-    name: '',
-    icon: ''
-  }
+  ]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, []);
-
-  const { ethereum } = useWallet()
-
-  const tokenContract = useMemo(() => {
-    return getContract(ethereum as provider, depositTokenAddress)
-  }, [ethereum, depositTokenAddress])
-
-  const { onRedeem } = useRedeem(contract)
-
-  const depositTokenName = useMemo(() => {
-    return depositToken.toUpperCase()
-  }, [depositToken])
-
-  const earnTokenName = useMemo(() => {
-    return earnToken.toUpperCase()
-  }, [earnToken])
-
+  const { onRedeem } = useRedeem(contract);
   return (
     <>
       <PageHeader
-        icon={"🏦"}
+        icon={icon}
         subtitle={`Deposit ${depositTokenName} and earn ${earnTokenName}`}
         title={'Pick a Bank'}
       />
@@ -69,22 +47,19 @@ const Bank: React.FC = () => {
             <Stake
               poolContract={contract}
               tokenContract={tokenContract}
-              tokenName={depositToken.toUpperCase()}
+              tokenName={depositTokenName}
             />
           </StyledCardWrapper>
         </StyledCardsWrapper>
         <Spacer size="lg" />
         <div>
-          <Button
-            onClick={onRedeem}
-            text="Settle & Withdraw"
-          />
+          <Button onClick={onRedeem} text="Settle & Withdraw" />
         </div>
         <Spacer size="lg" />
       </StyledBank>
     </>
-  )
-}
+  );
+};
 
 const StyledBank = styled.div`
   align-items: center;
@@ -93,7 +68,7 @@ const StyledBank = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
-`
+`;
 
 const StyledCardsWrapper = styled.div`
   display: flex;
@@ -103,7 +78,7 @@ const StyledCardsWrapper = styled.div`
     flex-flow: column nowrap;
     align-items: center;
   }
-`
+`;
 
 const StyledCardWrapper = styled.div`
   display: flex;
@@ -112,6 +87,6 @@ const StyledCardWrapper = styled.div`
   @media (max-width: 768px) {
     width: 80%;
   }
-`
+`;
 
 export default Bank;

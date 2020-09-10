@@ -5,6 +5,7 @@ export type Configuration = {
   chainId: number,
   endpoint: string,
   deployments: Deployments,
+  externalTokens: {[contractName: string]: string};
   config?: EthereumConfig,
   uniswapConfig?: UniswapConfig,
 };

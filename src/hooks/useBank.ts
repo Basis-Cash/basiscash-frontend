@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { Context as BanksContext, Bank } from '../contexts/Banks';
+import { Context as BanksContext } from '../contexts/Banks';
+import { Bank } from '../basis-cash';
 
 const useBank = (id: string): Bank => {
   const { banks } = useContext(BanksContext);
