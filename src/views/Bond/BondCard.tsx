@@ -19,7 +19,7 @@ const BondCard: React.FC = () => {
         <InputGroup>
           <InputText>from</InputText>
           <InputControl>
-            <Input />
+            <Input onChange={() => console.log('go')} value="" />
             <div>
               Basis Cash
             </div>
@@ -34,7 +34,7 @@ const BondCard: React.FC = () => {
         <InputGroup>
           <InputText>to</InputText>
           <InputControl>
-            <Input />
+            <Input onChange={() => console.log('go')} value="" />
             <Button variant='secondary'>Basis Bond</Button>
           </InputControl>
         </InputGroup>
