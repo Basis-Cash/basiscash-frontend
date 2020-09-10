@@ -1,29 +1,24 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useWallet } from 'use-wallet';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
-import useYam from '../../hooks/useYam';
 import HomeCard from './components/HomeCard';
 import { OverviewData } from './types';
-import { getStats } from './utils';
 import useBasisCash from '../../hooks/useBasisCash';
 
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
-  const [{
-    circSupply,
-    curPrice,
-    nextRebase,
-    targetPrice,
-    totalSupply,
-  }, setStats] = useState<OverviewData>({});
+  const { Cash, Bond, Share } = basisCash.contracts;
 
+  const [{ cash, bond, share }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
-    // const statsData = await getStats(yam);
-    // setStats(statsData);
-    console.log('I am fetching men');
+    const [cash, bond, share] = await Promise.all([
+      basisCash.getTokenStat(Cash),
+      basisCash.getTokenStat(Bond),
+      basisCash.getTokenStat(Share),
+    ]);
+    setStats({ cash, bond, share });
   }, [basisCash, setStats]);
 
   useEffect(() => {
@@ -51,12 +46,15 @@ const Home: React.FC = () => {
       <CardWrapper>
         <HomeCard
           title={'Basis Cash'}
+          stat={cash}
         />
         <HomeCard
           title={'Basis Bonds'}
+          stat={bond}
         />
         <HomeCard
           title={'Basis Share'}
+          stat={share}
         />
       </CardWrapper>
     </Page>
