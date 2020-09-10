@@ -1,45 +1,37 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
-
-import { useWallet } from 'use-wallet'
-
-import Page from '../../components/Page'
-import PageHeader from '../../components/PageHeader'
-import Spacer from '../../components/Spacer'
-
-import useYam from '../../hooks/useYam'
-
-import Rebase from './components/Rebase'
-import Stats from './components/Stats'
-import Vote from './components/Vote'
-import HomeCard from './components/HomeCard'
-
-import { OverviewData } from './types'
-import { getStats } from './utils'
+import React, { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useWallet } from 'use-wallet';
+import Page from '../../components/Page';
+import PageHeader from '../../components/PageHeader';
+import Spacer from '../../components/Spacer';
+import useYam from '../../hooks/useYam';
+import HomeCard from './components/HomeCard';
+import { OverviewData } from './types';
+import { getStats } from './utils';
+import useBasisCash from '../../hooks/useBasisCash';
 
 const Home: React.FC = () => {
-
-  const { account } = useWallet()
-
-  const yam = useYam()
+  const basisCash = useBasisCash();
   const [{
     circSupply,
     curPrice,
     nextRebase,
     targetPrice,
     totalSupply,
-  }, setStats] = useState<OverviewData>({})
+  }, setStats] = useState<OverviewData>({});
 
   const fetchStats = useCallback(async () => {
-    const statsData = await getStats(yam)
-    setStats(statsData)
-  }, [yam, setStats])
+    // const statsData = await getStats(yam);
+    // setStats(statsData);
+    console.log('I am fetching men');
+  }, [basisCash, setStats]);
 
   useEffect(() => {
-    if (yam) {
+    if (basisCash) {
       fetchStats()
+        .catch(err => console.error(err.stack));
     }
-  }, [yam])
+  }, [basisCash]);
 
   return (
     <Page>
@@ -49,9 +41,11 @@ const Home: React.FC = () => {
         title="Welcome to Basis Cash!"
       />
       <div style={{
-        margin: '-24px auto 48px'
+        margin: '-24px auto 48px',
       }}>
-        <StyledLink href="https://medium.com/@yamfinance/how-to-exit-the-eternal-lands-pool-and-withdraw-your-yam-823d57c95f3a">How to withdraw from Uniswap</StyledLink>
+        <StyledLink
+          href="https://medium.com/@yamfinance/how-to-exit-the-eternal-lands-pool-and-withdraw-your-yam-823d57c95f3a">How
+          to withdraw from Uniswap</StyledLink>
       </div>
       <Spacer />
       <CardWrapper>
@@ -66,8 +60,8 @@ const Home: React.FC = () => {
         />
       </CardWrapper>
     </Page>
-  )
-}
+  );
+};
 
 const StyledOverview = styled.div`
   align-items: center;
@@ -77,7 +71,7 @@ const StyledOverview = styled.div`
     flex-flow: column nowrap;
     align-items: center;
   }
-`
+`;
 
 const CardWrapper = styled.div`
   display: flex;
@@ -89,16 +83,16 @@ const CardWrapper = styled.div`
     flex-flow: column nowrap;
     align-items: center;
   }
-`
+`;
 const StyledSpacer = styled.div`
   height: ${props => props.theme.spacing[4]}px;
   width: ${props => props.theme.spacing[4]}px;
-`
+`;
 
 const StyledLink = styled.a`
   font-weight: 700l
   text-decoration: none;
   color: ${props => props.theme.color.primary.main};
-`
+`;
 
-export default Home
+export default Home;
