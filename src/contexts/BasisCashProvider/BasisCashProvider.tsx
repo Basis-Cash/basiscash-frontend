@@ -1,16 +1,16 @@
-import React, { createContext, useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
+import React, { createContext, useEffect, useState } from 'react';
+import { useWallet } from 'use-wallet';
 import { BasisCash, defaultConfiguration } from '../../basis-cash';
 
 export interface BasisCashContext {
-  basisCash?: BasisCash
+  basisCash?: BasisCash;
 }
 
 export const Context = createContext<BasisCashContext>({ basisCash: null });
 
 export const BasisCashProvider: React.FC = ({ children }) => {
-  const { ethereum } = useWallet()
-  const [basisCash, setBasisCash] = useState<BasisCash>()
+  const { ethereum } = useWallet();
+  const [basisCash, setBasisCash] = useState<BasisCash>();
 
   useEffect(() => {
     if (!basisCash) {
@@ -23,11 +23,8 @@ export const BasisCashProvider: React.FC = ({ children }) => {
     } else if (ethereum) {
       basisCash.injectProvider(ethereum);
     }
-  }, [ethereum])
+    console.log('Useeffect');
+  }, [ethereum]);
 
-  return (
-    <Context.Provider value={{ basisCash }}>
-      {children}
-    </Context.Provider>
-  )
-}
+  return <Context.Provider value={{ basisCash }}>{children}</Context.Provider>;
+};

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useWallet } from 'use-wallet';
-
 import Button from '../../components/Button';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
-import BondCard from './BondCard';
+import Bank from '../Bank';
+import BankCards from './BankCards';
 
-const Bank: React.FC = () => {
+const Banks: React.FC = () => {
   const { path } = useRouteMatch();
   const { account, connect } = useWallet();
   return (
@@ -18,11 +18,14 @@ const Bank: React.FC = () => {
             <Route exact path={path}>
               <PageHeader
                 icon={'🏦'}
-                title="Buy Bonds"
-                subtitle="Earn premiums upon redemption"
+                title="Pick a Bank."
+                subtitle="Earn Basis Cash / Basis Shares by providing liquidity"
               />
+              <BankCards />
             </Route>
-            <BondCard />
+            <Route path={`${path}/:bankId`}>
+              <Bank />
+            </Route>
           </>
         ) : (
           <div
@@ -41,4 +44,4 @@ const Bank: React.FC = () => {
   );
 };
 
-export default Bank;
+export default Banks;

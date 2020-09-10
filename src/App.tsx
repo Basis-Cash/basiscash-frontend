@@ -1,25 +1,19 @@
-import React, { useCallback, useEffect } from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-} from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
-import { UseWalletProvider } from 'use-wallet'
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { UseWalletProvider } from 'use-wallet';
 
+import BanksProvider from './contexts/Banks';
+import BasisCashProvider from './contexts/BasisCashProvider';
+import ModalsProvider from './contexts/Modals';
+import YamProvider from './contexts/YamProvider';
+import TransactionProvider from './contexts/Transactions';
 
-import FarmsProvider from './contexts/Farms'
-import ModalsProvider from './contexts/Modals'
-import { BasisCashProvider } from './contexts/BasisCashProvider'
-import YamProvider from './contexts/YamProvider'
-import TransactionProvider from './contexts/Transactions'
+import Banks from './views/Banks';
+import Home from './views/Home';
+import Bond from './views/Bond';
 
-import Bank from './views/Bank'
-import Home from './views/Home'
-import Bond from './views/Bond'
-import Farm from './views/Farm'
-
-import theme from './theme'
+import theme from './theme';
 
 const App: React.FC = () => {
   return (
@@ -30,7 +24,7 @@ const App: React.FC = () => {
             <Home />
           </Route>
           <Route path="/bank">
-            <Bank />
+            <Banks />
           </Route>
           <Route path="/bonds">
             <Bond />
@@ -49,9 +43,9 @@ const Providers: React.FC = ({ children }) => {
           <YamProvider>
             <TransactionProvider>
               <ModalsProvider>
-                <FarmsProvider>
+                <BanksProvider>
                   {children}
-                </FarmsProvider>
+                </BanksProvider>
               </ModalsProvider>
             </TransactionProvider>
           </YamProvider>

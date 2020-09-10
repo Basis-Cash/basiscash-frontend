@@ -9,10 +9,10 @@ import useBasisCash from '../../hooks/useBasisCash';
 
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
-  const { Cash, Bond, Share } = basisCash.contracts;
 
   const [{ cash, bond, share }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
+    const { Cash, Bond, Share } = basisCash.contracts;
     const [cash, bond, share] = await Promise.all([
       basisCash.getTokenStat(Cash),
       basisCash.getTokenStat(Bond),
