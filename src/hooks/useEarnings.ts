@@ -11,14 +11,13 @@ const useEarnings = (pool: Contract) => {
   const basisCash = useBasisCash();
 
   const fetchBalance = useCallback(async () => {
-    const balance = await basisCash.earnedFromBank(pool);
+    const balance = await basisCash.earnedFromBank(pool, account);
     setBalance(balance);
   }, [account, pool]);
 
   useEffect(() => {
     if (account && pool && basisCash) {
-      fetchBalance()
-        .catch(err => console.error(err.stack));
+      fetchBalance().catch((err) => console.error(err.stack));
     }
   }, [account, pool, setBalance, basisCash]);
 

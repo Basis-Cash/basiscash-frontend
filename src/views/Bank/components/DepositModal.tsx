@@ -20,7 +20,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   const [val, setVal] = useState('')
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max)
+    return getFullDisplayBalance(max, tokenName === 'USDC' ? 6 : 18)
   }, [max])
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {

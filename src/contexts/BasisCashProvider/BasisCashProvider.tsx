@@ -24,8 +24,7 @@ export const BasisCashProvider: React.FC = ({ children }) => {
     } else if (account) {
       basisCash.unlockWallet(ethereum, account);
     }
-    console.log('Useeffect');
-  }, [ethereum]);
+  }, [account]);
 
   return <Context.Provider value={{ basisCash }}>{children}</Context.Provider>;
 };

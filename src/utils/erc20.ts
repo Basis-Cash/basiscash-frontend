@@ -24,7 +24,7 @@ export const getAllowance = async (tokenContract: Contract, poolContract: Contra
 export const getBalance = async (provider: provider, tokenAddress: string, userAddress: string): Promise<string> => {
   const tokenContract = getContract(provider, tokenAddress)
   try {
-    const balance: string = await tokenContract.methods.balanceOf(userAddress).call()
+    const balance: string = await tokenContract.methods.balanceOf(userAddress).call({ from: userAddress })
     return balance
   } catch (e) {
     return '0'
@@ -33,6 +33,9 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
 
 export const approve = async (tokenContract: Contract, poolContract: Contract, account: string) => {
   return tokenContract.methods
-    .approve(poolContract.options.address, ethers.constants.MaxUint256)
+    .approve(poolContract.options.address, ethers.constants.MaxUint256.toString())
     .send({ from: account, gas: 80000 })
+    .on('transactionHash', (tx: { transactionHash: string }) => {
+      return tx.transactionHash;
+    });
 };

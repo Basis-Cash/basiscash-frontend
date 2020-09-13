@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Contract } from 'web3-eth-contract';
@@ -36,7 +36,7 @@ const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, t
   const [requestedApproval, setRequestedApproval] = useState(false);
 
   const allowance = useAllowance(tokenContract, poolContract);
-  const { onApprove } = useApprove(tokenContract, poolContract);
+  const { onApprove } = useApprove(tokenContract, poolContract, tokenName);
 
   const tokenBalance = useTokenBalance(tokenContract.options.address);
   const stakedBalance = useStakedBalance(poolContract);
@@ -65,13 +65,27 @@ const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, t
     }
   }, [onApprove, setRequestedApproval]);
 
+  const updateApprovalStatus = useCallback(async () => {
+    if (allowance.toNumber()) {
+      setRequestedApproval(false);
+    }
+  }, [allowance, setRequestedApproval])
+
+  useEffect(() => {
+    if (requestedApproval) {
+      const refreshInterval = setInterval(updateApprovalStatus, 5000);
+      return () => clearInterval(refreshInterval);
+    }
+  }, [requestedApproval]);
+
+
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>{tokenIcon || '🌱'}</CardIcon>
-            <Value value={getDisplayBalance(stakedBalance)} />
+            <Value value={getDisplayBalance(stakedBalance, tokenName === 'USDC' ? 6 : 18)} />
             <Label text={`${tokenName} Staked`} />
           </StyledCardHeader>
           <StyledCardActions>

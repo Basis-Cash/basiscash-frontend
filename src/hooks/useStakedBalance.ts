@@ -11,7 +11,7 @@ const useStakedBalance = (pool: Contract) => {
   const basisCash = useBasisCash();
 
   const fetchBalance = useCallback(async () => {
-    const balance = await basisCash.stakedBalanceOnBank(pool);
+    const balance = await basisCash.stakedBalanceOnBank(pool, account);
     setBalance(balance);
   }, [account, pool]);
 

@@ -43,6 +43,10 @@ export class BasisCash {
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
   }
 
+  get isUnlocked(): boolean {
+    return !!this.myAccount;
+  }
+
   private async sendTransaction(tx: any, description: string): Promise<string> {
     const options: SendOptions = {
       from: this.myAccount,
@@ -71,10 +75,10 @@ export class BasisCash {
   }
 
   async getBondStat(): Promise<TokenStat> {
-    const { Bond } = this.contracts;
-    const price = Number(await this.getTokenPrice(Bond));
+    const { Cash, Bond } = this.contracts;
+    const cashPrice = Number(await this.getTokenPrice(Cash));
     return {
-      priceInDAI: (price ** 2).toPrecision(3),
+      priceInDAI: (cashPrice ** 2).toPrecision(3),
       totalSupply: await this.getTokenSupply(Bond),
     };
   }
@@ -107,7 +111,7 @@ export class BasisCash {
     try {
       return balanceOf(await contract.methods.totalSupply().call());
     } catch (err) {
-      console.error(err);
+      console.error(`Failed to fetch token supply: ${err.stack}`);
       return 'Unknown';
     }
   }
@@ -122,18 +126,18 @@ export class BasisCash {
     await this.sendTransaction(tx, `Buy ${amount} BAB`);
   }
 
-  async earnedFromBank(pool: Contract): Promise<BigNumber> {
+  async earnedFromBank(pool: Contract, account = this.myAccount): Promise<BigNumber> {
     try {
-      return new BigNumber(await pool.methods.earned(this.myAccount));
+      return new BigNumber(await pool.methods.earned(account).call({ from: account }));
     } catch (err) {
       console.error(`Failed to call earned() on pool ${pool.options.address}: ${err.stack}`);
       return new BigNumber(0);
     }
   }
 
-  async stakedBalanceOnBank(pool: Contract): Promise<BigNumber> {
+  async stakedBalanceOnBank(pool: Contract, account = this.myAccount): Promise<BigNumber> {
     try {
-      return new BigNumber(await pool.methods.balanceOf(this.myAccount));
+      return new BigNumber(await pool.methods.balanceOf(account).call({ from: account }));
     } catch (err) {
       console.error(`Failed to call balanceOf() on pool ${pool.options.address}: ${err.stack}`);
       return new BigNumber(0);
