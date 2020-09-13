@@ -22,7 +22,7 @@ const Banks: React.FC = ({ children }) => {
         earnTokenAddress: config.deployments[bankInfo.earnTokenName].address,
       });
     }
-    banks.sort((a, b) => (a.sort < b.sort ? 1 : -1));
+    banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));
     setBanks(banks);
   }, [basisCash, setBanks]);
 
