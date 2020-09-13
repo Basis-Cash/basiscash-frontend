@@ -16,38 +16,40 @@ import useRedeem from '../../hooks/useRedeem';
 import { getContract } from '../../utils/erc20';
 
 const Bank: React.FC = () => {
-  const { bankId } = useParams();
-  const { contract, depositTokenName, depositTokenAddress, earnTokenName, icon } = useBank(
-    bankId,
-  );
-
   useEffect(() => window.scrollTo(0, 0));
 
-  const { ethereum } = useWallet();
-  const tokenContract = useMemo(() => getContract(ethereum as provider, depositTokenAddress), [
-    ethereum,
-    depositTokenAddress,
-  ]);
+  const { bankId } = useParams();
+  const bank = useBank(bankId);
 
-  const { onRedeem } = useRedeem(contract);
-  return (
+  const { ethereum, account } = useWallet();
+  const tokenContract = useMemo(
+    () => getContract(ethereum as provider, bank?.depositTokenAddress),
+    [ethereum, bank?.depositTokenAddress],
+  );
+
+  const { onRedeem } = useRedeem(bank?.contract);
+  return account && bank ? (
     <>
       <PageHeader
-        icon={icon}
-        subtitle={`Deposit ${depositTokenName} and earn ${earnTokenName}`}
-        title={'Pick a Bank'}
+        icon="🏦"
+        subtitle={`Deposit ${bank?.depositTokenName} and earn ${bank?.earnTokenName}`}
+        title={bank?.name}
       />
       <StyledBank>
         <StyledCardsWrapper>
           <StyledCardWrapper>
-            <Harvest poolContract={contract} />
+            <Harvest
+              poolContract={bank?.contract}
+              tokenName={bank?.earnTokenName}
+            />
           </StyledCardWrapper>
           <Spacer />
           <StyledCardWrapper>
             <Stake
-              poolContract={contract}
+              poolContract={bank?.contract}
               tokenContract={tokenContract}
-              tokenName={depositTokenName}
+              tokenName={bank?.depositTokenName}
+              tokenIcon={bank?.icon}
             />
           </StyledCardWrapper>
         </StyledCardsWrapper>
@@ -58,6 +60,31 @@ const Bank: React.FC = () => {
         <Spacer size="lg" />
       </StyledBank>
     </>
+  ) : !bank ? (
+    <BankNotFound />
+  ) : (
+    <UnlockWallet />
+  );
+};
+
+const BankNotFound = () => {
+  return (
+    <Center>
+      <PageHeader
+        icon="🏚"
+        title="Not Found"
+        subtitle="You've hit a bank just robbed by unicorns."
+      />
+    </Center>
+  );
+};
+
+const UnlockWallet = () => {
+  const { connect } = useWallet();
+  return (
+    <Center>
+      <Button onClick={() => connect('injected')} text="Unlock Wallet" />
+    </Center>
   );
 };
 
@@ -87,6 +114,13 @@ const StyledCardWrapper = styled.div`
   @media (max-width: 768px) {
     width: 80%;
   }
+`;
+
+const Center = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default Bank;
