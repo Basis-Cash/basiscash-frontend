@@ -5,6 +5,7 @@ import { BankInfo } from './basis-cash';
 const configurations: {[env: string]: Configuration} = {
   development: {
     chainId: ChainId.ROPSTEN,
+    etherscanUrl: 'https://ropsten.etherscan.io',
     defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
     deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
     externalTokens: {
@@ -17,6 +18,7 @@ const configurations: {[env: string]: Configuration} = {
   },
   production: {
     chainId: ChainId.MAINNET,
+    etherscanUrl: 'https://etherscan.io',
     defaultProvider: 'wss://mainnet.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
     deployments: require('./basis-cash/deployments/deployments.local.json'),
     externalTokens: {

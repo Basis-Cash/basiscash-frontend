@@ -22,6 +22,7 @@ const TopBar: React.FC = () => {
             display: 'flex',
             justifyContent: 'flex-end'
           }}>
+            <TxButton />
             <AccountButton />
           </div>
         </StyledTopBarInner>
