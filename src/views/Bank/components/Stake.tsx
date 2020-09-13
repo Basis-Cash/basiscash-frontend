@@ -42,7 +42,7 @@ const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, t
   const stakedBalance = useStakedBalance(poolContract);
 
   const { onStake } = useStake(poolContract, tokenName);
-  const { onUnstake } = useUnstake(poolContract);
+  const { onUnstake } = useUnstake(poolContract, tokenName);
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />,

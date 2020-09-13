@@ -1,19 +1,18 @@
-import { useCallback } from 'react'
+import { useCallback } from 'react';
 
-import { useWallet } from 'use-wallet'
-import { Contract } from "web3-eth-contract"
-
-import { stake } from '../yamUtils'
+import { Contract } from 'web3-eth-contract';
+import useBasisCash from './useBasisCash';
 
 const useStake = (poolContract: Contract, tokenName: string) => {
-  const { account } = useWallet()
+  const basisCash = useBasisCash();
+  const handleStake = useCallback(
+    async (amount: string) => {
+      await basisCash.stake(poolContract, amount, tokenName);
+    },
+    [poolContract, basisCash],
+  );
 
-  const handleStake = useCallback(async (amount: string) => {
-    const txHash = await stake(poolContract, amount, account, tokenName)
-    console.log(txHash)
-  }, [account, poolContract])
+  return { onStake: handleStake };
+};
 
-  return { onStake: handleStake }
-}
-
-export default useStake
+export default useStake;

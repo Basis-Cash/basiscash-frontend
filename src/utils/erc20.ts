@@ -4,6 +4,7 @@ import { AbiItem } from 'web3-utils'
 
 import ERC20ABI from '../constants/abi/ERC20.json'
 import { Contract } from "web3-eth-contract"
+import { ethers } from 'ethers';
 
 export const getContract = (provider: provider, address: string) => {
   const web3 = new Web3(provider)
@@ -29,3 +30,9 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
     return '0'
   }
 }
+
+export const approve = async (tokenContract: Contract, poolContract: Contract, account: string) => {
+  return tokenContract.methods
+    .approve(poolContract.options.address, ethers.constants.MaxUint256)
+    .send({ from: account, gas: 80000 })
+};

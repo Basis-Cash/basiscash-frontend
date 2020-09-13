@@ -6,6 +6,7 @@ import { TokenStat } from './types';
 import { decimalToString } from '../yam/lib/Helpers';
 import { ethers } from 'ethers';
 import { balanceOf, web3ProviderFrom } from './ether-utils';
+import BigNumber from 'bignumber.js';
 
 /**
  * An API module of Basis Cash contracts.
@@ -13,6 +14,7 @@ import { balanceOf, web3ProviderFrom } from './ether-utils';
  */
 export class BasisCash {
   web3: Web3;
+  myAccount: string;
   uniswapProvider: ethers.providers.BaseProvider;
   config: Configuration;
   contracts: { [name: string]: Contract };
@@ -39,15 +41,20 @@ export class BasisCash {
    */
   unlockWallet(provider: any, account: string) {
     this.web3.setProvider(provider);
-    this.web3.defaultAccount = account;
+    this.myAccount = account;
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
   }
 
-  private async sendTransaction(tx: any) {
+  private async sendTransaction(tx: any, description: string): Promise<string> {
     const options: SendOptions = {
-      from: this.web3.defaultAccount,
+      from: this.myAccount,
     };
-    await tx.send(options);
+    return tx
+      .send(options)
+      .on('transactionHash', (tx: { transactionHash: string }) => {
+      console.log(`${description}: ${tx}`);
+      return tx.transactionHash;
+    });
   }
 
   /** @returns an object of Pool contracts (e.g. BACDAIPool, BACYFIPool) */
@@ -108,9 +115,51 @@ export class BasisCash {
    * Buy bonds from the system.
    * @param amount amount of cash to purchase bonds with.
    */
-  async buyBonds(amount: number): Promise<void> {
+  async buyBonds(amount: string | number): Promise<void> {
     const { Treasury } = this.contracts;
     const tx = Treasury.methods.buyBonds(decimalToString(amount));
-    await this.sendTransaction(tx);
+    await this.sendTransaction(tx, `Buy ${amount} BAB`);
+  }
+
+  async earnedFromBank(pool: Contract): Promise<BigNumber> {
+    try {
+      return new BigNumber(await pool.methods.earned(this.myAccount));
+    } catch (err) {
+      console.error(`Failed to call earned() on pool ${pool.options.address}: ${err.stack}`);
+      return new BigNumber(0);
+    }
+  }
+
+  async stakedBalanceOnBank(pool: Contract): Promise<BigNumber> {
+    try {
+      return new BigNumber(await pool.methods.balanceOf(this.myAccount));
+    } catch (err) {
+      console.error(`Failed to call balanceOf() on pool ${pool.options.address}: ${err.stack}`);
+      return new BigNumber(0);
+    }
+  }
+
+  /**
+   * Deposits token to given pool.
+   * @param pool An instance of pool {@code Contract}.
+   * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
+   * @param tokenName Name of the token you're staking
+   * @returns {string} Transaction hash
+   */
+  async stake(pool: Contract, amount: string | number, tokenName: string): Promise<string> {
+    const tx = pool.methods.stake(decimalToString(amount));
+    return await this.sendTransaction(tx, `Stake ${amount} ${tokenName}`);
+  }
+
+  /**
+   * Withdraws token from given pool.
+   * @param pool An instance of pool {@code Contract}.
+   * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
+   * @param tokenName Name of the token you're staking
+   * @returns {string} Transaction hash
+   */
+  async unstake(pool: Contract, amount: string | number, tokenName: string): Promise<string> {
+    const tx = pool.methods.withdraw(decimalToString(amount));
+    return await this.sendTransaction(tx, `Withdraw ${amount} ${tokenName}`);
   }
 }
