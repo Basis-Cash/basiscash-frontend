@@ -5,7 +5,7 @@ import { BankInfo } from './basis-cash';
 const configurations: {[env: string]: Configuration} = {
   development: {
     chainId: 5777,
-    endpoint: 'http://localhost:8545',
+    defaultProvider: 'http://localhost:8545',
     deployments: require('./basis-cash/deployments/deployments.local.json'),
     externalTokens: {
       DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
@@ -15,6 +15,7 @@ const configurations: {[env: string]: Configuration} = {
       USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     },
     uniswapConfig: {
+      provider: 'wss://mainnet.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
       daiAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
       chainId: ChainId.MAINNET,
       isMockedPrice: true,
@@ -22,7 +23,7 @@ const configurations: {[env: string]: Configuration} = {
   },
   production: {
     chainId: 1,
-    endpoint: 'http://localhost:8545',
+    defaultProvider: 'wss://mainnet.infura.io/ws/v3/57d0fd1bf341490088b7182d445fe45c',
     deployments: require('./basis-cash/deployments/deployments.local.json'),
     externalTokens: {
       DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
@@ -32,6 +33,7 @@ const configurations: {[env: string]: Configuration} = {
       USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     },
     uniswapConfig: {
+      provider: 'wss://mainnet.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
       daiAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
       chainId: ChainId.MAINNET,
       isMockedPrice: false,
@@ -76,15 +78,15 @@ export const bankDefinitions: {[contractName: string]: BankInfo} = {
     sort: 7,
   },
   DAIBACLPTokenSharePool: {
-    name: 'daiBacShare',
-    depositTokenName: 'DAI',
+    name: 'DAI_BAC_UNI_LP',
+    depositTokenName: 'DAI_BAC-UNI-LP v2',
     earnTokenName: 'Share',
     icon: '🦄',
     sort: 5,
   },
   DAIBASLPTokenSharePool: {
-    name: 'daiBasShare',
-    depositTokenName: 'DAI',
+    name: 'DAI_BAS_UNI_LP',
+    depositTokenName: 'DAI_BAS-UNI-LP v2',
     earnTokenName: 'Share',
     icon: '🌈',
     sort: 6,

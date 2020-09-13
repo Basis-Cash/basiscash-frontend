@@ -12,11 +12,10 @@ const Home: React.FC = () => {
 
   const [{ cash, bond, share }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
-    const { Cash, Bond, Share } = basisCash.contracts;
     const [cash, bond, share] = await Promise.all([
-      basisCash.getTokenStat(Cash),
-      basisCash.getTokenStat(Bond),
-      basisCash.getTokenStat(Share),
+      basisCash.getCashStat(),
+      basisCash.getBondStat(),
+      basisCash.getShareStat(),
     ]);
     setStats({ cash, bond, share });
   }, [basisCash, setStats]);

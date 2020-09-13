@@ -3,14 +3,14 @@ import { ChainId } from '@uniswap/sdk';
 
 export type Configuration = {
   chainId: number,
-  endpoint: string,
+  defaultProvider: string,
   deployments: Deployments,
   externalTokens: {[contractName: string]: string};
   config?: EthereumConfig,
   uniswapConfig?: UniswapConfig,
 };
 
-type EthereumConfig = {
+export type EthereumConfig = {
   testing: boolean,
   autoGasMultiplier: number,
   defaultConfirmations: number,
@@ -20,6 +20,9 @@ type EthereumConfig = {
 };
 
 type UniswapConfig = {
+  // Web3 provider used for fetching price feeds.
+  provider: string;
+
   daiAddress: string;
   chainId: ChainId;
   isMockedPrice?: boolean;
