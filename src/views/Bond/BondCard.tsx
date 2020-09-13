@@ -1,39 +1,54 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import CardContent from '../../components/CardContent';
 import Input from '../../components/Input';
+import useBasisCash from '../../hooks/useBasisCash';
 
 const BondCard: React.FC = () => {
+  const [amount, setAmount] = useState(0);
+  const basisCash = useBasisCash();
+
+  const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    setAmount(Number(e.currentTarget.value));
+  }, [setAmount]);
+
+  const handleClick = useCallback(() => {
+    basisCash
+      .buyBonds(amount)
+      .then(() => alert('TODO: Amazing!'))
+      .catch((err) => alert(`Failed to buy bonds: ${err}`));
+  }, [basisCash, amount]);
+
   return (
     <Card>
       <CardContent>
         <InputGroup>
           <InputText>from</InputText>
           <InputControl>
-            <Input onChange={() => console.log('go')} value="" />
+            <Input onChange={handleChange} value={`${amount}`} />
             <div>Basis Cash</div>
           </InputControl>
         </InputGroup>
 
-        <div>
-          <span>dasf</span>
-          <OptionText>+ add a send (optional)</OptionText>
-        </div>
+        {/*<div>*/}
+        {/*  <span>dasf</span>*/}
+        {/*  <OptionText>+ add a send (optional)</OptionText>*/}
+        {/*</div>*/}
 
         <InputGroup>
           <InputText>to</InputText>
           <InputControl>
-            <Input onChange={() => console.log('go')} value="" />
+            <Input onChange={() => null} value={`${amount}`} />
             <Button variant="secondary">Basis Bond</Button>
           </InputControl>
         </InputGroup>
 
         <div>Price</div>
 
-        <Button>Swap</Button>
+        <Button onClick={handleClick}>Swap</Button>
       </CardContent>
     </Card>
   );

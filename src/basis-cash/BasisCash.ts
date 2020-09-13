@@ -104,6 +104,13 @@ export class BasisCash {
     }
   }
 
-function balanceOf(n: number): string {
-  return `${Math.ceil(n / 1e18)}`;
+  /**
+   * Buy bonds from the system.
+   * @param amount amount of cash to purchase bonds with.
+   */
+  async buyBonds(amount: number): Promise<void> {
+    const { Treasury } = this.contracts;
+    const tx = Treasury.methods.buyBonds(decimalToString(amount));
+    await this.sendTransaction(tx);
+  }
 }
