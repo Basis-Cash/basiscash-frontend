@@ -4,26 +4,20 @@ import { BankInfo } from './basis-cash';
 
 const configurations: {[env: string]: Configuration} = {
   development: {
-    chainId: 5777,
-    defaultProvider: 'http://localhost:8545',
-    deployments: require('./basis-cash/deployments/deployments.local.json'),
+    chainId: ChainId.ROPSTEN,
+    defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
+    deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
     externalTokens: {
-      DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+      DAI: '0xc2118d4d90b274016cb7a54c03ef52e6c537d957',
       YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
       SUSD: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',
-      USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-      USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    },
-    uniswapConfig: {
-      provider: 'wss://mainnet.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
-      daiAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-      chainId: ChainId.MAINNET,
-      isMockedPrice: true,
+      USDC: '0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c',
+      USDT: '0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136',
     },
   },
   production: {
-    chainId: 1,
-    defaultProvider: 'wss://mainnet.infura.io/ws/v3/57d0fd1bf341490088b7182d445fe45c',
+    chainId: ChainId.MAINNET,
+    defaultProvider: 'wss://mainnet.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
     deployments: require('./basis-cash/deployments/deployments.local.json'),
     externalTokens: {
       DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
@@ -31,12 +25,6 @@ const configurations: {[env: string]: Configuration} = {
       SUSD: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',
       USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    },
-    uniswapConfig: {
-      provider: 'wss://mainnet.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
-      daiAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-      chainId: ChainId.MAINNET,
-      isMockedPrice: false,
     },
   },
 }

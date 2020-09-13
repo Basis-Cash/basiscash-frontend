@@ -19,12 +19,11 @@ export class BasisCash {
   contracts: { [name: string]: Contract };
 
   constructor(cfg: Configuration) {
-    const { defaultProvider, deployments, uniswapConfig } = cfg;
+    const { defaultProvider, deployments } = cfg;
 
-    this.web3 = new Web3(web3ProviderFrom(defaultProvider));
-    this.uniswapProvider = new ethers.providers.Web3Provider(
-      web3ProviderFrom(uniswapConfig.provider),
-    );
+    const provider = web3ProviderFrom(defaultProvider);
+    this.web3 = new Web3(provider);
+    this.uniswapProvider = new ethers.providers.Web3Provider(provider);
 
     // loads contracts from deployments
     this.contracts = {};
@@ -89,16 +88,19 @@ export class BasisCash {
   }
 
   async getTokenPrice(contract: Contract): Promise<string> {
-    const { chainId, daiAddress, isMockedPrice } = this.config.uniswapConfig;
+    const { chainId } = this.config;
+    const { DAI } = this.config.externalTokens;
 
-    const dai = new Token(chainId, daiAddress, 18);
-    const token = isMockedPrice
-      ? new Token(chainId, this.config.externalTokens['USDC'], 6) // display USDC price on development
-      : new Token(chainId, contract.options.address, 18);
+    const dai = new Token(chainId, DAI, 18);
+    const token = new Token(chainId, contract.options.address, 18);
 
-    const daiToToken = await Fetcher.fetchPairData(dai, token, this.uniswapProvider);
-    const priceInDAI = new Route([daiToToken], token);
-    return priceInDAI.midPrice.toSignificant(3);
+    try {
+      const daiToToken = await Fetcher.fetchPairData(dai, token, this.uniswapProvider);
+      const priceInDAI = new Route([daiToToken], token);
+      return priceInDAI.midPrice.toSignificant(3);
+    } catch (err) {
+      console.error(`Failed to fetch token price of ${contract.options.address}: ${err}`);
+    }
   }
 
   private async getTokenSupply(contract: Contract): Promise<string> {

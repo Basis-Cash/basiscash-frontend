@@ -2,12 +2,11 @@ import { Deployments } from './deployments';
 import { ChainId } from '@uniswap/sdk';
 
 export type Configuration = {
-  chainId: number,
+  chainId: ChainId,
   defaultProvider: string,
   deployments: Deployments,
   externalTokens: {[contractName: string]: string};
   config?: EthereumConfig,
-  uniswapConfig?: UniswapConfig,
 };
 
 export type EthereumConfig = {
@@ -18,15 +17,6 @@ export type EthereumConfig = {
   defaultGasPrice: string,
   ethereumNodeTimeout: number,
 };
-
-type UniswapConfig = {
-  // Web3 provider used for fetching price feeds.
-  provider: string;
-
-  daiAddress: string;
-  chainId: ChainId;
-  isMockedPrice?: boolean;
-}
 
 export const defaultEthereumConfig = {
   testing: false,

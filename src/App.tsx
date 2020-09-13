@@ -13,7 +13,7 @@ import Home from './views/Home';
 import Bond from './views/Bond';
 
 import theme from './theme';
-import { ChainId } from '@uniswap/sdk';
+import config from './config';
 
 const App: React.FC = () => {
   return (
@@ -38,7 +38,7 @@ const App: React.FC = () => {
 const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      <UseWalletProvider chainId={ChainId.MAINNET}>
+      <UseWalletProvider chainId={config.chainId}>
         <BasisCashProvider>
           <TransactionProvider>
             <ModalsProvider>
