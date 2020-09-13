@@ -3,9 +3,8 @@ import { Contract, SendOptions } from 'web3-eth-contract';
 import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Configuration } from './config';
 import { TokenStat } from './types';
-import { decimalToString } from '../yam/lib/Helpers';
 import { ethers } from 'ethers';
-import { balanceOf, web3ProviderFrom } from './ether-utils';
+import { balanceOf, decimalToString, web3ProviderFrom } from './ether-utils';
 import BigNumber from 'bignumber.js';
 
 /**

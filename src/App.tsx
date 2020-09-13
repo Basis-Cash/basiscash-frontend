@@ -6,7 +6,6 @@ import { UseWalletProvider } from 'use-wallet';
 import BanksProvider from './contexts/Banks';
 import BasisCashProvider from './contexts/BasisCashProvider';
 import ModalsProvider from './contexts/Modals';
-import YamProvider from './contexts/YamProvider';
 import TransactionProvider from './contexts/Transactions';
 
 import Banks from './views/Banks';
@@ -41,15 +40,13 @@ const Providers: React.FC = ({ children }) => {
     <ThemeProvider theme={theme}>
       <UseWalletProvider chainId={ChainId.MAINNET}>
         <BasisCashProvider>
-          <YamProvider>
-            <TransactionProvider>
-              <ModalsProvider>
-                <BanksProvider>
-                  {children}
-                </BanksProvider>
-              </ModalsProvider>
-            </TransactionProvider>
-          </YamProvider>
+          <TransactionProvider>
+            <ModalsProvider>
+              <BanksProvider>
+                {children}
+              </BanksProvider>
+            </ModalsProvider>
+          </TransactionProvider>
         </BasisCashProvider>
       </UseWalletProvider>
     </ThemeProvider>
