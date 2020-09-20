@@ -1,14 +1,10 @@
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'ethers';
 
 export const getDisplayBalance = (balance: BigNumber, decimals = 18) => {
-  const displayBalance = balance.dividedBy(new BigNumber(10).pow(decimals))
-  if (displayBalance.lt(1)) {
-    return displayBalance.toPrecision(4)
-  } else {
-    return displayBalance.toFixed(2)
-  }
+  const displayBalance = balance.div(BigNumber.from(10).pow(decimals))
+  return displayBalance.toString()
 }
 
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
-  return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed()
+  return balance.div(BigNumber.from(10).pow(decimals)).toString();
 }

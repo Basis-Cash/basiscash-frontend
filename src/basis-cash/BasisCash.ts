@@ -1,36 +1,46 @@
-import Web3 from 'web3';
-import { Contract, SendOptions } from 'web3-eth-contract';
 import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Configuration } from './config';
 import { TokenStat } from './types';
-import { ethers } from 'ethers';
-import { balanceOf, decimalToString, web3ProviderFrom } from './ether-utils';
-import BigNumber from 'bignumber.js';
+import { ethers, Contract, BigNumber } from 'ethers';
+import { decimalToBalance, balanceToDecimal, web3ProviderFrom } from './ether-utils';
+import { TransactionResponse } from '@ethersproject/providers';
+import ERC20 from './ERC20';
 
 /**
  * An API module of Basis Cash contracts.
  * All contract-interacting domain logic should be defined in here.
  */
 export class BasisCash {
-  web3: Web3;
   myAccount: string;
-  uniswapProvider: ethers.providers.BaseProvider;
+  provider: ethers.providers.Web3Provider;
+  signer?: ethers.Signer;
   config: Configuration;
   contracts: { [name: string]: Contract };
+  externalTokens: { [name: string]: ERC20 };
+
+  BAC: ERC20;
+  BAS: ERC20;
+  BAB: ERC20;
 
   constructor(cfg: Configuration) {
-    const { defaultProvider, deployments } = cfg;
-
-    const provider = web3ProviderFrom(defaultProvider);
-    this.web3 = new Web3(provider);
-    this.uniswapProvider = new ethers.providers.Web3Provider(provider);
+    const { defaultProvider, deployments, externalTokens } = cfg;
+    const provider = new ethers.providers.Web3Provider(web3ProviderFrom(defaultProvider));
 
     // loads contracts from deployments
     this.contracts = {};
     for (const [name, deployment] of Object.entries(deployments)) {
-      this.contracts[name] = new this.web3.eth.Contract(deployment.abi, deployment.address);
+      this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
     }
+    this.externalTokens = {};
+    for (const [symbol, address] of Object.entries(externalTokens)) {
+      this.externalTokens[symbol] = new ERC20(address, provider, symbol); // TODO: add decimal
+    }
+    this.BAC = new ERC20(deployments.Cash.address, provider, 'BAC');
+    this.BAS = new ERC20(deployments.Share.address, provider, 'BAS');
+    this.BAB = new ERC20(deployments.Bond.address, provider, 'BAB');
+
     this.config = cfg;
+    this.provider = provider;
   }
 
   /**
@@ -38,25 +48,23 @@ export class BasisCash {
    * @param account An address of unlocked wallet account.
    */
   unlockWallet(provider: any, account: string) {
-    this.web3.setProvider(provider);
+    this.provider = new ethers.providers.Web3Provider(provider);
+    this.signer = this.provider.getSigner(0);
     this.myAccount = account;
+    for (const [name, contract] of Object.entries(this.contracts)) {
+      this.contracts[name] = contract.connect(this.signer);
+    }
+    for (const [name, contract] of Object.entries(this.externalTokens)) {
+      this.externalTokens[name] = contract.connect(this.signer);
+    }
+    this.BAC = this.BAC.connect(this.signer);
+    this.BAS = this.BAS.connect(this.signer);
+    this.BAB = this.BAB.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
   }
 
   get isUnlocked(): boolean {
     return !!this.myAccount;
-  }
-
-  private async sendTransaction(tx: any, description: string): Promise<string> {
-    const options: SendOptions = {
-      from: this.myAccount,
-    };
-    return tx
-      .send(options)
-      .on('transactionHash', (tx: { transactionHash: string }) => {
-      console.log(`${description}: ${tx}`);
-      return tx.transactionHash;
-    });
   }
 
   /** @returns an object of Pool contracts (e.g. BACDAIPool, BACYFIPool) */
@@ -96,20 +104,20 @@ export class BasisCash {
     const { DAI } = this.config.externalTokens;
 
     const dai = new Token(chainId, DAI, 18);
-    const token = new Token(chainId, contract.options.address, 18);
+    const token = new Token(chainId, contract.address, 18);
 
     try {
-      const daiToToken = await Fetcher.fetchPairData(dai, token, this.uniswapProvider);
+      const daiToToken = await Fetcher.fetchPairData(dai, token, this.provider);
       const priceInDAI = new Route([daiToToken], token);
       return priceInDAI.midPrice.toSignificant(3);
     } catch (err) {
-      console.error(`Failed to fetch token price of ${contract.options.address}: ${err}`);
+      console.error(`Failed to fetch token price of ${contract.address}: ${err}`);
     }
   }
 
   private async getTokenSupply(contract: Contract): Promise<string> {
     try {
-      return balanceOf(await contract.methods.totalSupply().call());
+      return balanceToDecimal(await contract.totalSupply());
     } catch (err) {
       console.error(`Failed to fetch token supply: ${err.stack}`);
       return 'Unknown';
@@ -120,27 +128,26 @@ export class BasisCash {
    * Buy bonds from the system.
    * @param amount amount of cash to purchase bonds with.
    */
-  async buyBonds(amount: string | number): Promise<void> {
+  async buyBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    const tx = Treasury.methods.buyBonds(decimalToString(amount));
-    await this.sendTransaction(tx, `Buy ${amount} BAB`);
+    return await Treasury.buyBonds(decimalToBalance(amount));
   }
 
   async earnedFromBank(pool: Contract, account = this.myAccount): Promise<BigNumber> {
     try {
-      return new BigNumber(await pool.methods.earned(account).call({ from: account }));
+      return await pool.earned(account);
     } catch (err) {
-      console.error(`Failed to call earned() on pool ${pool.options.address}: ${err.stack}`);
-      return new BigNumber(0);
+      console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
+      return BigNumber.from(0);
     }
   }
 
   async stakedBalanceOnBank(pool: Contract, account = this.myAccount): Promise<BigNumber> {
     try {
-      return new BigNumber(await pool.methods.balanceOf(account).call({ from: account }));
+      return await pool.balanceOf(account);
     } catch (err) {
-      console.error(`Failed to call balanceOf() on pool ${pool.options.address}: ${err.stack}`);
-      return new BigNumber(0);
+      console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err.stack}`);
+      return BigNumber.from(0);
     }
   }
 
@@ -148,23 +155,34 @@ export class BasisCash {
    * Deposits token to given pool.
    * @param pool An instance of pool {@code Contract}.
    * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
-   * @param tokenName Name of the token you're staking
    * @returns {string} Transaction hash
    */
-  async stake(pool: Contract, amount: string | number, tokenName: string): Promise<string> {
-    const tx = pool.methods.stake(decimalToString(amount));
-    return await this.sendTransaction(tx, `Stake ${amount} ${tokenName}`);
+  async stake(pool: Contract, amount: string | number): Promise<TransactionResponse> {
+    return await pool.stake(decimalToBalance(amount));
   }
 
   /**
    * Withdraws token from given pool.
    * @param pool An instance of pool {@code Contract}.
    * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
-   * @param tokenName Name of the token you're staking
    * @returns {string} Transaction hash
    */
-  async unstake(pool: Contract, amount: string | number, tokenName: string): Promise<string> {
-    const tx = pool.methods.withdraw(decimalToString(amount));
-    return await this.sendTransaction(tx, `Withdraw ${amount} ${tokenName}`);
+  async unstake(pool: Contract, amount: string | number): Promise<TransactionResponse> {
+    return await pool.withdraw(decimalToBalance(amount));
+  }
+
+  async stakeShareToBoardroom(amount: BigNumber): Promise<TransactionResponse> {
+    const { Boardroom } = this.contracts;
+    return await Boardroom.stake(amount);
+  }
+
+  async getStakedSharesOnBoardroom(): Promise<BigNumber> {
+    const { Boardroom } = this.contracts;
+    return await Boardroom.getBoardSeatBalance();
+  }
+
+  async withdrawShareFromBoardroom(amount: BigNumber): Promise<TransactionResponse> {
+    const { Boardroom } = this.contracts;
+    return await Boardroom.withdraw(amount);
   }
 }

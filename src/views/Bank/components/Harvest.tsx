@@ -14,6 +14,7 @@ import useEarnings from '../../../hooks/useEarnings';
 import useReward from '../../../hooks/useReward';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
+import TokenSymbol from '../../../components/TokenSymbol';
 
 interface HarvestProps {
   poolContract: Contract;

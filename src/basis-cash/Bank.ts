@@ -1,4 +1,5 @@
-import { Contract } from 'web3-eth-contract';
+import ERC20 from './ERC20';
+import { Contract } from 'ethers';
 
 export interface BankInfo {
   name: string;
@@ -17,6 +18,6 @@ export type TokenInfo = {
 export interface Bank extends BankInfo {
   id: string;
   contract: Contract;
-  depositTokenAddress: string;
-  earnTokenAddress: string;
+  depositToken: ERC20;
+  earnToken: ERC20;
 }

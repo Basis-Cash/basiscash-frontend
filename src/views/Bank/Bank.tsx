@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { useParams } from 'react-router-dom';
 import { useWallet } from 'use-wallet';
-import { provider } from 'web3-core';
 
 import Button from '../../components/Button';
 import PageHeader from '../../components/PageHeader';
@@ -21,11 +20,7 @@ const Bank: React.FC = () => {
   const { bankId } = useParams();
   const bank = useBank(bankId);
 
-  const { ethereum, account } = useWallet();
-  const tokenContract = useMemo(
-    () => getContract(ethereum as provider, bank?.depositTokenAddress),
-    [ethereum, bank?.depositTokenAddress],
-  );
+  const { account } = useWallet();
 
   const { onRedeem } = useRedeem(bank?.contract);
   return account && bank ? (
@@ -38,16 +33,13 @@ const Bank: React.FC = () => {
       <StyledBank>
         <StyledCardsWrapper>
           <StyledCardWrapper>
-            <Harvest
-              poolContract={bank?.contract}
-              tokenName={bank?.earnTokenName}
-            />
+            <Harvest poolContract={bank?.contract} tokenName={bank?.earnTokenName} />
           </StyledCardWrapper>
           <Spacer />
           <StyledCardWrapper>
             <Stake
               poolContract={bank?.contract}
-              tokenContract={tokenContract}
+              tokenContract={bank?.depositToken}
               tokenName={bank?.depositTokenName}
               tokenIcon={bank?.icon}
             />

@@ -81,7 +81,7 @@ export const redeem = async (poolContract, account) => {
 
 export const approve = async (tokenContract, poolContract, account) => {
   return tokenContract.methods
-    .approve(poolContract.options.address, ethers.constants.MaxUint256)
+    .approve(poolContract.address, ethers.constants.MaxUint256)
     .send({ from: account, gas: 80000 })
 }
 

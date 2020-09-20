@@ -1,24 +1,14 @@
 import { useCallback } from 'react';
 
-import { Contract } from 'web3-eth-contract';
+import { Contract } from 'ethers';
 import useBasisCash from './useBasisCash';
-import useTransactionAdder from './useTransactionAdder';
 
 const useStake = (poolContract: Contract, tokenName: string) => {
   const basisCash = useBasisCash();
-  const { onAddTransaction } = useTransactionAdder();
-
   const handleStake = useCallback(
-    async (amount: string) => {
-      const hash = await basisCash.stake(poolContract, amount, tokenName);
-      onAddTransaction({
-        hash,
-        description: `Stake ${amount} ${tokenName}`,
-      })
-    },
-    [poolContract, basisCash, onAddTransaction],
+    async (amount: string) => await basisCash.stake(poolContract, amount),
+    [poolContract, basisCash],
   );
-
   return { onStake: handleStake };
 };
 

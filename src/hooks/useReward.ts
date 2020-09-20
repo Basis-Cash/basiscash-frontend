@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useWallet } from 'use-wallet'
-import { Contract } from "web3-eth-contract"
+import { Contract } from 'ethers'
 
 import { harvest } from '../yamUtils'
 

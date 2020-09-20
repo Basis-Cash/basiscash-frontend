@@ -1,29 +1,26 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react';
+import { BigNumber, Contract } from 'ethers';
+import { useWallet } from 'use-wallet';
 
-import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
-import { provider } from 'web3-core'
-
-import { getBalance } from '../utils/erc20'
-
-const useTokenBalance = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, ethereum }: { account: string, ethereum: provider } = useWallet()
+const useTokenBalance = (token: Contract) => {
+  const [balance, setBalance] = useState(BigNumber.from(0));
+  const { account } = useWallet();
 
   const fetchBalance = useCallback(async () => {
-    const balance = await getBalance(ethereum, tokenAddress, account)
-    setBalance(new BigNumber(balance))
-  }, [account, ethereum, tokenAddress])
+    setBalance(await token.balanceOf(account));
+  }, [account, token]);
 
   useEffect(() => {
-    if (account && ethereum) {
-      fetchBalance()
-      let refreshInterval = setInterval(fetchBalance, 10000)
-      return () => clearInterval(refreshInterval)
+    if (account) {
+      fetchBalance().catch((err) =>
+        console.error(`Failed to fetch token balance: ${err.stack}`),
+      );
+      let refreshInterval = setInterval(fetchBalance, 10000);
+      return () => clearInterval(refreshInterval);
     }
-  }, [account, ethereum, setBalance, tokenAddress])
+  }, [account, setBalance, token]);
 
-  return balance
-}
+  return balance;
+};
 
-export default useTokenBalance
+export default useTokenBalance;

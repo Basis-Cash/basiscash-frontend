@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-
-import BigNumber from 'bignumber.js';
 import { useWallet } from 'use-wallet';
-import { Contract } from 'web3-eth-contract';
+import { BigNumber, Contract } from 'ethers';
 import useBasisCash from './useBasisCash';
 
 const useEarnings = (pool: Contract) => {
-  const [balance, setBalance] = useState(new BigNumber(0));
+  const [balance, setBalance] = useState(BigNumber.from(0));
   const { account } = useWallet();
   const basisCash = useBasisCash();
 
