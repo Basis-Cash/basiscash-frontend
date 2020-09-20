@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Contract } from 'web3-eth-contract';
+import { Contract } from 'ethers';
 
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
@@ -30,7 +30,9 @@ const Harvest: React.FC<HarvestProps> = ({ poolContract, tokenName }) => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <CardIcon>🍠</CardIcon>
+            <CardIcon>
+              <TokenSymbol symbol={tokenName === 'Share' ? 'BAS' : 'BAC'} />
+            </CardIcon>
             <Value value={getDisplayBalance(earnings)} />
             <Label text={`Basis ${tokenName} Earned`} />
           </StyledCardHeader>

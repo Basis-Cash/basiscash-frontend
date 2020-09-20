@@ -34,26 +34,27 @@ const Home: React.FC = () => {
         subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
         title="Welcome to Basis Cash!"
       />
-      <div style={{
-        margin: '-24px auto 48px',
-      }}>
-        <StyledLink
-          href="https://medium.com/@yamfinance/how-to-exit-the-eternal-lands-pool-and-withdraw-your-yam-823d57c95f3a">How
-          to withdraw from Uniswap</StyledLink>
-      </div>
       <Spacer />
       <CardWrapper>
         <HomeCard
           title={'Basis Cash'}
+          symbol="BAC"
+          color="#EEA7ED"
           stat={cash}
         />
-        <HomeCard
-          title={'Basis Bonds'}
-          stat={bond}
-        />
+        <Spacer size="lg" />
         <HomeCard
           title={'Basis Share'}
+          symbol="BAS"
+          color="#E83725"
           stat={share}
+        />
+        <Spacer size="lg" />
+        <HomeCard
+          title={'Basis Bonds'}
+          symbol="BAB"
+          color="#ECF25C"
+          stat={bond}
         />
       </CardWrapper>
     </Page>
@@ -72,7 +73,7 @@ const StyledOverview = styled.div`
 
 const CardWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
 
   @media (max-width: 768px) {
@@ -87,7 +88,7 @@ const StyledSpacer = styled.div`
 `;
 
 const StyledLink = styled.a`
-  font-weight: 700l
+  font-weight: 700;
   text-decoration: none;
   color: ${props => props.theme.color.primary.main};
 `;

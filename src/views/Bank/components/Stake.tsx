@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { Contract } from 'ethers';
@@ -12,8 +12,7 @@ import IconButton from '../../../components/IconButton';
 import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 
-import useAllowance from '../../../hooks/useAllowance';
-import useApprove from '../../../hooks/useApprove';
+import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import useModal from '../../../hooks/useModal';
 import useStake from '../../../hooks/useStake';
 import useStakedBalance from '../../../hooks/useStakedBalance';
@@ -24,21 +23,21 @@ import { getDisplayBalance } from '../../../utils/formatBalance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
+import ERC20 from '../../../basis-cash/ERC20';
+import TokenSymbol from '../../../components/TokenSymbol';
 
 interface StakeProps {
   poolContract: Contract;
-  tokenContract: Contract;
+  tokenContract: ERC20;
   tokenName: string;
   tokenIcon?: string;
 }
 
 const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, tokenIcon }) => {
-  const [requestedApproval, setRequestedApproval] = useState(false);
+  const [approveStatus, approve] = useApprove(tokenContract, poolContract, tokenName);
 
-  const allowance = useAllowance(tokenContract, poolContract);
-  const { onApprove } = useApprove(tokenContract, poolContract, tokenName);
-
-  const tokenBalance = useTokenBalance(tokenContract.options.address);
+  // TODO: reactive update of token balance
+  const tokenBalance = useTokenBalance(tokenContract);
   const stakedBalance = useStakedBalance(poolContract);
 
   const { onStake } = useStake(poolContract, tokenName);
@@ -52,46 +51,23 @@ const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, t
     <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
   );
 
-  const handleApprove = useCallback(async () => {
-    try {
-      setRequestedApproval(true);
-      const txHash = await onApprove();
-      // user rejected tx or didn't go thru
-      if (!txHash) {
-        setRequestedApproval(false);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, [onApprove, setRequestedApproval]);
-
-  const updateApprovalStatus = useCallback(async () => {
-    if (allowance.toNumber()) {
-      setRequestedApproval(false);
-    }
-  }, [allowance, setRequestedApproval])
-
-  useEffect(() => {
-    if (requestedApproval) {
-      const refreshInterval = setInterval(updateApprovalStatus, 5000);
-      return () => clearInterval(refreshInterval);
-    }
-  }, [requestedApproval]);
-
+  const handleApprove = useCallback(async () => await approve, [approve]);
 
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <CardIcon>{tokenIcon || '🌱'}</CardIcon>
+            <CardIcon>
+              <TokenSymbol symbol={tokenName} size={54} />
+            </CardIcon>
             <Value value={getDisplayBalance(stakedBalance, tokenName === 'USDC' ? 6 : 18)} />
             <Label text={`${tokenName} Staked`} />
           </StyledCardHeader>
           <StyledCardActions>
-            {!allowance.toNumber() ? (
+            {approveStatus !== ApprovalState.APPROVED ? (
               <Button
-                disabled={requestedApproval}
+                disabled={approveStatus == ApprovalState.PENDING}
                 onClick={handleApprove}
                 text={`Approve ${tokenName}`}
               />

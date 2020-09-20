@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { useParams } from 'react-router-dom';
@@ -12,7 +12,6 @@ import Stake from './components/Stake';
 
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-import { getContract } from '../../utils/erc20';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -45,6 +44,12 @@ const Bank: React.FC = () => {
             />
           </StyledCardWrapper>
         </StyledCardsWrapper>
+        <Spacer size="lg" />
+        {bank.depositTokenName.includes('LP') && (
+          <StyledLink href="https://medium.com/@yamfinance/how-to-exit-the-eternal-lands-pool-and-withdraw-your-yam-823d57c95f3a">
+            🦄  Provide liquidity to BAS-DAI pair on Uniswap  🦄
+          </StyledLink>
+        )}
         <Spacer size="lg" />
         <div>
           <Button onClick={onRedeem} text="Settle & Withdraw" />
@@ -88,6 +93,17 @@ const StyledBank = styled.div`
     width: 100%;
   }
 `;
+
+const StyledUniswapLPGuide = styled.div`
+  margin: -24px auto 48px;
+`;
+
+const StyledLink = styled.a`
+  font-weight: 700;
+  text-decoration: none;
+  color: ${props => props.theme.color.primary.main};
+`;
+
 
 const StyledCardsWrapper = styled.div`
   display: flex;

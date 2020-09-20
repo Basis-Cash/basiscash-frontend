@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
 import CardIcon from '../CardIcon'
+import TokenSymbol from '../TokenSymbol';
 
 interface LoaderProps {
   text?: string
@@ -11,7 +12,7 @@ const Loader: React.FC<LoaderProps> = ({ text }) => {
   return (
     <StyledLoader>
       <CardIcon>
-      <StyledYam>🍠</StyledYam>
+        <TokenSymbol symbol="BAC" size={36} />
       </CardIcon>
       {!!text && <StyledText>{text}</StyledText>}
     </StyledLoader>

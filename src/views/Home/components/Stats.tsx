@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-
+import { BigNumber } from 'ethers';
 import numeral from 'numeral'
 
 import Card from '../../../components/Card'
@@ -8,7 +8,6 @@ import CardContent from '../../../components/CardContent'
 import Label from '../../../components/Label'
 
 import { getDisplayBalance } from '../../../utils/formatBalance'
-import BigNumber from 'bignumber.js'
 
 interface StatsProps {
   circSupply?: string,
@@ -25,8 +24,8 @@ const Stats: React.FC<StatsProps> = ({
 
   const formattedTotalSupply = useMemo(() => {
     if (totalSupply) {
-      const supplyStr = getDisplayBalance(new BigNumber(totalSupply))
-      return numeral(supplyStr).format('0.0a') 
+      const supplyStr = getDisplayBalance(BigNumber.from(totalSupply))
+      return numeral(supplyStr).format('0.0a')
     } else return '--'
   }, [totalSupply])
 
@@ -35,7 +34,7 @@ const Stats: React.FC<StatsProps> = ({
       <Card>
         <CardContent>
           <StyledStat>
-            <StyledValue>{curPrice ? `$${getDisplayBalance(new BigNumber(curPrice))}` : '--'}</StyledValue>
+            <StyledValue>{curPrice ? `$${getDisplayBalance(BigNumber.from(curPrice))}` : '--'}</StyledValue>
             <Label text="Current Price" />
           </StyledStat>
         </CardContent>
@@ -58,7 +57,7 @@ const Stats: React.FC<StatsProps> = ({
         <CardContent>
           <StyledStat>
             <StyledValue>
-              --
+              ${formattedTotalSupply}
             </StyledValue>
             <Label text="Total Supply" />
           </StyledStat>

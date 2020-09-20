@@ -23,15 +23,17 @@ const IconButton: React.FC<IconButtonProps> = ({ children, disabled, onClick, to
 interface StyledButtonProps {
   disabled?: boolean
 }
+/*
+  box-shadow: 6px 6px 12px ${props => props.theme.color.grey[600]},
+    -12px -12px 24px ${props => props.theme.color.grey[800]}aa;
+ */
 
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background-color: ${props => props.theme.color.grey[200]};
+  background-color: ${props => props.theme.color.grey[700]};
   border: 0;
   border-radius: 28px;
-  box-shadow: 6px 6px 12px ${props => props.theme.color.grey[300]},
-    -12px -12px 24px ${props => props.theme.color.grey[100]}aa;
-  color: ${props => !props.disabled ? props.theme.color.primary.main : props.theme.color.grey[400]};
+  color: ${props => !props.disabled ? props.theme.color.primary.main : props.theme.color.grey[500]};
   cursor: pointer;
   display: flex;
   font-weight: 700;
@@ -45,7 +47,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   text-transform: uppercase;
   width: 56px;
   &:hover {
-    background-color: ${props => props.theme.color.grey[100]};
+    background-color: ${props => props.theme.color.grey[800]};
   }
 `
 

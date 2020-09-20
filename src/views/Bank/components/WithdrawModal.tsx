@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import BigNumber from 'bignumber.js'
-
 import Button from '../../../components/Button'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
@@ -9,6 +7,7 @@ import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
 
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
+import { BigNumber } from 'ethers';
 
 interface WithdrawModalProps extends ModalProps {
   max: BigNumber,

@@ -29,6 +29,8 @@ export const grey = {
   900: '#212121',
 }
 
+export const bg = '#000000';
+
 export const teal = {
   200: '#64ffda'
 }

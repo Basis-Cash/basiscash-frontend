@@ -4,25 +4,29 @@ import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 import { TokenStat } from '../../../basis-cash/types';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import TokenSymbol from '../../../components/TokenSymbol';
 
 interface HomeCardProps {
   title: string;
+  symbol: string;
+  color: string;
   stat?: TokenStat;
 }
 
-const HomeCard: React.FC<HomeCardProps> = ({ title, stat }) => {
+const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, stat }) => {
   return (
     <Wrapper>
       <CardHeader>{title}</CardHeader>
       <StyledCards>
+        <TokenSymbol symbol={symbol} />
         <CardSection>
-          {stat ? <Value value={stat.priceInDAI} /> : <ValueSkeleton />}
-          <Label text="Current Price" />
+          {stat ? <Value value={`${stat.priceInDAI}$`} /> : <ValueSkeleton />}
+          <Label text="Current Price" color={color} />
         </CardSection>
 
         <CardSection>
           {stat ? <Value value={stat.totalSupply} /> : <ValueSkeleton />}
-          <Label text="Total Supply" />
+          <Label text="Total Supply" color={color} />
         </CardSection>
       </StyledCards>
     </Wrapper>
@@ -52,10 +56,6 @@ const StyledCards = styled.div`
 `;
 
 const CardSection = styled.div`
-  padding: ${(props) => props.theme.spacing[2]}px ${(props) => props.theme.spacing[3]}px
-    ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[3]}px;
-  background-color: ${(props) => props.theme.color.grey[800]};
-  border-radius: 5px;
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
 
   &:last-child {
