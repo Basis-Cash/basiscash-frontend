@@ -1,4 +1,5 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { UseWalletProvider } from 'use-wallet';
@@ -12,8 +13,11 @@ import Banks from './views/Banks';
 import Home from './views/Home';
 import Bond from './views/Bond';
 
+import store from './state';
 import theme from './theme';
 import config from './config';
+import Updaters from './state/Updaters';
+import Boardroom from './views/Boardroom';
 
 const App: React.FC = () => {
   return (
@@ -29,29 +33,32 @@ const App: React.FC = () => {
           <Route path="/bonds">
             <Bond />
           </Route>
+          <Route path="/boardroom">
+            <Boardroom />
+          </Route>
         </Switch>
       </Router>
     </Providers>
-  )
-}
+  );
+};
 
 const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <UseWalletProvider chainId={config.chainId}>
-        <BasisCashProvider>
-          <TransactionProvider>
-            <ModalsProvider>
-              <BanksProvider>
-                {children}
-              </BanksProvider>
-            </ModalsProvider>
-          </TransactionProvider>
-        </BasisCashProvider>
+        <Provider store={store}>
+          <Updaters />
+          <BasisCashProvider>
+            <TransactionProvider>
+              <ModalsProvider>
+                <BanksProvider>{children}</BanksProvider>
+              </ModalsProvider>
+            </TransactionProvider>
+          </BasisCashProvider>
+        </Provider>
       </UseWalletProvider>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-
-export default App
+export default App;

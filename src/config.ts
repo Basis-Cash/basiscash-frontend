@@ -14,6 +14,9 @@ const configurations: {[env: string]: Configuration} = {
       SUSD: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',
       USDC: '0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c',
       USDT: '0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136',
+      // TODO: replace with real address
+      'BAC_DAI-UNI-LPv2': '0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136',
+      'BAS_DAI-UNI-LPv2': '0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136',
     },
   },
   production: {
@@ -27,6 +30,9 @@ const configurations: {[env: string]: Configuration} = {
       SUSD: '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',
       USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+      // TODO: replace with real address
+      'BAC_DAI-UNI-LPv2': '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+      'BAS_DAI-UNI-LPv2': '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   },
 }
@@ -47,7 +53,7 @@ export const bankDefinitions: {[contractName: string]: BankInfo} = {
     sort: 2,
   },
   BACSUSDPool: {
-    name: 'Earn BAC by SUSD',
+    name: 'Earn BAC by sUSD',
     depositTokenName: 'SUSD',
     earnTokenName: 'Cash',
     icon: '💸',
@@ -61,25 +67,25 @@ export const bankDefinitions: {[contractName: string]: BankInfo} = {
     sort: 4,
   },
   BACYFIPool: {
-    name: 'Earn BAC by YFI',
-    depositTokenName: 'YFI',
+    name: 'Earn BAC by yCRV',
+    depositTokenName: 'yCRV',
     earnTokenName: 'Cash',
     icon: '🐋',
-    sort: 7,
-  },
-  DAIBACLPTokenSharePool: {
-    name: 'DAI_BAC_UNI_LP',
-    depositTokenName: 'DAI_BAC-UNI-LP v2',
-    earnTokenName: 'Share',
-    icon: '🦄',
     sort: 5,
   },
+  DAIBACLPTokenSharePool: {
+    name: 'Earn BAS by BAC-DAI-LP',
+    depositTokenName: 'BAC_DAI-UNI-LPv2',
+    earnTokenName: 'Share',
+    icon: '🦄',
+    sort: 6,
+  },
   DAIBASLPTokenSharePool: {
-    name: 'DAI_BAS_UNI_LP',
-    depositTokenName: 'DAI_BAS-UNI-LP v2',
+    name: 'Earn BAS by BAS-DAI-LP',
+    depositTokenName: 'BAS_DAI-UNI-LPv2',
     earnTokenName: 'Share',
     icon: '🌈',
-    sort: 6,
+    sort: 7,
   },
 };
 
