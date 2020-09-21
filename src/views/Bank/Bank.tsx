@@ -41,7 +41,7 @@ const Bank: React.FC = () => {
         </StyledCardsWrapper>
         <Spacer size="lg" />
         {bank.depositTokenName.includes('LP') && (
-          <StyledLink href="https://medium.com/@yamfinance/how-to-exit-the-eternal-lands-pool-and-withdraw-your-yam-823d57c95f3a">
+          <StyledLink href="https://medium.com/@basiscash">
             🦄  Provide liquidity to BAS-DAI pair on Uniswap  🦄
           </StyledLink>
         )}

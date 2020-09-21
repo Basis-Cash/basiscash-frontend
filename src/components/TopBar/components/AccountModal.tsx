@@ -1,17 +1,12 @@
-import React, { useCallback, useMemo } from 'react'
-import styled from 'styled-components'
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import useTokenBalance from '../../../hooks/useTokenBalance';
+import { getDisplayBalance } from '../../../utils/formatBalance';
 
-import { yam as yamAddress } from '../../../constants/tokenAddresses'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import { getDisplayBalance } from '../../../utils/formatBalance'
-
-import Button from '../../Button'
-import CardIcon from '../../CardIcon'
-import IconButton from '../../IconButton'
-import { AddIcon, RemoveIcon } from '../../icons'
-import Label from '../../Label'
-import Modal, { ModalProps } from '../../Modal'
-import ModalTitle from '../../ModalTitle'
+import Button from '../../Button';
+import Label from '../../Label';
+import Modal, { ModalProps } from '../../Modal';
+import ModalTitle from '../../ModalTitle';
 import useBasisCash from '../../../hooks/useBasisCash';
 import TokenSymbol from '../../TokenSymbol';
 
