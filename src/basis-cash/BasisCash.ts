@@ -1,8 +1,8 @@
 import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Configuration } from './config';
-import { TokenStat } from './types';
-import { ethers, Contract, BigNumber } from 'ethers';
-import { decimalToBalance, balanceToDecimal, web3ProviderFrom } from './ether-utils';
+import { ContractName, TokenStat } from './types';
+import { BigNumber, Contract, ethers } from 'ethers';
+import { decimalToBalance, web3ProviderFrom } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
 
@@ -32,8 +32,8 @@ export class BasisCash {
       this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
     }
     this.externalTokens = {};
-    for (const [symbol, address] of Object.entries(externalTokens)) {
-      this.externalTokens[symbol] = new ERC20(address, provider, symbol); // TODO: add decimal
+    for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
+      this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal); // TODO: add decimal
     }
     this.BAC = new ERC20(deployments.Cash.address, provider, 'BAC');
     this.BAS = new ERC20(deployments.Share.address, provider, 'BAS');
@@ -54,12 +54,10 @@ export class BasisCash {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    for (const [name, contract] of Object.entries(this.externalTokens)) {
-      this.externalTokens[name] = contract.connect(this.signer);
+    const tokens = [this.BAC, this.BAS, this.BAB, ...Object.values(this.externalTokens)];
+    for (const token of tokens) {
+      token.connect(this.signer);
     }
-    this.BAC = this.BAC.connect(this.signer);
-    this.BAS = this.BAS.connect(this.signer);
-    this.BAB = this.BAB.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
   }
 
@@ -67,60 +65,41 @@ export class BasisCash {
     return !!this.myAccount;
   }
 
-  /** @returns an object of Pool contracts (e.g. BACDAIPool, BACYFIPool) */
-  bankContracts(): { [name: string]: Contract } {
-    return Object.keys(this.contracts)
-      .filter((name) => name.endsWith('Pool'))
-      .reduce((prev, name) => ({ ...prev, [name]: this.contracts[name] }), {});
-  }
-
   async getCashStat(): Promise<TokenStat> {
-    const { Cash } = this.contracts;
     return {
-      priceInDAI: await this.getTokenPrice(Cash),
-      totalSupply: await this.getTokenSupply(Cash),
+      priceInDAI: await this.getTokenPrice(this.BAC),
+      totalSupply: await this.BAC.displayedTotalSupply(),
     };
   }
 
   async getBondStat(): Promise<TokenStat> {
-    const { Cash, Bond } = this.contracts;
-    const cashPrice = Number(await this.getTokenPrice(Cash));
+    const cashPrice = Number(await this.getTokenPrice(this.BAC));
     return {
       priceInDAI: (cashPrice ** 2).toPrecision(3),
-      totalSupply: await this.getTokenSupply(Bond),
+      totalSupply: await this.BAB.displayedTotalSupply(),
     };
   }
 
   async getShareStat(): Promise<TokenStat> {
-    const { Share } = this.contracts;
     return {
-      priceInDAI: await this.getTokenPrice(Share),
-      totalSupply: await this.getTokenSupply(Share),
+      priceInDAI: await this.getTokenPrice(this.BAS),
+      totalSupply: await this.BAS.displayedTotalSupply(),
     };
   }
 
-  async getTokenPrice(contract: Contract): Promise<string> {
+  async getTokenPrice(tokenContract: ERC20): Promise<string> {
     const { chainId } = this.config;
     const { DAI } = this.config.externalTokens;
 
-    const dai = new Token(chainId, DAI, 18);
-    const token = new Token(chainId, contract.address, 18);
+    const dai = new Token(chainId, DAI[0], 18);
+    const token = new Token(chainId, tokenContract.address, 18);
 
     try {
       const daiToToken = await Fetcher.fetchPairData(dai, token, this.provider);
       const priceInDAI = new Route([daiToToken], token);
       return priceInDAI.midPrice.toSignificant(3);
     } catch (err) {
-      console.error(`Failed to fetch token price of ${contract.address}: ${err}`);
-    }
-  }
-
-  private async getTokenSupply(contract: Contract): Promise<string> {
-    try {
-      return balanceToDecimal(await contract.totalSupply());
-    } catch (err) {
-      console.error(`Failed to fetch token supply: ${err.stack}`);
-      return 'Unknown';
+      console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
     }
   }
 
@@ -133,7 +112,8 @@ export class BasisCash {
     return await Treasury.buyBonds(decimalToBalance(amount));
   }
 
-  async earnedFromBank(pool: Contract, account = this.myAccount): Promise<BigNumber> {
+  async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
+    const pool = this.contracts[poolName];
     try {
       return await pool.earned(account);
     } catch (err) {
@@ -142,7 +122,8 @@ export class BasisCash {
     }
   }
 
-  async stakedBalanceOnBank(pool: Contract, account = this.myAccount): Promise<BigNumber> {
+  async stakedBalanceOnBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
+    const pool = this.contracts[poolName];
     try {
       return await pool.balanceOf(account);
     } catch (err) {
@@ -153,22 +134,40 @@ export class BasisCash {
 
   /**
    * Deposits token to given pool.
-   * @param pool An instance of pool {@code Contract}.
+   * @param poolName A name of pool contract.
    * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
    * @returns {string} Transaction hash
    */
-  async stake(pool: Contract, amount: string | number): Promise<TransactionResponse> {
+  async stake(poolName: ContractName, amount: string | number): Promise<TransactionResponse> {
+    const pool = this.contracts[poolName];
     return await pool.stake(decimalToBalance(amount));
   }
 
   /**
    * Withdraws token from given pool.
-   * @param pool An instance of pool {@code Contract}.
+   * @param poolName A name of pool contract.
    * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
    * @returns {string} Transaction hash
    */
-  async unstake(pool: Contract, amount: string | number): Promise<TransactionResponse> {
+  async unstake(poolName: ContractName, amount: string | number): Promise<TransactionResponse> {
+    const pool = this.contracts[poolName];
     return await pool.withdraw(decimalToBalance(amount));
+  }
+
+  /**
+   * Transfers earned token reward from given pool to my account.
+   */
+  async harvest(poolName: ContractName): Promise<TransactionResponse> {
+    const pool = this.contracts[poolName];
+    return await pool.getReward();
+  }
+
+  /**
+   * Harvests and withdraws deposited tokens from the pool.
+   */
+  async exit(poolName: ContractName): Promise<TransactionResponse> {
+    const pool = this.contracts[poolName];
+    return await pool.exit();
   }
 
   async stakeShareToBoardroom(amount: BigNumber): Promise<TransactionResponse> {
@@ -184,5 +183,15 @@ export class BasisCash {
   async withdrawShareFromBoardroom(amount: BigNumber): Promise<TransactionResponse> {
     const { Boardroom } = this.contracts;
     return await Boardroom.withdraw(amount);
+  }
+
+  async harvestCashFromBoardroom(): Promise<TransactionResponse> {
+    const { Boardroom } = this.contracts;
+    return await Boardroom.claimDividends();
+  }
+
+  async exitFromBoardroom(): Promise<TransactionResponse> {
+    const { Boardroom } = this.contracts;
+    return await Boardroom.exit();
   }
 }

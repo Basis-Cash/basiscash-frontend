@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { Contract } from 'ethers';
-
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
@@ -17,41 +15,45 @@ import useModal from '../../../hooks/useModal';
 import useStake from '../../../hooks/useStake';
 import useStakedBalance from '../../../hooks/useStakedBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
-import useUnstake from '../../../hooks/useUnstake';
+import useWithdraw from '../../../hooks/useWithdraw';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import ERC20 from '../../../basis-cash/ERC20';
 import TokenSymbol from '../../../components/TokenSymbol';
+import { Bank } from '../../../basis-cash';
 
 interface StakeProps {
-  poolContract: Contract;
-  tokenContract: ERC20;
-  tokenName: string;
-  tokenIcon?: string;
+  bank: Bank;
 }
 
-const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, tokenIcon }) => {
-  const [approveStatus, approve] = useApprove(tokenContract, poolContract, tokenName);
+const Stake: React.FC<StakeProps> = ({ bank }) => {
+  const [approveStatus, approve] = useApprove(bank.depositToken, bank.address);
 
   // TODO: reactive update of token balance
-  const tokenBalance = useTokenBalance(tokenContract);
-  const stakedBalance = useStakedBalance(poolContract);
+  const tokenBalance = useTokenBalance(bank.depositToken);
+  const stakedBalance = useStakedBalance(bank.contract);
 
-  const { onStake } = useStake(poolContract, tokenName);
-  const { onUnstake } = useUnstake(poolContract, tokenName);
+  const { onStake } = useStake(bank);
+  const { onWithdraw } = useWithdraw(bank);
 
   const [onPresentDeposit] = useModal(
-    <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />,
+    <DepositModal
+      max={tokenBalance}
+      decimals={bank.depositToken.decimal}
+      onConfirm={onStake}
+      tokenName={bank.depositTokenName}
+    />,
   );
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
+    <WithdrawModal
+      max={stakedBalance}
+      onConfirm={onWithdraw}
+      tokenName={bank.depositTokenName}
+    />,
   );
-
-  const handleApprove = useCallback(async () => await approve, [approve]);
 
   return (
     <Card>
@@ -59,17 +61,17 @@ const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, t
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>
-              <TokenSymbol symbol={tokenName} size={54} />
+              <TokenSymbol symbol={bank.depositToken.symbol} size={54} />
             </CardIcon>
-            <Value value={getDisplayBalance(stakedBalance, tokenName === 'USDC' ? 6 : 18)} />
-            <Label text={`${tokenName} Staked`} />
+            <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
+            <Label text={`${bank.depositTokenName} Staked`} />
           </StyledCardHeader>
           <StyledCardActions>
             {approveStatus !== ApprovalState.APPROVED ? (
               <Button
                 disabled={approveStatus == ApprovalState.PENDING}
-                onClick={handleApprove}
-                text={`Approve ${tokenName}`}
+                onClick={approve}
+                text={`Approve ${bank.depositTokenName}`}
               />
             ) : (
               <>
@@ -77,7 +79,7 @@ const Stake: React.FC<StakeProps> = ({ poolContract, tokenContract, tokenName, t
                   <RemoveIcon />
                 </IconButton>
                 <StyledActionSpacer />
-                {tokenName !== 'YCRV_YAM_UNI_LP' && (
+                {bank.depositTokenName !== 'YCRV_YAM_UNI_LP' && (
                   <IconButton onClick={onPresentDeposit}>
                     <AddIcon />
                   </IconButton>

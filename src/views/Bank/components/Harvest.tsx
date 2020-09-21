@@ -11,27 +11,28 @@ import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 
 import useEarnings from '../../../hooks/useEarnings';
-import useReward from '../../../hooks/useReward';
+import useHarvest from '../../../hooks/useHarvest';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
+import { Bank } from '../../../basis-cash';
 
 interface HarvestProps {
-  poolContract: Contract;
-  tokenName: string;
+  bank: Bank;
 }
 
-const Harvest: React.FC<HarvestProps> = ({ poolContract, tokenName }) => {
-  const earnings = useEarnings(poolContract);
-  const { onReward } = useReward(poolContract);
+const Harvest: React.FC<HarvestProps> = ({ bank }) => {
+  const earnings = useEarnings(bank.contract);
+  const { onReward } = useHarvest(bank);
 
+  const tokenName = bank.earnTokenName === 'BAS' ? 'Share' : 'Cash';
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>
-              <TokenSymbol symbol={tokenName === 'Share' ? 'BAS' : 'BAC'} />
+              <TokenSymbol symbol={bank.earnToken.symbol} />
             </CardIcon>
             <Value value={getDisplayBalance(earnings)} />
             <Label text={`Basis ${tokenName} Earned`} />

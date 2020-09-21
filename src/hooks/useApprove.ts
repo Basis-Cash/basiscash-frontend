@@ -1,9 +1,8 @@
-import { TransactionResponse } from '@ethersproject/providers';
-import { Contract } from 'ethers';
-import { useCallback, useMemo } from 'react';
-import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks';
-import useAllowance from './useAllowance';
 import { ethers } from 'ethers';
+import { useCallback, useMemo } from 'react';
+import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks';
+import useAllowance from './useAllowance';
+import ERC20 from '../basis-cash/ERC20';
 
 const APPROVE_AMOUNT = ethers.constants.MaxUint256;
 
@@ -15,13 +14,9 @@ export enum ApprovalState {
 }
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
-function useApprove(
-  tokenContract: Contract,
-  poolContract: Contract,
-  tokenName: string,
-): [ApprovalState, () => Promise<void>] {
-  const currentAllowance = useAllowance(tokenContract, poolContract);
-  const pendingApproval = useHasPendingApproval(tokenContract.address, poolContract.address);
+function useApprove(token: ERC20, spender: string): [ApprovalState, () => Promise<void>] {
+  const currentAllowance = useAllowance(token, spender);
+  const pendingApproval = useHasPendingApproval(token.address, spender);
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
@@ -34,7 +29,7 @@ function useApprove(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
-  }, [currentAllowance, pendingApproval, poolContract]);
+  }, [currentAllowance, pendingApproval]);
 
   const addTransaction = useTransactionAdder();
 
@@ -44,22 +39,15 @@ function useApprove(
       return;
     }
 
-    return tokenContract
-      .approve(poolContract.address, APPROVE_AMOUNT)
-      .then((response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: `Approve ${tokenName}`,
-          approval: {
-            tokenAddress: tokenContract.address,
-            spender: poolContract.address,
-          },
-        });
-      })
-      .catch((error: Error) => {
-        console.debug('Failed to approve token', error);
-        throw error;
-      });
-  }, [approvalState, tokenContract, poolContract, addTransaction]);
+    const response = await token.approve(spender, APPROVE_AMOUNT);
+    addTransaction(response, {
+      summary: `Approve ${token.symbol}`,
+      approval: {
+        tokenAddress: token.address,
+        spender: spender,
+      },
+    });
+  }, [approvalState, token, spender, addTransaction]);
 
   return [approvalState, approve];
 }

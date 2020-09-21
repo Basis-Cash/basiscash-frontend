@@ -1,13 +1,20 @@
 import { useCallback } from 'react';
-
-import { Contract } from 'ethers';
 import useBasisCash from './useBasisCash';
+import { Bank} from '../basis-cash';
+import { useTransactionAdder } from '../state/transactions/hooks';
 
-const useStake = (poolContract: Contract, tokenName: string) => {
+const useStake = (bank: Bank) => {
   const basisCash = useBasisCash();
+  const addTransaction = useTransactionAdder();
+
   const handleStake = useCallback(
-    async (amount: string) => await basisCash.stake(poolContract, amount),
-    [poolContract, basisCash],
+    async (amount: string) => {
+      const tx = await basisCash.stake(bank.contract, amount);
+      addTransaction(tx, {
+        summary: `Stake ${amount} ${bank.depositTokenName} to ${bank.contract}`,
+      });
+    },
+    [bank, basisCash, addTransaction],
   );
   return { onStake: handleStake };
 };

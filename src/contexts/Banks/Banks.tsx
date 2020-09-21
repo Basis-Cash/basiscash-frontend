@@ -9,17 +9,14 @@ const Banks: React.FC = ({ children }) => {
   const basisCash = useBasisCash();
 
   const fetchPools = useCallback(async () => {
-    const pools = basisCash.bankContracts();
     const banks: Bank[] = [];
 
-    for (const [name, contract] of Object.entries(pools)) {
-      const bankInfo = bankDefinitions[name];
+    for (const bankInfo of Object.values(bankDefinitions)) {
       banks.push({
         ...bankInfo,
-        contract,
-        id: name,
+        address: config.deployments[bankInfo.contract].address,
         depositToken: basisCash.externalTokens[bankInfo.depositTokenName],
-        earnToken: bankInfo.earnTokenName == 'Cash' ? basisCash.BAC : basisCash.BAS,
+        earnToken: bankInfo.earnTokenName == 'BAC' ? basisCash.BAC : basisCash.BAS,
       });
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));

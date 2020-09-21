@@ -20,8 +20,8 @@ const Bank: React.FC = () => {
   const bank = useBank(bankId);
 
   const { account } = useWallet();
+  const { onRedeem } = useRedeem(bank);
 
-  const { onRedeem } = useRedeem(bank?.contract);
   return account && bank ? (
     <>
       <PageHeader
@@ -32,16 +32,11 @@ const Bank: React.FC = () => {
       <StyledBank>
         <StyledCardsWrapper>
           <StyledCardWrapper>
-            <Harvest poolContract={bank?.contract} tokenName={bank?.earnTokenName} />
+            <Harvest bank={bank} />
           </StyledCardWrapper>
           <Spacer />
           <StyledCardWrapper>
-            <Stake
-              poolContract={bank?.contract}
-              tokenContract={bank?.depositToken}
-              tokenName={bank?.depositTokenName}
-              tokenIcon={bank?.icon}
-            />
+            <Stake bank={bank} />
           </StyledCardWrapper>
         </StyledCardsWrapper>
         <Spacer size="lg" />

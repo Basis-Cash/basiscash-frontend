@@ -3,16 +3,16 @@ import useBasisCash from './useBasisCash';
 import { useTransactionAdder } from '../state/transactions/hooks';
 import { Bank } from '../basis-cash';
 
-const useRedeem = (bank: Bank) => {
+const useHarvest = (bank: Bank) => {
   const basisCash = useBasisCash();
   const addTransaction = useTransactionAdder();
 
-  const handleRedeem = useCallback(async () => {
+  const handleReward = useCallback(async () => {
     const tx = await basisCash.exit(bank.contract);
-    addTransaction(tx, { summary: `Redeem ${bank.contract}` });
+    addTransaction(tx, { summary: `Harvest ${bank.earnTokenName} from ${bank.contract}` });
   }, [bank, basisCash, addTransaction]);
 
-  return { onRedeem: handleRedeem };
+  return { onReward: handleReward };
 };
 
-export default useRedeem;
+export default useHarvest;

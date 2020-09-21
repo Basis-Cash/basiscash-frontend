@@ -11,15 +11,16 @@ import { BigNumber } from 'ethers';
 
 interface DepositModalProps extends ModalProps {
   max: BigNumber,
+  decimals: number,
   onConfirm: (amount: string) => void,
   tokenName?: string,
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, tokenName = '' }) => {
+const DepositModal: React.FC<DepositModalProps> = ({ max, decimals, onConfirm, onDismiss, tokenName = '' }) => {
   const [val, setVal] = useState('')
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max, tokenName === 'USDC' ? 6 : 18)
+    return getFullDisplayBalance(max, decimals)
   }, [max])
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {

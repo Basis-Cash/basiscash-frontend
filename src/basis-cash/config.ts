@@ -6,7 +6,7 @@ export type Configuration = {
   etherscanUrl: string,
   defaultProvider: string,
   deployments: Deployments,
-  externalTokens: {[contractName: string]: string};
+  externalTokens: {[contractName: string]: [string, number]};
   config?: EthereumConfig,
 };
 

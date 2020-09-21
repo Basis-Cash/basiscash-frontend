@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BigNumber, Contract } from 'ethers';
+import { BigNumber } from 'ethers';
 import { useWallet } from 'use-wallet';
+import ERC20 from '../basis-cash/ERC20';
 
-const useTokenBalance = (token: Contract) => {
+const useTokenBalance = (token: ERC20) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
   const { account } = useWallet();
 

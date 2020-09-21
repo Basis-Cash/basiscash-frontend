@@ -4,38 +4,65 @@ import { Provider } from '@ethersproject/abstract-provider';
 import { TransactionResponse } from '@ethersproject/providers';
 import { formatUnits } from 'ethers/lib/utils';
 
-declare interface IERC20 {
-  totalSupply(): Promise<BigNumber>;
-  balanceOf(account: string): Promise<BigNumber>;
-  transfer(recipient: string, amount: BigNumber): Promise<TransactionResponse>;
-  allowance(owner: string, spender: string): Promise<BigNumber>;
-  approve(spender: string, amount: BigNumber): Promise<TransactionResponse>;
-  transferFrom(
-    sender: string,
-    recipient: string,
-    amount: BigNumber,
-  ): Promise<TransactionResponse>;
-}
+class ERC20 {
+  private contract: Contract;
 
-class ERC20 extends Contract {
+  address: string;
   symbol: string;
   decimal: number;
 
   constructor(address: string, provider: Signer | Provider, symbol: string, decimal = 18) {
-    super(address, ABI, provider);
+    this.contract = new Contract(address, ABI, provider);
+    this.address = address;
     this.symbol = symbol;
     this.decimal = decimal;
   }
 
-  connect(signerOrProvider: Signer | Provider): ERC20 {
-    return new ERC20(this.address, signerOrProvider, this.symbol, this.decimal);
+  connect(signerOrProvider: Signer | Provider) {
+    this.contract = new Contract(this.address, ABI, signerOrProvider);
+  }
+
+  get estimateGas() {
+    return this.contract.estimateGas;
+  }
+
+  totalSupply(): Promise<BigNumber> {
+    return this.contract.totalSupply();
+  }
+
+  balanceOf(account: string): Promise<BigNumber> {
+    return this.contract.balanceOf(account);
+  }
+
+  transfer(recipient: string, amount: BigNumber): Promise<TransactionResponse> {
+    return this.contract.transfer(recipient, amount);
+  }
+
+  allowance(owner: string, spender: string): Promise<BigNumber> {
+    return this.contract.allowance(owner, spender);
+  }
+
+  approve(spender: string, amount: BigNumber): Promise<TransactionResponse> {
+    return this.contract.approve(spender, amount);
+  }
+
+  transferFrom(
+    sender: string,
+    recipient: string,
+    amount: BigNumber,
+  ): Promise<TransactionResponse> {
+    return this.contract.transferFro (sender, recipient, amount);
   }
 
   async displayedBalanceOf(account: string): Promise<string> {
     const balance = await this.balanceOf(account);
     return formatUnits(balance, this.decimal);
   }
-}
+
+  async displayedTotalSupply(): Promise<string> {
+    const supply = await this.totalSupply();
+    return formatUnits(supply, this.decimal);
+  }}
 
 export default ERC20;
 
