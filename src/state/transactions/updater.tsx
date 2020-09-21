@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from 'use-wallet';
-import { Eth } from 'web3-eth/types';
 import { useAddPopup, useBlockNumber } from '../application/hooks';
 import { AppDispatch, AppState } from '../index';
 import { checkedTransaction, finalizeTransaction } from './actions';
+import { ethers } from 'ethers';
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -28,7 +28,7 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const { chainId, ethereum } = useWallet<Eth>();
+  const { chainId, ethereum } = useWallet();
 
   const lastBlockNumber = useBlockNumber();
 
@@ -45,10 +45,12 @@ export default function Updater(): null {
       return;
     }
 
+    const provider = new ethers.providers.Web3Provider(ethereum);
+
     Object.keys(transactions)
       .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
       .forEach((hash) => {
-        ethereum
+        provider
           .getTransactionReceipt(hash)
           .then((receipt) => {
             if (receipt) {
@@ -61,7 +63,7 @@ export default function Updater(): null {
                     blockNumber: receipt.blockNumber,
                     contractAddress: receipt.contractAddress,
                     from: receipt.from,
-                    status: receipt.status ? 1 : 0,
+                    status: receipt.status,
                     to: receipt.to,
                     transactionHash: receipt.transactionHash,
                     transactionIndex: receipt.transactionIndex,
@@ -73,7 +75,7 @@ export default function Updater(): null {
                 {
                   txn: {
                     hash,
-                    success: receipt.status,
+                    success: receipt.status == 1,
                     summary: transactions[hash]?.summary,
                   },
                 },

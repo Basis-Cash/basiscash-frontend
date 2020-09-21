@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
 import Button from '../../Button';
-import config from '../../../config';
-import usePendingTransactions from '../../../hooks/usePendingTransactions';
+import { isTransactionRecent, useAllTransactions } from '../../../state/transactions/hooks';
+import { TransactionDetails } from '../../../state/transactions/reducer';
+import useModal from '../../../hooks/useModal';
+import TxModal from './TxModal';
 
 interface TxButtonProps {}
 
+// we want the latest one to come first, so return negative if a is after b
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime;
+}
+
 const TxButton: React.FC<TxButtonProps> = () => {
   const { account } = useWallet();
-  const pendingTransactions = usePendingTransactions();
-  const transactionRef = pendingTransactions.length === 1
-    ? `${config.etherscanUrl}/tx/${pendingTransactions[0].hash}`
-    : `${config.etherscanUrl}/address/${account}`;
+  const allTransactions = useAllTransactions();
 
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions);
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst);
+  }, [allTransactions]);
+
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt);
+  const confirmed = sortedRecentTransactions.filter((tx) => tx.receipt);
+
+  const [onPresentTransactionModal] = useModal(
+    <TxModal pending={pending} confirmed={confirmed} />
+  );
   return (
     <>
-      {!!account && !!pendingTransactions.length ? (
+      {!!account && (
         <StyledTxButton>
           <Button
             size="sm"
-            text={`${pendingTransactions.length} Transaction(s)`}
-            href={transactionRef}
+            text={pending.length > 0 ? `${pending.length} Transaction(s)`: `Transactions`}
+            variant={pending.length > 0 ? 'secondary' : 'default'}
+            onClick={() => onPresentTransactionModal()}
           />
         </StyledTxButton>
-      ) : null}
+      )}
     </>
   );
 };

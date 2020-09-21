@@ -7,7 +7,6 @@ import { UseWalletProvider } from 'use-wallet';
 import BanksProvider from './contexts/Banks';
 import BasisCashProvider from './contexts/BasisCashProvider';
 import ModalsProvider from './contexts/Modals';
-import TransactionProvider from './contexts/Transactions';
 
 import Banks from './views/Banks';
 import Home from './views/Home';
@@ -18,6 +17,7 @@ import theme from './theme';
 import config from './config';
 import Updaters from './state/Updaters';
 import Boardroom from './views/Boardroom';
+import Popups from './components/Popups';
 
 const App: React.FC = () => {
   return (
@@ -49,11 +49,14 @@ const Providers: React.FC = ({ children }) => {
         <Provider store={store}>
           <Updaters />
           <BasisCashProvider>
-            <TransactionProvider>
-              <ModalsProvider>
-                <BanksProvider>{children}</BanksProvider>
-              </ModalsProvider>
-            </TransactionProvider>
+            <ModalsProvider>
+              <BanksProvider>
+                <>
+                  <Popups />
+                  {children}
+                </>
+              </BanksProvider>
+            </ModalsProvider>
           </BasisCashProvider>
         </Provider>
       </UseWalletProvider>
