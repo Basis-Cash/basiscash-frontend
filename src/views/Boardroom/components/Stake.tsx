@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { Contract } from 'ethers';
-
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
@@ -14,49 +12,35 @@ import Value from '../../../components/Value';
 
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import useModal from '../../../hooks/useModal';
-import useStake from '../../../hooks/useStake';
-import useStakedBalance from '../../../hooks/useStakedBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
-import useUnstake from '../../../hooks/useUnstake';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import ERC20 from '../../../basis-cash/ERC20';
 import useBasisCash from '../../../hooks/useBasisCash';
 import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardroom';
 import TokenSymbol from '../../../components/TokenSymbol';
+import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
+import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
 
-interface StakeProps {
-  // poolContract: Contract;
-  // tokenContract: ERC20;
-  // tokenName: string;
-  // tokenIcon?: string;
-}
-
-const Stake: React.FC<StakeProps> = ({ }) => {
+const Stake: React.FC = () => {
   const { BAS, contracts: { Boardroom } } = useBasisCash();
-  const [approveStatus, approve] = useApprove(BAS, Boardroom, 'BAS');
+  const [approveStatus, approve] = useApprove(BAS, Boardroom.address);
 
-  // TODO: reactive update of token balance
   const tokenBalance = useTokenBalance(BAS);
   const stakedBalance = useStakedBalanceOnBoardroom();
 
-  // const { onStake } = useStake(poolContract, tokenName);
-  // const { onUnstake } = useUnstake(poolContract, tokenName);
-  const onStake = () => {};
-  const onUnstake = () => {};
+  const { onStake } = useStakeToBoardroom();
+  const { onWithdraw } = useWithdrawFromBoardroom();
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={"Basis Share"} />,
   );
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={"Basis Share"} />,
+    <WithdrawModal max={stakedBalance} onConfirm={onWithdraw} tokenName={"Basis Share"} />,
   );
-
-  const handleApprove = useCallback(async () => await approve, [approve]);
 
   return (
     <Card>
@@ -73,7 +57,7 @@ const Stake: React.FC<StakeProps> = ({ }) => {
             {approveStatus !== ApprovalState.APPROVED ? (
               <Button
                 disabled={approveStatus == ApprovalState.PENDING}
-                onClick={handleApprove}
+                onClick={approve}
                 text="Approve Basis Share"
               />
             ) : (

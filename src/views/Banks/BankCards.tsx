@@ -3,7 +3,6 @@ import Countdown, { CountdownRenderProps } from 'react-countdown';
 import styled from 'styled-components';
 
 import { Bank } from '../../basis-cash';
-import { getPoolStartTime } from '../../yamUtils';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import CardContent from '../../components/CardContent';
@@ -57,35 +56,6 @@ interface BankCardProps {
 }
 
 const BankCard: React.FC<BankCardProps> = ({ bank }) => {
-  const [startTime, setStartTime] = useState(0);
-  // TODO: alert if not unlocked
-
-  const getStartTime = useCallback(async () => {
-    const startTime = await getPoolStartTime(bank.contract);
-    setStartTime(startTime);
-  }, [bank, setStartTime]);
-
-  const renderer = (countdownProps: CountdownRenderProps) => {
-    const { hours, minutes, seconds } = countdownProps;
-    const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-    const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    const paddedHours = hours < 10 ? `0${hours}` : hours;
-    return (
-      <span style={{ width: '100%' }}>
-        {paddedHours}:{paddedMinutes}:{paddedSeconds}
-      </span>
-    );
-  };
-
-  useEffect(() => {
-    if (bank && bank.id === 'ycrv_yam_uni_lp') {
-      getStartTime();
-    }
-  }, [bank, getStartTime]);
-
-  const poolActive = startTime * 1000 - Date.now() <= 0;
-  console.log(bank.depositToken);
-
   return (
     <StyledCardWrapper>
       {bank.depositTokenName.includes('LP') &&
@@ -105,15 +75,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
               <StyledDetail>Deposit {bank.depositTokenName.toUpperCase()}</StyledDetail>
               <StyledDetail>Earn {`Basis ${bank.earnTokenName}`}</StyledDetail>
             </StyledDetails>
-            <Button
-              disabled={!poolActive}
-              text={poolActive ? 'Select' : undefined}
-              to={`/bank/${bank.id}`}
-            >
-              {!poolActive && (
-                <Countdown date={new Date(startTime * 1000)} renderer={renderer} />
-              )}
-            </Button>
+            <Button text="Select" to={`/bank/${bank.contract}`} />
           </StyledContent>
         </CardContent>
       </Card>

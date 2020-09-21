@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { BigNumber } from 'ethers';
+import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../../components/Button';
@@ -8,18 +7,13 @@ import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
 import Label from '../../../components/Label';
 import Value from '../../../components/Value';
-import { getDisplayBalance } from '../../../utils/formatBalance';
 import CardIcon from '../../../components/CardIcon';
+import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardroom';
+import useHarvestFromBoardroom from '../../../hooks/useHarvestFromBoardroom';
 
-interface HarvestProps {
-  // poolContract: Contract;
-  // tokenName: string;
-}
-
-const Harvest: React.FC<HarvestProps> = ({ }) => {
-  // const earnings = useEarnings(poolContract);
-  // const { onReward } = useReward(poolContract);
-  const [earnings, setEarnings] = useState(BigNumber.from(0));
+const Harvest: React.FC = ({}) => {
+  const { onReward } = useHarvestFromBoardroom();
+  const stakedBalance = useStakedBalanceOnBoardroom();
 
   return (
     <Card>
@@ -29,11 +23,11 @@ const Harvest: React.FC<HarvestProps> = ({ }) => {
             <CardIcon>
               <TokenSymbol symbol="BAC" />
             </CardIcon>
-            <Value value={getDisplayBalance(earnings)} />
+            <Value value={stakedBalance.gt(0) ? '> 0' : '0'} />
             <Label text="Basis Cash Earned" />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button onClick={() => {}} text="Settle" disabled={!earnings.toNumber()} />
+            <Button onClick={onReward} text="Claim Reward" disabled={stakedBalance.eq(0)} />
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
