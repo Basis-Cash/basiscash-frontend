@@ -61,7 +61,7 @@ class ERC20 {
 
   async displayedTotalSupply(): Promise<string> {
     const supply = await this.totalSupply();
-    return formatUnits(supply, this.decimal);
+    return Number(formatUnits(supply, this.decimal)).toFixed(0);
   }}
 
 export default ERC20;

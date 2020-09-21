@@ -104,12 +104,21 @@ export class BasisCash {
   }
 
   /**
-   * Buy bonds from the system.
+   * Buy bonds with cash.
    * @param amount amount of cash to purchase bonds with.
    */
   async buyBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     return await Treasury.buyBonds(decimalToBalance(amount));
+  }
+
+  /**
+   * Redeem bonds for cash.
+   * @param amount amount of bonds to redeem.
+   */
+  async redeemBonds(amount: string): Promise<TransactionResponse> {
+    const { Treasury } = this.contracts;
+    return await Treasury.redeemBonds(decimalToBalance(amount));
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
