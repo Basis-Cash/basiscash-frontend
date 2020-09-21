@@ -20,12 +20,12 @@ const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, stat }) => {
       <StyledCards>
         <TokenSymbol symbol={symbol} />
         <CardSection>
-          {stat ? <Value value={`${stat.priceInDAI}$`} /> : <ValueSkeleton />}
+          {stat ? <StyledValue>${stat.priceInDAI}</StyledValue> : <ValueSkeleton />}
           <Label text="Current Price" color={color} />
         </CardSection>
 
         <CardSection>
-          {stat ? <Value value={stat.totalSupply} /> : <ValueSkeleton />}
+          {stat ? <StyledValue>{stat.totalSupply}</StyledValue> : <ValueSkeleton />}
           <Label text="Total Supply" color={color} />
         </CardSection>
       </StyledCards>
@@ -53,6 +53,12 @@ const StyledCards = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
+`;
+
+const StyledValue = styled.span`
+  display: inline-block;
+  font-size: 36px;
+  color: #eeeeee;
 `;
 
 const CardSection = styled.div`
