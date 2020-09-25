@@ -15,8 +15,8 @@ const configurations: {[env: string]: Configuration} = {
       USDC: ['0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c', 6],
       USDT: ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
       // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0x2027be631cde5171bbb409ee5a165e1adc40df6a', 18],
-      'BAS_DAI-UNI-LPv2': ['0xcb25532e715c4a6e27bc1e51eb8d158a1b842f68', 18],
+      'BAC_DAI-UNI-LPv2': ['0xdc05b286a75ecbb545a6d3cd2a1c864c76dcbe6a', 18],
+      'BAS_DAI-UNI-LPv2': ['0x76332e3ec7588fbbbd1734c9c8b9a0199a468c67', 18],
     },
   },
   production: {
@@ -44,8 +44,8 @@ const configurations: {[env: string]: Configuration} = {
       USDC: ['0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c', 6],
       USDT: ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
       // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0x2027be631cde5171bbb409ee5a165e1adc40df6a', 18],
-      'BAS_DAI-UNI-LPv2': ['0xcb25532e715c4a6e27bc1e51eb8d158a1b842f68', 18],
+      'BAC_DAI-UNI-LPv2': ['0xdc05b286a75ecbb545a6d3cd2a1c864c76dcbe6a', 18],
+      'BAS_DAI-UNI-LPv2': ['0x76332e3ec7588fbbbd1734c9c8b9a0199a468c67', 18],
     },
   },
 }
