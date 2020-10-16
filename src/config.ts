@@ -4,19 +4,18 @@ import { BankInfo } from './basis-cash';
 
 const configurations: {[env: string]: Configuration} = {
   development: {
-    chainId: ChainId.ROPSTEN,
-    etherscanUrl: 'https://ropsten.etherscan.io',
-    defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
-    deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
+    chainId: ChainId.RINKEBY,
+    etherscanUrl: 'https://rinkeby.etherscan.io',
+    defaultProvider: 'wss://rinkeby.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
+    deployments: require('./basis-cash/deployments/deployments.rinkeby.json'),
     externalTokens: {
-      DAI: ['0xc2118d4d90b274016cb7a54c03ef52e6c537d957', 18],
-      YFI: ['0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e', 18],
-      SUSD: ['0x57Ab1E02fEE23774580C119740129eAC7081e9D3', 18],
-      USDC: ['0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c', 6],
-      USDT: ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
-      // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
-      'BAS_DAI-UNI-LPv2': ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
+      DAI: ['0x4fad411bd2Fb63DC906FCCd702A64AD3574f9C44', 18],
+      YFI: ['0x4fad411bd2Fb63DC906FCCd702A64AD3574f9C44', 18],
+      SUSD: ['0x4fad411bd2Fb63DC906FCCd702A64AD3574f9C44', 18],
+      USDC: ['0x4fad411bd2Fb63DC906FCCd702A64AD3574f9C44', 18],
+      USDT: ['0x4fad411bd2Fb63DC906FCCd702A64AD3574f9C44', 18],
+      'BAC_DAI-UNI-LPv2': ['0x87E8399c5237aB1419d6f1A538a39720871cad91', 18],
+      'BAS_DAI-UNI-LPv2': ['0xc4Cc92358c625bE863443f74516808BA8dA000Ab', 18],
     },
   },
   production: {
@@ -68,7 +67,7 @@ export const bankDefinitions: {[contractName: string]: BankInfo} = {
   },
   BACYFIPool: {
     name: 'Earn BAC by yCRV',
-    contract: 'BACYFIPool',
+    contract: 'BACyCRVPool',
     depositTokenName: 'yCRV',
     earnTokenName: 'BAC',
     sort: 5,
