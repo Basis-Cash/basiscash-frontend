@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../../components/Button';
@@ -38,19 +38,19 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
   const { onStake } = useStake(bank);
   const { onWithdraw } = useWithdraw(bank);
 
-  const [onPresentDeposit] = useModal(
+  const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
       decimals={bank.depositToken.decimal}
-      onConfirm={onStake}
+      onConfirm={(amount) => { onStake(amount); onDismissDeposit(); }}
       tokenName={bank.depositTokenName}
     />,
   );
 
-  const [onPresentWithdraw] = useModal(
+  const [onPresentWithdraw, onDismissWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
-      onConfirm={onWithdraw}
+      onConfirm={(amount) => { onWithdraw(amount); onDismissWithdraw(); }}
       tokenName={bank.depositTokenName}
     />,
   );
@@ -69,7 +69,10 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
           <StyledCardActions>
             {approveStatus !== ApprovalState.APPROVED ? (
               <Button
-                disabled={approveStatus == ApprovalState.PENDING}
+                disabled={
+                  approveStatus == ApprovalState.PENDING ||
+                  approveStatus == ApprovalState.UNKNOWN
+                }
                 onClick={approve}
                 text={`Approve ${bank.depositTokenName}`}
               />

@@ -13,6 +13,7 @@ import useModal from '../../../hooks/useModal';
 import ExchangeModal from './ExchangeModal';
 import ERC20 from '../../../basis-cash/ERC20';
 import useTokenBalance from '../../../hooks/useTokenBalance';
+import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 
 interface ExchangeCardProps {
   action: string;
@@ -35,6 +36,9 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
   onExchange,
   disabled = false,
 }) => {
+  const { contracts: { Treasury } } = useBasisCash();
+  const [approveStatus, approve] = useApprove(fromToken, Treasury.address);
+
   const balance = useTokenBalance(fromToken);
   const [onPresent, onDismiss] = useModal(
     <ExchangeModal
@@ -70,7 +74,18 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
           </StyledExchanger>
           <StyledDesc>{priceDesc}</StyledDesc>
           <StyledCardActions>
-            <Button text={action} onClick={onPresent} disabled={disabled} />
+            {approveStatus !== ApprovalState.APPROVED ? (
+              <Button
+                disabled={
+                  approveStatus == ApprovalState.PENDING ||
+                  approveStatus == ApprovalState.UNKNOWN
+                }
+                onClick={approve}
+                text={`Approve ${fromTokenName}`}
+              />
+            ) : (
+              <Button text={action} onClick={onPresent} disabled={disabled} />
+            )}
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
