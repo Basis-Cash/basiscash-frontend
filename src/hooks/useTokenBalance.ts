@@ -19,7 +19,7 @@ const useTokenBalance = (token: ERC20) => {
       let refreshInterval = setInterval(fetchBalance, 10000);
       return () => clearInterval(refreshInterval);
     }
-  }, [account, setBalance, token]);
+  }, [account, token]);
 
   return balance;
 };
