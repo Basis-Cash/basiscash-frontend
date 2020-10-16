@@ -9,7 +9,7 @@ import { RowFixed } from '../../Row';
 
 const TransactionWrapper = styled.div`
   display: flex;
-  height: 36px;
+  height: 30px;
 `;
 
 const TransactionStatusText = styled.div`

@@ -8,6 +8,7 @@ import { TransactionDetails } from '../../../state/transactions/reducer';
 import styled from 'styled-components';
 import Transaction from './Transaction';
 import ModalActions from '../../ModalActions';
+import Spacer from '../../Spacer';
 
 interface TxModalProps extends ModalProps {
   pending: TransactionDetails[];
@@ -25,6 +26,7 @@ const TxModal: React.FC<TxModalProps> = ({ pending, confirmed, onDismiss }) => {
           <StyledTransactionList>
             {pending.map(tx => <Transaction key={tx.hash} tx={tx} />)}
           </StyledTransactionList>
+          <Spacer size="sm" />
         </>
       )}
       {confirmed?.length > 0 && (
