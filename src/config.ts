@@ -15,8 +15,8 @@ const configurations: {[env: string]: Configuration} = {
       USDC: ['0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c', 6],
       USDT: ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
       // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0xe5D272E082c699785550f8234510a1Ce4A6c4161', 18],
-      'BAS_DAI-UNI-LPv2': ['0xCA8774af1Ce9f6A2f022df34616Ad235d044FF24', 18],
+      'BAC_DAI-UNI-LPv2': ['0x195bbAe23dB588b71800fF76b35131A0C444c068', 18],
+      'BAS_DAI-UNI-LPv2': ['0xaCc1c8ec173eC60e4Cfb0BF7c382d0F3f01A840b', 18],
     },
     // chainId: ChainId.ROPSTEN,
     // etherscanUrl: 'https://ropsten.etherscan.io',
@@ -71,8 +71,8 @@ const configurations: {[env: string]: Configuration} = {
         USDC: ['0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c', 6],
         USDT: ['0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136', 6],
         // TODO: replace with real address
-        'BAC_DAI-UNI-LPv2': ['0xe5D272E082c699785550f8234510a1Ce4A6c4161', 18],
-        'BAS_DAI-UNI-LPv2': ['0xCA8774af1Ce9f6A2f022df34616Ad235d044FF24', 18],
+        'BAC_DAI-UNI-LPv2': ['0x195bbAe23dB588b71800fF76b35131A0C444c068', 18],
+        'BAS_DAI-UNI-LPv2': ['0xaCc1c8ec173eC60e4Cfb0BF7c382d0F3f01A840b', 18],
     },
   },
 }
