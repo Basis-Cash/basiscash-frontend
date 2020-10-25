@@ -8,7 +8,7 @@ const useHarvestFromBoardroom = () => {
 
   const handleReward = useCallback(async () => {
     const tx = await basisCash.harvestCashFromBoardroom();
-    addTransaction(tx, { summary: 'Harvest BAC from Boardroom' });
+    addTransaction(tx, { summary: 'Claim BAC from Boardroom' });
   }, [basisCash, addTransaction]);
 
   return { onReward: handleReward };

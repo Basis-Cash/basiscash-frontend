@@ -8,8 +8,8 @@ const useHarvest = (bank: Bank) => {
   const addTransaction = useTransactionAdder();
 
   const handleReward = useCallback(async () => {
-    const tx = await basisCash.exit(bank.contract);
-    addTransaction(tx, { summary: `Harvest ${bank.earnTokenName} from ${bank.contract}` });
+    const tx = await basisCash.harvest(bank.contract);
+    addTransaction(tx, { summary: `Claim ${bank.earnTokenName} from ${bank.contract}` });
   }, [bank, basisCash, addTransaction]);
 
   return { onReward: handleReward };
