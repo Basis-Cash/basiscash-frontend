@@ -179,9 +179,9 @@ export class BasisCash {
     return await pool.exit();
   }
 
-  async stakeShareToBoardroom(amount: BigNumber): Promise<TransactionResponse> {
+  async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
     const { Boardroom } = this.contracts;
-    return await Boardroom.stake(amount);
+    return await Boardroom.stake(decimalToBalance(amount));
   }
 
   async getStakedSharesOnBoardroom(): Promise<BigNumber> {
@@ -189,9 +189,14 @@ export class BasisCash {
     return await Boardroom.getBoardSeatBalance();
   }
 
-  async withdrawShareFromBoardroom(amount: BigNumber): Promise<TransactionResponse> {
+  async getEarningsOnBoardroom(): Promise<BigNumber> {
     const { Boardroom } = this.contracts;
-    return await Boardroom.withdraw(amount);
+    return await Boardroom.getCashEarnings();
+  }
+
+  async withdrawShareFromBoardroom(amount: string): Promise<TransactionResponse> {
+    const { Boardroom } = this.contracts;
+    return await Boardroom.withdraw(decimalToBalance(amount));
   }
 
   async harvestCashFromBoardroom(): Promise<TransactionResponse> {

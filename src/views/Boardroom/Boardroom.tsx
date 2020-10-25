@@ -9,11 +9,12 @@ import Harvest from './components/Harvest';
 import Stake from './components/Stake';
 import { Switch } from 'react-router-dom';
 import Page from '../../components/Page';
+import useRedeemOnBoardroom from '../../hooks/useRedeemOnBoardroom';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
   const { account } = useWallet();
-  // TODO: useBoardroom
+  const { onRedeem } = useRedeemOnBoardroom();
 
   return (
     <Switch>
@@ -37,7 +38,7 @@ const Boardroom: React.FC = () => {
               </StyledCardsWrapper>
               <Spacer size="lg" />
               <div>
-                <Button onClick={() => {}} text="Settle & Withdraw" />
+                <Button onClick={onRedeem} text="Settle & Withdraw" />
               </div>
               <Spacer size="lg" />
             </StyledBoardroom>

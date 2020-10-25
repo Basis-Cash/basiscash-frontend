@@ -9,7 +9,7 @@ const useWithdrawFromBoardroom = () => {
   const addTransaction = useTransactionAdder();
   const handleWithdraw = useCallback(
     async (amount: string) => {
-      const result = await basisCash.withdrawShareFromBoardroom(BigNumber.from(amount));
+      const result = await basisCash.withdrawShareFromBoardroom(amount);
       addTransaction(result, {
         summary: `Withdraw ${amount} BAS from the boardroom`,
       });

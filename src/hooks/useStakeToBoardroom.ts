@@ -10,7 +10,7 @@ const useStakeToBoardroom = () => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      const tx = await basisCash.stakeShareToBoardroom(BigNumber.from(amount));
+      const tx = await basisCash.stakeShareToBoardroom(amount);
       addTransaction(tx, { summary: `Stake ${amount} BAS to the boardroom` });
     },
     [basisCash, addTransaction],
