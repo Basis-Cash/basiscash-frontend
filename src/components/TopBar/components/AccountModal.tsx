@@ -51,20 +51,9 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
           </StyledBalance>
         </StyledBalanceWrapper>
       </Balances>
-
-      <StyledSpacer />
-      <Button
-        href=""
-        text="More info"
-      />
     </Modal>
   )
 }
-
-const StyledSpacer = styled.div`
-  height: ${props => props.theme.spacing[4]}px;
-  width: ${props => props.theme.spacing[4]}px;
-`
 
 const StyledValue = styled.div`
   color: ${props => props.theme.color.grey[300]};
