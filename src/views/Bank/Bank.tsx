@@ -12,6 +12,7 @@ import Stake from './components/Stake';
 
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
+import { Bank } from '../../basis-cash';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -40,11 +41,7 @@ const Bank: React.FC = () => {
           </StyledCardWrapper>
         </StyledCardsWrapper>
         <Spacer size="lg" />
-        {bank.depositTokenName.includes('LP') && (
-          <StyledLink href="https://medium.com/@basiscash">
-            🦄  Provide liquidity to BAS-DAI pair on Uniswap  🦄
-          </StyledLink>
-        )}
+        {bank.depositTokenName.includes('LP') && <LPTokenHelpText bank={bank} />}
         <Spacer size="lg" />
         <div>
           <Button onClick={onRedeem} text="Settle & Withdraw" />
@@ -56,6 +53,23 @@ const Bank: React.FC = () => {
     <BankNotFound />
   ) : (
     <UnlockWallet />
+  );
+};
+
+const LPTokenHelpText: React.FC<{ bank: Bank }> = ({ bank }) => {
+  let pairName: string;
+  let uniswapUrl: string;
+  if (bank.depositTokenName.includes('BAC')) {
+    pairName = 'BAC-DAI pair';
+    uniswapUrl = 'https://medium.com/@basiscash/#bac-dai';
+  } else {
+    pairName = 'BAS-DAI pair';
+    uniswapUrl = 'https://medium.com/@basiscash/#bas-dai';
+  }
+  return (
+    <StyledLink href={uniswapUrl}>
+      {`🦄  Provide liquidity to ${pairName} on Uniswap  🦄`}
+    </StyledLink>
   );
 };
 
@@ -96,9 +110,8 @@ const StyledUniswapLPGuide = styled.div`
 const StyledLink = styled.a`
   font-weight: 700;
   text-decoration: none;
-  color: ${props => props.theme.color.primary.main};
+  color: ${(props) => props.theme.color.primary.main};
 `;
-
 
 const StyledCardsWrapper = styled.div`
   display: flex;
