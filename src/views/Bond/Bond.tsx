@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useWallet } from 'use-wallet';
 
@@ -40,6 +40,7 @@ const Bond: React.FC = () => {
     },
     [basisCash, addTransaction, bondStat],
   );
+  const cashIsOverpriced = useMemo(() => Number(bondStat?.priceInDAI) > 1.0, [bondStat]);
 
   return (
     <Switch>
@@ -63,7 +64,7 @@ const Bond: React.FC = () => {
                   toTokenName="Basis Bond"
                   priceDesc={`BAB Price: ${!bondStat ? '-' : '$' + bondStat.priceInDAI}`}
                   onExchange={handleBuyBonds}
-                  disabled={!bondStat}
+                  disabled={!bondStat || cashIsOverpriced}
                 />
               </StyledCardWrapper>
               <Spacer size="lg" />
