@@ -8,14 +8,12 @@ import CardContent from '../../../components/CardContent';
 import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 import CardIcon from '../../../components/CardIcon';
-import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardroom';
 import useHarvestFromBoardroom from '../../../hooks/useHarvestFromBoardroom';
 import useEarningsOnBoardroom from '../../../hooks/useEarningsOnBoardroom';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 const Harvest: React.FC = ({}) => {
   const { onReward } = useHarvestFromBoardroom();
-  const stakedBalance = useStakedBalanceOnBoardroom();
   const earnings = useEarningsOnBoardroom();
 
   return (
@@ -26,11 +24,11 @@ const Harvest: React.FC = ({}) => {
             <CardIcon>
               <TokenSymbol symbol="BAC" />
             </CardIcon>
-            <Value value={stakedBalance.gt(0) ? getDisplayBalance(earnings) : '0'} />
+            <Value value={getDisplayBalance(earnings)} />
             <Label text="Basis Cash Earned" />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button onClick={onReward} text="Claim Reward" disabled={stakedBalance.eq(0)} />
+            <Button onClick={onReward} text="Claim Reward" disabled={earnings.eq(0)} />
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
