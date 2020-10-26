@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../../components/Button';
@@ -34,12 +34,22 @@ const Stake: React.FC = () => {
   const { onStake } = useStakeToBoardroom();
   const { onWithdraw } = useWithdrawFromBoardroom();
 
-  const [onPresentDeposit] = useModal(
-    <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={"Basis Share"} />,
+  const [onPresentDeposit, onDismissDeposit] = useModal(
+    <DepositModal max={tokenBalance} onConfirm={(value) => {
+      onStake(value);
+      onDismissDeposit();
+    }} tokenName={'Basis Share'} />,
   );
 
-  const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={onWithdraw} tokenName={"Basis Share"} />,
+  const [onPresentWithdraw, onDismissWithdraw] = useModal(
+    <WithdrawModal
+      max={stakedBalance}
+      onConfirm={(value) => {
+        onWithdraw(value);
+        onDismissWithdraw();
+      }}
+      tokenName={'Basis Share'}
+    />,
   );
 
   return (

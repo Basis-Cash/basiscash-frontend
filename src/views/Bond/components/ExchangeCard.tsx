@@ -14,6 +14,7 @@ import ExchangeModal from './ExchangeModal';
 import ERC20 from '../../../basis-cash/ERC20';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
+import useCatchError from '../../../hooks/useCatchError';
 
 interface ExchangeCardProps {
   action: string;
@@ -36,6 +37,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
   onExchange,
   disabled = false,
 }) => {
+  const catchError = useCatchError();
   const { contracts: { Treasury } } = useBasisCash();
   const [approveStatus, approve] = useApprove(fromToken, Treasury.address);
 
@@ -45,7 +47,10 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
       title={action}
       description={priceDesc}
       max={balance}
-      onConfirm={onExchange}
+      onConfirm={(value) => {
+        onExchange(value);
+        onDismiss();
+      }}
       action={action}
       tokenName={fromTokenName}
     />,
@@ -80,7 +85,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
                   approveStatus == ApprovalState.PENDING ||
                   approveStatus == ApprovalState.UNKNOWN
                 }
-                onClick={approve}
+                onClick={() => catchError(approve(), `Unable to approve ${fromTokenName}`)}
                 text={`Approve ${fromTokenName}`}
               />
             ) : (
