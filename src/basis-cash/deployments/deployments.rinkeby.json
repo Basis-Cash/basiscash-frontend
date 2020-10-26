@@ -1,6 +1,6 @@
 {
   "Cash": {
-    "address": "0xdfDB9a2ac4e6ef41A729c450500c595CCC7A84B4",
+    "address": "0x06011283D7fa8b81bceC0A546e608d13dd61E2d4",
     "abi": [
       {
         "inputs": [],
@@ -454,7 +454,7 @@
     ]
   },
   "Bond": {
-    "address": "0x3221C4DCF374D36DC643002FD47155026aa6e47E",
+    "address": "0x1388cBaCf7678cF526E25ae169faC4ccfbD0C794",
     "abi": [
       {
         "inputs": [],
@@ -908,7 +908,7 @@
     ]
   },
   "Share": {
-    "address": "0x5C730025795423177FA731955b10cF132876A119",
+    "address": "0x1cc1B606Ec5243Df063EB65439c130B789b3ac5c",
     "abi": [
       {
         "inputs": [],
@@ -1362,7 +1362,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0xd0B27fF27294Db9156983EA3395CC5c7815E43a5",
+    "address": "0x17728C84C132F702eeA3dA15e9b0E0faC0736359",
     "abi": [
       {
         "inputs": [
@@ -1597,7 +1597,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x2702F283e590526cf5A7621Ef9C945fa20FfE30f",
+    "address": "0xB0cAAA0ec31B600092f4753Cec112EDd7304565D",
     "abi": [
       {
         "inputs": [
@@ -4177,7 +4177,7 @@
     ]
   },
   "DAIBACLPTokenSharePool": {
-    "address": "0x4e3f98191700CA7a989C8faD4C91Eb1255cB59Af",
+    "address": "0x32077B95595ba53Fd40C75d58Ea94e47fc21659b",
     "abi": [
       {
         "inputs": [
@@ -4655,7 +4655,7 @@
     ]
   },
   "DAIBASLPTokenSharePool": {
-    "address": "0x44DDad3f91b339b5FBc8aAE451a88fA549269034",
+    "address": "0x952c58539c70617CBB78055F181ed8f72da8A010",
     "abi": [
       {
         "inputs": [
