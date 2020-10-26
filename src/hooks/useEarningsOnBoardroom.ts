@@ -1,22 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useWallet } from 'use-wallet';
 import { BigNumber } from 'ethers';
 import useBasisCash from './useBasisCash';
 
 const useEarningsOnBoardroom = () => {
   const [balance, setBalance] = useState(BigNumber.from(0));
-  const { account } = useWallet();
   const basisCash = useBasisCash();
 
   const fetchBalance = useCallback(async () => {
     setBalance(await basisCash.getEarningsOnBoardroom());
-  }, [account, basisCash]);
+  }, [basisCash?.isUnlocked]);
 
   useEffect(() => {
-    if (account && basisCash) {
+    if (basisCash?.isUnlocked) {
       fetchBalance().catch((err) => console.error(err.stack));
+
+      const refreshBalance = setInterval(fetchBalance, 10000);
+      return () => clearInterval(refreshBalance);
     }
-  }, [account, setBalance, basisCash]);
+  }, [basisCash?.isUnlocked, setBalance]);
 
   return balance;
 };
