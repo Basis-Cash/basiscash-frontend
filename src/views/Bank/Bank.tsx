@@ -12,7 +12,11 @@ import Stake from './components/Stake';
 
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
+<<<<<<< HEAD
 import { Bank as BasisBank } from '../../basis-cash';
+=======
+import { Bank as BankEntity } from '../../basis-cash';
+>>>>>>> fix: Resolve naming collision
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -56,7 +60,7 @@ const Bank: React.FC = () => {
   );
 };
 
-const LPTokenHelpText: React.FC<{ bank: BasisBank }> = ({ bank }) => {
+const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let pairName: string;
   let uniswapUrl: string;
   if (bank.depositTokenName.includes('BAC')) {
