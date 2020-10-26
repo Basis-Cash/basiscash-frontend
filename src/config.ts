@@ -4,10 +4,10 @@ import { BankInfo } from './basis-cash';
 
 const configurations: { [env: string]: Configuration } = {
   development: {
-    chainId: ChainId.ROPSTEN,
-    etherscanUrl: 'https://ropsten.etherscan.io',
-    defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
-    deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
+    chainId: ChainId.RINKEBY,
+    etherscanUrl: 'https://rinkeby.etherscan.io',
+    defaultProvider: 'wss://rinkeby.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
+    deployments: require('./basis-cash/deployments/deployments.rinkeby.json'),
     externalTokens: {
       DAI: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 18],
       YFI: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 18],
