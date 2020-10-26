@@ -1,19 +1,19 @@
 import { useCallback } from 'react';
 import useBasisCash from './useBasisCash';
-import { Bank } from '../basis-cash';
-import { useTransactionAdder } from '../state/transactions/hooks';
-import { BigNumber } from 'ethers';
+import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useStakeToBoardroom = () => {
   const basisCash = useBasisCash();
-  const addTransaction = useTransactionAdder();
+  const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleStake = useCallback(
-    async (amount: string) => {
-      const tx = await basisCash.stakeShareToBoardroom(amount);
-      addTransaction(tx, { summary: `Stake ${amount} BAS to the boardroom` });
+    (amount: string) => {
+      handleTransactionReceipt(
+        basisCash.stakeShareToBoardroom(amount),
+        `Stake ${amount} BAS to the boardroom`,
+      );
     },
-    [basisCash, addTransaction],
+    [basisCash],
   );
   return { onStake: handleStake };
 };

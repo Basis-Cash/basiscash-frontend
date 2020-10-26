@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
 import useBasisCash from './useBasisCash';
-import { Bank} from '../basis-cash';
-import { useTransactionAdder } from '../state/transactions/hooks';
+import { Bank } from '../basis-cash';
+import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useStake = (bank: Bank) => {
   const basisCash = useBasisCash();
-  const addTransaction = useTransactionAdder();
+  const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleStake = useCallback(
-    async (amount: string) => {
-      const tx = await basisCash.stake(bank.contract, amount);
-      addTransaction(tx, {
-        summary: `Stake ${amount} ${bank.depositTokenName} to ${bank.contract}`,
-      });
+    (amount: string) => {
+      handleTransactionReceipt(
+        basisCash.stake(bank.contract, amount),
+        `Stake ${amount} ${bank.depositTokenName} to ${bank.contract}`,
+      );
     },
-    [bank, basisCash, addTransaction],
+    [bank, basisCash],
   );
   return { onStake: handleStake };
 };

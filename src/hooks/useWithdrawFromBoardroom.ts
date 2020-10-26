@@ -3,18 +3,20 @@ import useBasisCash from './useBasisCash';
 import { Bank } from '../basis-cash';
 import { useTransactionAdder } from '../state/transactions/hooks';
 import { BigNumber } from 'ethers';
+import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useWithdrawFromBoardroom = () => {
   const basisCash = useBasisCash();
-  const addTransaction = useTransactionAdder();
+  const handleTransactionReceipt = useHandleTransactionReceipt();
+
   const handleWithdraw = useCallback(
-    async (amount: string) => {
-      const result = await basisCash.withdrawShareFromBoardroom(amount);
-      addTransaction(result, {
-        summary: `Withdraw ${amount} BAS from the boardroom`,
-      });
+    (amount: string) => {
+      handleTransactionReceipt(
+        basisCash.withdrawShareFromBoardroom(amount),
+        `Withdraw ${amount} BAS from the boardroom`,
+      );
     },
-    [basisCash, addTransaction],
+    [basisCash],
   );
   return { onWithdraw: handleWithdraw };
 };

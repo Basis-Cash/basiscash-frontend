@@ -1,16 +1,15 @@
 import { useCallback } from 'react';
 import useBasisCash from './useBasisCash';
-import { useTransactionAdder } from '../state/transactions/hooks';
 import { Bank } from '../basis-cash';
+import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useRedeem = (bank: Bank) => {
   const basisCash = useBasisCash();
-  const addTransaction = useTransactionAdder();
+  const handleTransactionReceipt = useHandleTransactionReceipt();
 
-  const handleRedeem = useCallback(async () => {
-    const tx = await basisCash.exit(bank.contract);
-    addTransaction(tx, { summary: `Redeem ${bank.contract}` });
-  }, [bank, basisCash, addTransaction]);
+  const handleRedeem = useCallback(() => {
+    handleTransactionReceipt(basisCash.exit(bank.contract), `Redeem ${bank.contract}`);
+  }, [bank, basisCash]);
 
   return { onRedeem: handleRedeem };
 };
