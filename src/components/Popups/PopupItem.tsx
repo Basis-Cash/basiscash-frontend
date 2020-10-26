@@ -6,6 +6,7 @@ import { animated } from 'react-spring';
 import { PopupContent } from '../../state/application/actions';
 import { useRemovePopup } from '../../state/application/hooks';
 import TransactionPopup from './TransactionPopup';
+import ErrorPopup from './ErrorPopup';
 
 export const StyledClose = styled(X)`
   position: absolute;
@@ -73,6 +74,10 @@ export default function PopupItem({
       txn: { hash, success, summary },
     } = content;
     popupContent = <TransactionPopup hash={hash} success={success} summary={summary} />;
+  }
+  if ('error' in content) {
+    const { error: { message, stack } } = content;
+    popupContent = <ErrorPopup message={message} stack={stack} />
   }
 
   const faderStyle = useSpring({

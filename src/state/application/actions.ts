@@ -1,10 +1,14 @@
 import { createAction } from '@reduxjs/toolkit';
 
 export type PopupContent = {
-  txn: {
+  txn?: {
     hash: string;
     success: boolean;
     summary?: string;
+  };
+  error?: {
+    message: string;
+    stack: string;
   };
 };
 
