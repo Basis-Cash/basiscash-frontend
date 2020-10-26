@@ -102,4 +102,5 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
 };
 
-export default configurations[process.env.NODE_ENV];
+// export default configurations[process.env.NODE_ENV];
+export default configurations.development;
