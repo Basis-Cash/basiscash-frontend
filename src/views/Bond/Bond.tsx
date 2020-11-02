@@ -11,6 +11,7 @@ import Spacer from '../../components/Spacer';
 import useBondStats from '../../hooks/token/useBondStats';
 import useBasisCash from '../../hooks/useBasisCash';
 import { useTransactionAdder } from '../../state/transactions/hooks';
+import useCashStats from '../../hooks/token/useCashStats';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -18,29 +19,28 @@ const Bond: React.FC = () => {
   const basisCash = useBasisCash();
   const addTransaction = useTransactionAdder();
   const bondStat = useBondStats();
+  const cashStat = useCashStats();
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
       const tx = await basisCash.buyBonds(amount);
-      const bondAmount = Number(amount) / Number(bondStat.priceInDAI);
+      const bondAmount = Number(amount) / Number(cashStat.priceInDAI);
       addTransaction(tx, {
-        summary: `Buy ${bondAmount.toPrecision(3)} BAB with ${amount} BAC`,
+        summary: `Buy ${bondAmount.toFixed(2)} BAB with ${amount} BAC`,
       });
     },
-    [basisCash, addTransaction, bondStat],
+    [basisCash, addTransaction, cashStat],
   );
 
   const handleRedeemBonds = useCallback(
     async (amount: string) => {
       const tx = await basisCash.redeemBonds(amount);
-      const bondAmount = Number(amount) * Number(bondStat.priceInDAI);
-      addTransaction(tx, {
-        summary: `Redeem ${bondAmount} BAB`,
-      });
+      addTransaction(tx, { summary: `Redeem ${amount} BAB` });
     },
-    [basisCash, addTransaction, bondStat],
+    [basisCash, addTransaction],
   );
-  const cashIsOverpriced = useMemo(() => Number(bondStat?.priceInDAI) > 1.0, [bondStat]);
+  const cashIsOverpriced = useMemo(() => Number(cashStat?.priceInDAI) > 1.0, [cashStat]);
+  const cashIsUnderPriced = useMemo(() => Number(cashStat?.priceInDAI) < 1.0, [cashStat]);
 
   return (
     <Switch>
@@ -77,7 +77,7 @@ const Bond: React.FC = () => {
                   toTokenName="Basis Cash"
                   priceDesc="1 BAB = 1 BAC"
                   onExchange={handleRedeemBonds}
-                  disabled={!bondStat}
+                  disabled={!bondStat || cashIsUnderPriced}
                 />
               </StyledCardWrapper>
             </StyledBond>
