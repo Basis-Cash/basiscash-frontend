@@ -10,11 +10,13 @@ import Stake from './components/Stake';
 import { Switch } from 'react-router-dom';
 import Page from '../../components/Page';
 import useRedeemOnBoardroom from '../../hooks/useRedeemOnBoardroom';
+import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
   const { account } = useWallet();
   const { onRedeem } = useRedeemOnBoardroom();
+  const stakedBalance = useStakedBalanceOnBoardroom();
 
   return (
     <Switch>
@@ -38,7 +40,11 @@ const Boardroom: React.FC = () => {
               </StyledCardsWrapper>
               <Spacer size="lg" />
               <div>
-                <Button onClick={onRedeem} text="Settle & Withdraw" />
+                <Button
+                  disabled={stakedBalance.eq(0)}
+                  onClick={onRedeem}
+                  text="Settle & Withdraw"
+                />
               </div>
               <Spacer size="lg" />
             </StyledBoardroom>
