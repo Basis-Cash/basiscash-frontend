@@ -1,19 +1,22 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Label from '../../../components/Label';
-import Value from '../../../components/Value';
 import { TokenStat } from '../../../basis-cash/types';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import TokenSymbol from '../../../components/TokenSymbol';
+import { commify } from 'ethers/lib/utils';
+import config from '../../../config';
 
 interface HomeCardProps {
   title: string;
   symbol: string;
   color: string;
+  address: string;
   stat?: TokenStat;
 }
 
-const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, stat }) => {
+const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, address,  stat }) => {
+  const tokenUrl = `${config.etherscanUrl}/token/${address}`;
   return (
     <Wrapper>
       <CardHeader>{title}</CardHeader>
@@ -25,8 +28,10 @@ const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, stat }) => {
         </CardSection>
 
         <CardSection>
-          {stat ? <StyledValue>{stat.totalSupply}</StyledValue> : <ValueSkeleton />}
-          <Label text="Total Supply" color={color} />
+          {stat ? <StyledValue>{commify(stat.totalSupply)}</StyledValue> : <ValueSkeleton />}
+          <StyledSupplyLabel href={tokenUrl} color={color}>
+            Total Supply
+          </StyledSupplyLabel>
         </CardSection>
       </StyledCards>
     </Wrapper>
@@ -72,6 +77,11 @@ const CardSection = styled.div`
 const ValueSkeletonPadding = styled.div`
   padding-top: ${(props) => props.theme.spacing[3]}px;
   padding-bottom: ${(props) => props.theme.spacing[2]}px;
+`;
+
+const StyledSupplyLabel = styled.a`
+  display: block;
+  color: ${(props) => props.color};
 `;
 
 const ValueSkeleton = () => {

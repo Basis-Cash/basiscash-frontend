@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
@@ -27,6 +27,10 @@ const Home: React.FC = () => {
     }
   }, [basisCash]);
 
+  const cashAddr = useMemo(() => basisCash?.BAC.address, [basisCash]);
+  const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
+  const bondAddr = useMemo(() => basisCash?.BAB.address, [basisCash]);
+
   return (
     <Page>
       <PageHeader
@@ -40,6 +44,7 @@ const Home: React.FC = () => {
           title={'Basis Cash'}
           symbol="BAC"
           color="#EEA7ED"
+          address={cashAddr}
           stat={cash}
         />
         <Spacer size="lg" />
@@ -47,6 +52,7 @@ const Home: React.FC = () => {
           title={'Basis Share'}
           symbol="BAS"
           color="#E83725"
+          address={shareAddr}
           stat={share}
         />
         <Spacer size="lg" />
@@ -54,6 +60,7 @@ const Home: React.FC = () => {
           title={'Basis Bonds'}
           symbol="BAB"
           color="#ECF25C"
+          address={bondAddr}
           stat={bond}
         />
       </CardWrapper>
