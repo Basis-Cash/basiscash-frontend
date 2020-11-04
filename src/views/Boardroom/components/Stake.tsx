@@ -66,7 +66,7 @@ const Stake: React.FC = () => {
           <StyledCardActions>
             {approveStatus !== ApprovalState.APPROVED ? (
               <Button
-                disabled={approveStatus == ApprovalState.PENDING}
+                disabled={approveStatus !== ApprovalState.NOT_APPROVED}
                 onClick={approve}
                 text="Approve Basis Share"
               />
