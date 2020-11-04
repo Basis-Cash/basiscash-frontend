@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from 'use-wallet';
 
 import { AppDispatch, AppState } from '../index';
-import { addTransaction } from './actions';
+import { addTransaction, clearAllTransactions } from './actions';
 import { TransactionDetails } from './reducer';
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -87,4 +87,14 @@ export function useHasPendingApproval(
       }),
     [allTransactions, spender, tokenAddress],
   );
+}
+
+export function useClearAllTransactions(): { clearAllTransactions: () => void } {
+  const { chainId } = useWallet();
+  const dispatch = useDispatch<AppDispatch>();
+  return {
+    clearAllTransactions: useCallback(() => dispatch(clearAllTransactions({ chainId })), [
+      dispatch,
+    ]),
+  };
 }
