@@ -9,14 +9,14 @@ const configurations: { [env: string]: Configuration } = {
     defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
     deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
     externalTokens: {
-      DAI: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 18],
-      YFI: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 18],
-      SUSD: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 18],
-      USDC: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 6],
-      USDT: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 6],
+      DAI: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 18],
+      YFI: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 18],
+      SUSD: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 18],
+      USDC: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 6],
+      USDT: ['0xD105e5BD58a355EccEBdaecd7cFc99d80D93B308', 6],
       // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0xf88E68D380058FE7b5606d0E151881E4D8FC4Dc2', 18],
-      'BAS_DAI-UNI-LPv2': ['0xE69cE62F2E5296762C136C1C8bAE479DeDC5D66B', 18],
+      'BAC_DAI-UNI-LPv2': ['0x267132424D7fBc6C3D6333D248Da49Ee5f7029bE', 18],
+      'BAS_DAI-UNI-LPv2': ['0x84B2D5bFC8aB4601fc9ccD610a2E4b5ED84237cB', 18],
     },
   },
   production: {
