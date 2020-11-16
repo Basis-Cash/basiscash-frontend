@@ -12,7 +12,7 @@ import Stake from './components/Stake';
 
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-import { Bank } from '../../basis-cash';
+import { Bank as BasisBank } from '../../basis-cash';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -56,7 +56,7 @@ const Bank: React.FC = () => {
   );
 };
 
-const LPTokenHelpText: React.FC<{ bank: Bank }> = ({ bank }) => {
+const LPTokenHelpText: React.FC<{ bank: BasisBank }> = ({ bank }) => {
   let pairName: string;
   let uniswapUrl: string;
   if (bank.depositTokenName.includes('BAC')) {
