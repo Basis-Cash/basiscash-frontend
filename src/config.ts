@@ -2,21 +2,21 @@ import { ChainId } from '@uniswap/sdk';
 import { Configuration } from './basis-cash/config';
 import { BankInfo } from './basis-cash';
 
-const configurations: {[env: string]: Configuration} = {
+const configurations: { [env: string]: Configuration } = {
   development: {
     chainId: ChainId.ROPSTEN,
     etherscanUrl: 'https://ropsten.etherscan.io',
     defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
     deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
     externalTokens: {
-      DAI: ['0xa7bc95361b3807C820589589D7847221Cc4D5cDc', 18],
-      YFI: ['0xa7bc95361b3807C820589589D7847221Cc4D5cDc', 18],
-      SUSD: ['0xa7bc95361b3807C820589589D7847221Cc4D5cDc', 18],
-      USDC: ['0xa7bc95361b3807C820589589D7847221Cc4D5cDc', 6],
-      USDT: ['0xa7bc95361b3807C820589589D7847221Cc4D5cDc', 6],
+      DAI: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 18],
+      YFI: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 18],
+      SUSD: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 18],
+      USDC: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 6],
+      USDT: ['0x8b90e15867f4CE512c381AFdaC8E106ee08928d0', 6],
       // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0x688776D90E8FcACcAFbdAf9b996b5A491D0B6E31', 18],
-      'BAS_DAI-UNI-LPv2': ['0x545D57276218eCedA79200d8ec830B1025963144', 18],
+      'BAC_DAI-UNI-LPv2': ['0xf88E68D380058FE7b5606d0E151881E4D8FC4Dc2', 18],
+      'BAS_DAI-UNI-LPv2': ['0xE69cE62F2E5296762C136C1C8bAE479DeDC5D66B', 18],
     },
   },
   production: {
@@ -33,11 +33,11 @@ const configurations: {[env: string]: Configuration} = {
       // TODO: replace with real address
       'BAC_DAI-UNI-LPv2': ['0x6B175474E89094C44Da98b954EedeAC495271d0F', 18],
       'BAS_DAI-UNI-LPv2': ['0x6B175474E89094C44Da98b954EedeAC495271d0F', 18], */
-      chainId: ChainId.ROPSTEN,
-      etherscanUrl: 'https://ropsten.etherscan.io',
-      defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
-      deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
-      externalTokens: {
+    chainId: ChainId.ROPSTEN,
+    etherscanUrl: 'https://ropsten.etherscan.io',
+    defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
+    deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
+    externalTokens: {
       DAI: ['0xc2118d4d90b274016cb7a54c03ef52e6c537d957', 18],
       YFI: ['0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e', 18],
       SUSD: ['0x57Ab1E02fEE23774580C119740129eAC7081e9D3', 18],
@@ -48,9 +48,9 @@ const configurations: {[env: string]: Configuration} = {
       'BAS_DAI-UNI-LPv2': ['0x76332e3ec7588fbbbd1734c9c8b9a0199a468c67', 18],
     },
   },
-}
+};
 
-export const bankDefinitions: {[contractName: string]: BankInfo} = {
+export const bankDefinitions: { [contractName: string]: BankInfo } = {
   BACDAIPool: {
     name: 'Earn BAC by DAI',
     contract: 'BACDAIPool',
