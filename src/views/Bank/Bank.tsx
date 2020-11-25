@@ -12,11 +12,7 @@ import Stake from './components/Stake';
 
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-<<<<<<< HEAD
-import { Bank as BasisBank } from '../../basis-cash';
-=======
 import { Bank as BankEntity } from '../../basis-cash';
->>>>>>> fix: Resolve naming collision
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
