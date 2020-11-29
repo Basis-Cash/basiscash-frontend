@@ -4,19 +4,19 @@ import { BankInfo } from './basis-cash';
 
 const configurations: { [env: string]: Configuration } = {
   development: {
-    chainId: ChainId.RINKEBY,
-    etherscanUrl: 'https://rinkeby.etherscan.io',
-    defaultProvider: 'wss://rinkeby.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
-    deployments: require('./basis-cash/deployments/deployments.rinkeby.json'),
+    chainId: ChainId.ROPSTEN,
+    etherscanUrl: 'https://ropsten.etherscan.io',
+    defaultProvider: 'wss://ropsten.infura.io/ws/v3/d3bcb3c54e8c49a7bd1a9b6773e65bbe',
+    deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
     externalTokens: {
-      DAI: ['0xbda895A8a258c5EA7A21ED6dE405384B9250Fc28', 18],
-      yCRV: ['0xbda895A8a258c5EA7A21ED6dE405384B9250Fc28', 18],
-      SUSD: ['0xbda895A8a258c5EA7A21ED6dE405384B9250Fc28', 18],
-      USDC: ['0xbda895A8a258c5EA7A21ED6dE405384B9250Fc28', 6],
-      USDT: ['0xbda895A8a258c5EA7A21ED6dE405384B9250Fc28', 6],
+      DAI: ['0xf59b931a9e471c57306Ee330bE031B3fF28D6825', 18],
+      yCRV: ['0xf59b931a9e471c57306Ee330bE031B3fF28D6825', 18],
+      SUSD: ['0xf59b931a9e471c57306Ee330bE031B3fF28D6825', 18],
+      USDC: ['0xf59b931a9e471c57306Ee330bE031B3fF28D6825', 18],
+      USDT: ['0xf59b931a9e471c57306Ee330bE031B3fF28D6825', 18],
       // TODO: replace with real address
-      'BAC_DAI-UNI-LPv2': ['0x9c7471738B65B2c67ca63F398D037b780fEf74ec', 18],
-      'BAS_DAI-UNI-LPv2': ['0x752125de1C8105aDCfb6BAbE0e1dB3160A7BefE4', 18],
+      'BAC_DAI-UNI-LPv2': ['0xEB249F8cbD61f5B6E55cf6a1A1e944aad5c25e15', 18],
+      'BAS_DAI-UNI-LPv2': ['0x849e93C8A25AaBf440864682E97B0286713a8f5d', 18],
     },
   },
   production: {
