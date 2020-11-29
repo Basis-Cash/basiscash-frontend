@@ -35,7 +35,7 @@ const configurations: { [env: string]: Configuration } = {
       'BAC_DAI-UNI-LPv2': ['0xd4405F0704621DBe9d4dEA60E128E0C3b26bddbD', 18],
       'BAS_DAI-UNI-LPv2': ['0x0379dA7a5895D13037B6937b109fA8607a659ADF', 18],
     },
-    baseLaunchDate: new Date('2020-11-29T00:00:00Z'),
+    baseLaunchDate: new Date('2020-11-29T23:00:00Z'),
     bondLaunchesAt: new Date('2020-12-04T00:00:00Z'),
     boardroomLaunchesAt: new Date('2020-12-04T00:00:00Z'),
   },

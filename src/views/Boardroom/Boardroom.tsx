@@ -34,7 +34,7 @@ const Boardroom: React.FC = () => {
           <LaunchCountdown
             deadline={config.boardroomLaunchesAt}
             description="How does the boardroom work?"
-            descriptionLink="https://medium.com/basis-cash#TODO"
+            descriptionLink="https://docs.basis.cash/mechanisms/stabilization-mechanism#expansionary-policy"
           />
         </Page>
       </Switch>

@@ -57,7 +57,7 @@ const Bond: React.FC = () => {
           <LaunchCountdown
             deadline={config.bondLaunchesAt}
             description="How does Basis bonds work?"
-            descriptionLink="https://medium.com/basis-cash#TODO"
+            descriptionLink="https://docs.basis.cash/mechanisms/stabilization-mechanism"
           />
         </Page>
       </Switch>
