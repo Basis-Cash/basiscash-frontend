@@ -64,7 +64,7 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   } else {
     pairName = 'BAS-DAI pair';
   }
-  const uniswapUrl = `https://app.uniswap.org/#/add/${bank.depositToken.address}/${config.externalTokens.DAI}`;
+  const uniswapUrl = `https://app.uniswap.org/#/add/${bank.depositToken.address}/${config.externalTokens.DAI[0]}`;
   return (
     <StyledLink href={uniswapUrl}>
       {`🦄  Provide liquidity to ${pairName} on Uniswap  🦄`}
