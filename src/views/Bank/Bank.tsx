@@ -10,6 +10,7 @@ import Spacer from '../../components/Spacer';
 import Harvest from './components/Harvest';
 import Stake from './components/Stake';
 
+import config from '../../config';
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
 import { Bank as BankEntity } from '../../basis-cash';
@@ -58,14 +59,12 @@ const Bank: React.FC = () => {
 
 const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let pairName: string;
-  let uniswapUrl: string;
   if (bank.depositTokenName.includes('BAC')) {
     pairName = 'BAC-DAI pair';
-    uniswapUrl = 'https://medium.com/@basiscash/#bac-dai';
   } else {
     pairName = 'BAS-DAI pair';
-    uniswapUrl = 'https://medium.com/@basiscash/#bas-dai';
   }
+  const uniswapUrl = `https://app.uniswap.org/#/add/${bank.depositToken.address}/${config.externalTokens.DAI}`;
   return (
     <StyledLink href={uniswapUrl}>
       {`🦄  Provide liquidity to ${pairName} on Uniswap  🦄`}
