@@ -77,9 +77,12 @@ export class BasisCash {
 
   async getBondStat(): Promise<TokenStat> {
     const { Treasury } = this.contracts;
+    const decimals = BigNumber.from(10).pow(18);
+
     const cashPrice: BigNumber = await Treasury.getCashPrice();
+    const bondPrice = cashPrice.div(decimals).pow(2).mul(decimals);
     return {
-      priceInDAI: getDisplayBalance(cashPrice.pow(2)),
+      priceInDAI: getDisplayBalance(bondPrice),
       totalSupply: await this.BAB.displayedTotalSupply(),
     };
   }
