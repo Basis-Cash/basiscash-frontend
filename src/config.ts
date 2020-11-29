@@ -18,8 +18,8 @@ const configurations: { [env: string]: Configuration } = {
       'BAS_DAI-UNI-LPv2': ['0x1e794b54b5EC6Ff44A4070469Db54efB870FC248', 18],
     },
     baseLaunchDate: new Date('2020-11-26T00:00:00Z'),
-    bondLaunchesAt: new Date('2020-12-04T00:00:00Z'),
-    boardroomLaunchesAt: new Date('2020-12-04T00:00:00Z'),
+    bondLaunchesAt: new Date('2020-12-05T00:00:00Z'),
+    boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
   },
   production: {
     chainId: ChainId.MAINNET,
@@ -36,8 +36,8 @@ const configurations: { [env: string]: Configuration } = {
       'BAS_DAI-UNI-LPv2': ['0x0379dA7a5895D13037B6937b109fA8607a659ADF', 18],
     },
     baseLaunchDate: new Date('2020-11-29T23:00:00Z'),
-    bondLaunchesAt: new Date('2020-12-04T00:00:00Z'),
-    boardroomLaunchesAt: new Date('2020-12-04T00:00:00Z'),
+    bondLaunchesAt: new Date('2020-12-05T00:00:00Z'),
+    boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
   },
 };
 
