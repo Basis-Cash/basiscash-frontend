@@ -8,6 +8,10 @@ export type Configuration = {
   deployments: Deployments,
   externalTokens: {[contractName: string]: [string, number]};
   config?: EthereumConfig,
+
+  baseLaunchDate: Date,
+  bondLaunchesAt: Date,
+  boardroomLaunchesAt: Date,
 };
 
 export type EthereumConfig = {

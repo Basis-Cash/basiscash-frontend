@@ -12,6 +12,8 @@ import useBondStats from '../../hooks/token/useBondStats';
 import useBasisCash from '../../hooks/useBasisCash';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import useCashStats from '../../hooks/token/useCashStats';
+import config from '../../config';
+import LaunchCountdown from '../../components/LaunchCountdown';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -42,6 +44,25 @@ const Bond: React.FC = () => {
   const cashIsOverpriced = useMemo(() => Number(cashStat?.priceInDAI) > 1.0, [cashStat]);
   const cashIsUnderPriced = useMemo(() => Number(cashStat?.priceInDAI) < 1.0, [cashStat]);
 
+  const isLaunched = Date.now() >= config.bondLaunchesAt;
+  if (!isLaunched) {
+    return (
+      <Switch>
+        <Page>
+          <PageHeader
+            icon={'🏦'}
+            title="Buy & Redeem Bonds"
+            subtitle="Earn premiums upon redemption"
+          />
+          <LaunchCountdown
+            deadline={config.bondLaunchesAt}
+            description="How does Basis bonds work?"
+            descriptionLink="https://medium.com/basis-cash#TODO"
+          />
+        </Page>
+      </Switch>
+    );
+  }
   return (
     <Switch>
       <Page>

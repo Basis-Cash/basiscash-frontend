@@ -12,11 +12,34 @@ import Page from '../../components/Page';
 import useRedeemOnBoardroom from '../../hooks/useRedeemOnBoardroom';
 import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom';
 
+import config from '../../config';
+import LaunchCountdown from '../../components/LaunchCountdown';
+
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
   const { account } = useWallet();
   const { onRedeem } = useRedeemOnBoardroom();
   const stakedBalance = useStakedBalanceOnBoardroom();
+
+  const isLaunched = Date.now() >= config.boardroomLaunchesAt;
+  if (!isLaunched) {
+    return (
+      <Switch>
+        <Page>
+          <PageHeader
+            icon={'🤝'}
+            title="Join the Boardroom"
+            subtitle="Deposit Basis Shares and earn inflationary rewards"
+          />
+          <LaunchCountdown
+            deadline={config.boardroomLaunchesAt}
+            description="How does the boardroom work?"
+            descriptionLink="https://medium.com/basis-cash#TODO"
+          />
+        </Page>
+      </Switch>
+    );
+  }
 
   return (
     <Switch>
