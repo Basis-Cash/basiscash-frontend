@@ -5,6 +5,7 @@ import { BigNumber, Contract, ethers } from 'ethers';
 import { decimalToBalance, web3ProviderFrom } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
+import { getDisplayBalance } from '../utils/formatBalance';
 
 /**
  * An API module of Basis Cash contracts.
@@ -66,28 +67,31 @@ export class BasisCash {
   }
 
   async getCashStat(): Promise<TokenStat> {
+    const { Treasury } = this.contracts;
+    const cashPrice: BigNumber = await Treasury.getCashPrice()
     return {
-      priceInDAI: await this.getTokenPrice(this.BAC),
+      priceInDAI: getDisplayBalance(cashPrice),
       totalSupply: await this.BAC.displayedTotalSupply(),
     };
   }
 
   async getBondStat(): Promise<TokenStat> {
-    const cashPrice = Number(await this.getTokenPrice(this.BAC));
+    const { Treasury } = this.contracts;
+    const cashPrice: BigNumber = await Treasury.getCashPrice();
     return {
-      priceInDAI: (cashPrice ** 2).toPrecision(3),
+      priceInDAI: getDisplayBalance(cashPrice.pow(2)),
       totalSupply: await this.BAB.displayedTotalSupply(),
     };
   }
 
   async getShareStat(): Promise<TokenStat> {
     return {
-      priceInDAI: await this.getTokenPrice(this.BAS),
+      priceInDAI: await this.getTokenPriceFromUniswap(this.BAS),
       totalSupply: await this.BAS.displayedTotalSupply(),
     };
   }
 
-  async getTokenPrice(tokenContract: ERC20): Promise<string> {
+  async getTokenPriceFromUniswap(tokenContract: ERC20): Promise<string> {
     const { chainId } = this.config;
     const { DAI } = this.config.externalTokens;
 
@@ -191,7 +195,7 @@ export class BasisCash {
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
     const { Boardroom } = this.contracts;
-    return await Boardroom.getCashEarnings();
+    return await Boardroom.getCashEarningsOf(this.myAccount);
   }
 
   async withdrawShareFromBoardroom(amount: string): Promise<TransactionResponse> {
