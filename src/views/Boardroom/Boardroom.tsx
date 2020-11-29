@@ -21,7 +21,7 @@ const Boardroom: React.FC = () => {
   const { onRedeem } = useRedeemOnBoardroom();
   const stakedBalance = useStakedBalanceOnBoardroom();
 
-  const isLaunched = Date.now() >= config.boardroomLaunchesAt;
+  const isLaunched = Date.now() >= config.boardroomLaunchesAt.getTime();
   if (!isLaunched) {
     return (
       <Switch>

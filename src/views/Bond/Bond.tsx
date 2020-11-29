@@ -44,7 +44,7 @@ const Bond: React.FC = () => {
   const cashIsOverpriced = useMemo(() => Number(cashStat?.priceInDAI) > 1.0, [cashStat]);
   const cashIsUnderPriced = useMemo(() => Number(cashStat?.priceInDAI) < 1.0, [cashStat]);
 
-  const isLaunched = Date.now() >= config.bondLaunchesAt;
+  const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
   if (!isLaunched) {
     return (
       <Switch>
