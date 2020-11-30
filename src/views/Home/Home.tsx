@@ -6,6 +6,7 @@ import Spacer from '../../components/Spacer';
 import HomeCard from './components/HomeCard';
 import { OverviewData } from './types';
 import useBasisCash from '../../hooks/useBasisCash';
+import config from '../../config';
 
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
@@ -17,6 +18,9 @@ const Home: React.FC = () => {
       basisCash.getBondStat(),
       basisCash.getShareStat(),
     ]);
+    if (Date.now() < config.bondLaunchesAt.getTime()) {
+      bond.priceInDAI = '-';
+    }
     setStats({ cash, bond, share });
   }, [basisCash, setStats]);
 
