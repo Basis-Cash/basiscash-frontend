@@ -95,6 +95,8 @@ export class BasisCash {
   }
 
   async getTokenPriceFromUniswap(tokenContract: ERC20): Promise<string> {
+    await this.provider.ready;
+
     const { chainId } = this.config;
     const { DAI } = this.config.externalTokens;
 
