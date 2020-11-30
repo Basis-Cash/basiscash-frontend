@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 import useBasisCash from './useBasisCash';
 import { ContractName } from '../basis-cash';
+import config from '../config';
 
 const useEarnings = (poolName: ContractName) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
@@ -16,7 +17,7 @@ const useEarnings = (poolName: ContractName) => {
     if (basisCash?.isUnlocked) {
       fetchBalance().catch((err) => console.error(err.stack));
 
-      const refreshBalance = setInterval(fetchBalance, 10000);
+      const refreshBalance = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
   }, [basisCash?.isUnlocked, poolName, basisCash]);

@@ -12,6 +12,8 @@ export type Configuration = {
   baseLaunchDate: Date,
   bondLaunchesAt: Date,
   boardroomLaunchesAt: Date,
+
+  refreshInterval: number;
 };
 
 export type EthereumConfig = {

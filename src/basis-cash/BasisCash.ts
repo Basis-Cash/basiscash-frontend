@@ -6,6 +6,7 @@ import { decimalToBalance, web3ProviderFrom } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
+import { getDefaultProvider } from '../utils/provider';
 
 /**
  * An API module of Basis Cash contracts.
@@ -25,10 +26,7 @@ export class BasisCash {
 
   constructor(cfg: Configuration) {
     const { defaultProvider, deployments, externalTokens, chainId } = cfg;
-    const provider = new ethers.providers.Web3Provider(
-      web3ProviderFrom(defaultProvider),
-      chainId,
-    );
+    const provider = getDefaultProvider();
 
     // loads contracts from deployments
     this.contracts = {};
@@ -52,9 +50,9 @@ export class BasisCash {
    * @param account An address of unlocked wallet account.
    */
   unlockWallet(provider: any, account: string) {
-    this.provider = new ethers.providers.Web3Provider(provider, this.config.chainId);
+    const newProvider = new ethers.providers.Web3Provider(provider, this.config.chainId);
 
-    this.signer = this.provider.getSigner(0);
+    this.signer = newProvider.getSigner(0);
     this.myAccount = account;
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);

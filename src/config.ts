@@ -6,7 +6,7 @@ const configurations: { [env: string]: Configuration } = {
   development: {
     chainId: ChainId.ROPSTEN,
     etherscanUrl: 'https://ropsten.etherscan.io',
-    defaultProvider: 'wss://mainnet.infura.io/ws/v3/b936b38c55244c2d8f9e4f7a0b45eb9f',
+    defaultProvider: 'https://ropsten.infura.io/v3/b936b38c55244c2d8f9e4f7a0b45eb9f',
     deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
     externalTokens: {
       DAI: ['0xd4A2e76D12f8AAb562f8072Ce029add7f25239d5', 18],
@@ -20,11 +20,12 @@ const configurations: { [env: string]: Configuration } = {
     baseLaunchDate: new Date('2020-11-26T00:00:00Z'),
     bondLaunchesAt: new Date('2020-12-05T00:00:00Z'),
     boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
+    refreshInterval: 10000,
   },
   production: {
     chainId: ChainId.MAINNET,
     etherscanUrl: 'https://etherscan.io',
-    defaultProvider: 'wss://mainnet.infura.io/ws/v3/b936b38c55244c2d8f9e4f7a0b45eb9f',
+    defaultProvider: 'https://mainnet.infura.io/v3/b936b38c55244c2d8f9e4f7a0b45eb9f',
     deployments: require('./basis-cash/deployments/deployments.mainnet.json'),
     externalTokens: {
       DAI: ['0x6B175474E89094C44Da98b954EedeAC495271d0F', 18],
@@ -38,6 +39,7 @@ const configurations: { [env: string]: Configuration } = {
     baseLaunchDate: new Date('2020-11-29T23:00:00Z'),
     bondLaunchesAt: new Date('2020-12-05T00:00:00Z'),
     boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
+    refreshInterval: 30000,
   },
 };
 
