@@ -24,8 +24,11 @@ export class BasisCash {
   BAB: ERC20;
 
   constructor(cfg: Configuration) {
-    const { defaultProvider, deployments, externalTokens } = cfg;
-    const provider = new ethers.providers.Web3Provider(web3ProviderFrom(defaultProvider));
+    const { defaultProvider, deployments, externalTokens, chainId } = cfg;
+    const provider = new ethers.providers.Web3Provider(
+      web3ProviderFrom(defaultProvider),
+      chainId,
+    );
 
     // loads contracts from deployments
     this.contracts = {};
@@ -49,7 +52,8 @@ export class BasisCash {
    * @param account An address of unlocked wallet account.
    */
   unlockWallet(provider: any, account: string) {
-    this.provider = new ethers.providers.Web3Provider(provider);
+    this.provider = new ethers.providers.Web3Provider(provider, this.config.chainId);
+
     this.signer = this.provider.getSigner(0);
     this.myAccount = account;
     for (const [name, contract] of Object.entries(this.contracts)) {
@@ -140,7 +144,10 @@ export class BasisCash {
     }
   }
 
-  async stakedBalanceOnBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
+  async stakedBalanceOnBank(
+    poolName: ContractName,
+    account = this.myAccount,
+  ): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
       return await pool.balanceOf(account);
