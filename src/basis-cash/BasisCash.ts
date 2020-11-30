@@ -67,10 +67,10 @@ export class BasisCash {
   }
 
   async getCashStat(): Promise<TokenStat> {
-    const { Treasury } = this.contracts;
-    const cashPrice: BigNumber = await Treasury.getCashPrice()
+    // const { Treasury } = this.contracts;
+    // const cashPrice: BigNumber = await Treasury.getCashPrice()
     return {
-      priceInDAI: getDisplayBalance(cashPrice),
+      priceInDAI: await this.getTokenPriceFromUniswap(this.BAC),
       totalSupply: await this.BAC.displayedTotalSupply(),
     };
   }
