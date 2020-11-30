@@ -33,7 +33,7 @@ const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, address, stat
 
         <CardSection>
           {stat ? <StyledValue>{commify(stat.totalSupply)}</StyledValue> : <ValueSkeleton />}
-          <StyledSupplyLabel href={tokenUrl} color={color}>
+          <StyledSupplyLabel href={tokenUrl} target="_blank" color={color}>
             Total Supply
           </StyledSupplyLabel>
         </CardSection>

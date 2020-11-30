@@ -68,7 +68,7 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
     uniswapUrl = 'https://app.uniswap.org/#/add/0xa7ED29B253D8B4E3109ce07c80fc570f81B63696/0x6B175474E89094C44Da98b954EedeAC495271d0F';
   }
   return (
-    <StyledLink href={uniswapUrl}>
+    <StyledLink href={uniswapUrl} target="_blank">
       {`🦄  Provide liquidity to ${pairName} on Uniswap  🦄`}
     </StyledLink>
   );

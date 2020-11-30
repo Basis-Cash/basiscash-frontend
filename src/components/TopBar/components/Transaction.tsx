@@ -53,6 +53,7 @@ const Transaction: React.FC<TransactionProps> = ({ tx }) => {
     <TransactionWrapper>
       <TransactionState
         href={`${config.etherscanUrl}/tx/${tx.hash}`}
+        target="_blank"
         pending={pending}
         success={success}
       >

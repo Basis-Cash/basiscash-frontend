@@ -11,7 +11,11 @@ interface LaunchCountdownProps {
   descriptionLink: string;
 }
 
-const LaunchCountdown: React.FC<LaunchCountdownProps> = ({ deadline, description, descriptionLink }) => {
+const LaunchCountdown: React.FC<LaunchCountdownProps> = ({
+  deadline,
+  description,
+  descriptionLink,
+}) => {
   const percentage =
     ((Date.now() - config.baseLaunchDate.getTime()) /
       (deadline.getTime() - config.baseLaunchDate.getTime())) *
@@ -38,7 +42,9 @@ const LaunchCountdown: React.FC<LaunchCountdownProps> = ({ deadline, description
         </StyledCountdownWrapper>
       </Dial>
       <StyledDescriptionButton>
-        <StyledExternalLink href={descriptionLink}>{description}</StyledExternalLink>
+        <StyledExternalLink href={descriptionLink} target="_blank">
+          {description}
+        </StyledExternalLink>
       </StyledDescriptionButton>
     </StyledCard>
   );
@@ -105,10 +111,9 @@ const StyledExternalLink = styled.a`
   flex: 1;
   height: 56px;
   justify-content: center;
-  margin: 0 ${props => -props.theme.spacing[4]}px;
-  padding: 0 ${props => props.theme.spacing[4]}px;
+  margin: 0 ${(props) => -props.theme.spacing[4]}px;
+  padding: 0 ${(props) => props.theme.spacing[4]}px;
   text-decoration: none;
-`
-
+`;
 
 export default LaunchCountdown;
