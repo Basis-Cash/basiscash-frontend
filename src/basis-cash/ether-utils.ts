@@ -19,6 +19,7 @@ export function balanceToDecimal(s: string): string {
   return formatUnits(s);
 }
 
-export function decimalToBalance(d: string | number): BigNumber {
-  return parseUnits(String(d));
+export function decimalToBalance(d: string | number, decimals = 18): BigNumber {
+  const denominator = BigNumber.from(10).pow(decimals);
+  return BigNumber.from(d).mul(denominator);
 }

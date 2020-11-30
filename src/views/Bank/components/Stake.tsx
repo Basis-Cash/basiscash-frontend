@@ -50,6 +50,7 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
   const [onPresentWithdraw, onDismissWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
+      decimals={bank.depositToken.decimal}
       onConfirm={(amount) => { onWithdraw(amount); onDismissWithdraw(); }}
       tokenName={bank.depositTokenName}
     />,

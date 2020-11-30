@@ -151,23 +151,23 @@ export class BasisCash {
   /**
    * Deposits token to given pool.
    * @param poolName A name of pool contract.
-   * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
+   * @param amount Number of tokens with decimals applied. (e.g. 1.45 DAI * 10^18)
    * @returns {string} Transaction hash
    */
-  async stake(poolName: ContractName, amount: string | number): Promise<TransactionResponse> {
+  async stake(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    return await pool.stake(decimalToBalance(amount));
+    return await pool.stake(amount);
   }
 
   /**
    * Withdraws token from given pool.
    * @param poolName A name of pool contract.
-   * @param amount Number of tokens. (e.g. 1.45 DAI -> '1.45')
+   * @param amount Number of tokens with decimals applied. (e.g. 1.45 DAI * 10^18)
    * @returns {string} Transaction hash
    */
-  async unstake(poolName: ContractName, amount: string | number): Promise<TransactionResponse> {
+  async unstake(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    return await pool.withdraw(decimalToBalance(amount));
+    return await pool.withdraw(amount);
   }
 
   /**
