@@ -14,6 +14,7 @@ export type Configuration = {
   boardroomLaunchesAt: Date,
 
   refreshInterval: number;
+  gasLimitMultiplier: number;
 };
 
 export type EthereumConfig = {

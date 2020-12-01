@@ -1,8 +1,8 @@
 import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Configuration } from './config';
 import { ContractName, TokenStat } from './types';
-import { BigNumber, Contract, ethers } from 'ethers';
-import { decimalToBalance, web3ProviderFrom } from './ether-utils';
+import { BigNumber, Contract, ethers, Overrides } from 'ethers';
+import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
@@ -66,6 +66,14 @@ export class BasisCash {
 
   get isUnlocked(): boolean {
     return !!this.myAccount;
+  }
+
+  gasOptions(gas: BigNumber): Overrides {
+    const multiplied = Math.floor(gas.toNumber() * this.config.gasLimitMultiplier);
+    console.log(`⛽️ Gas multiplied: ${gas} -> ${multiplied}`);
+    return {
+      gasLimit: BigNumber.from(multiplied),
+    };
   }
 
   async getCashStat(): Promise<TokenStat> {
@@ -163,7 +171,8 @@ export class BasisCash {
    */
   async stake(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    return await pool.stake(amount);
+    const gas = await pool.estimateGas.stake(amount);
+    return await pool.stake(amount, this.gasOptions(gas));
   }
 
   /**
@@ -174,7 +183,8 @@ export class BasisCash {
    */
   async unstake(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    return await pool.withdraw(amount);
+    const gas = await pool.estimateGas.withdraw(amount);
+    return await pool.withdraw(amount, this.gasOptions(gas));
   }
 
   /**
@@ -182,7 +192,8 @@ export class BasisCash {
    */
   async harvest(poolName: ContractName): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    return await pool.getReward();
+    const gas = await pool.estimateGas.getReward();
+    return await pool.getReward(this.gasOptions(gas));
   }
 
   /**
@@ -190,7 +201,8 @@ export class BasisCash {
    */
   async exit(poolName: ContractName): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    return await pool.exit();
+    const gas = await pool.estimateGas.exit();
+    return await pool.exit(this.gasOptions(gas));
   }
 
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
