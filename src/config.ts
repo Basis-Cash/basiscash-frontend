@@ -25,7 +25,7 @@ const configurations: { [env: string]: Configuration } = {
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
     treasuryAllocationDelayInSec: 86400,
-    circSupply: Number(formatUnits(BigNumber.from(10).pow(22).mul(5))).toFixed(0),
+    circSupply: '50001',
   },
   production: {
     chainId: ChainId.MAINNET,
@@ -47,7 +47,7 @@ const configurations: { [env: string]: Configuration } = {
     refreshInterval: 30000,
     gasLimitMultiplier: 1.7,
     treasuryAllocationDelayInSec: 86400,
-    circSupply: Number(formatUnits(BigNumber.from(10).pow(22).mul(5))).toFixed(0),
+    circSupply: '50001',
   },
 };
 
