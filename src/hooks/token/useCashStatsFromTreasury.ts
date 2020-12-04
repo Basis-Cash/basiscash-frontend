@@ -3,12 +3,12 @@ import useBasisCash from '../useBasisCash';
 import { TokenStat } from '../../basis-cash/types';
 import config from '../../config';
 
-const useCashStats = () => {
+const useCashStatsFromTreasury = () => {
   const [stat, setStat] = useState<TokenStat>();
   const basisCash = useBasisCash();
 
   const fetchCashPrice = useCallback(async () => {
-    setStat(await basisCash.getCashStatFromUniswap());
+    setStat(await basisCash.getCashStatFromTreasury());
   }, [basisCash]);
 
   useEffect(() => {
@@ -20,4 +20,4 @@ const useCashStats = () => {
   return stat;
 };
 
-export default useCashStats;
+export default useCashStatsFromTreasury;

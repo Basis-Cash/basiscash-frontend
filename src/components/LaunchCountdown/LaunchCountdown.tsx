@@ -21,7 +21,6 @@ const LaunchCountdown: React.FC<LaunchCountdownProps> = ({
       (deadline.getTime() - config.baseLaunchDate.getTime())) *
     100;
 
-  console.log(deadline);
   const countdownRenderer = (countdownProps: CountdownRenderProps) => {
     const { days, hours, minutes, seconds } = countdownProps;
     const h = String(days * 24 + hours);

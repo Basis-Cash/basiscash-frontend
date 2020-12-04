@@ -1,6 +1,8 @@
 import { ChainId } from '@uniswap/sdk';
 import { Configuration } from './basis-cash/config';
 import { BankInfo } from './basis-cash';
+import { formatUnits } from 'ethers/lib/utils';
+import { BigNumber } from 'ethers';
 
 const configurations: { [env: string]: Configuration } = {
   development: {
@@ -18,10 +20,12 @@ const configurations: { [env: string]: Configuration } = {
       'BAS_DAI-UNI-LPv2': ['0x1e794b54b5EC6Ff44A4070469Db54efB870FC248', 18],
     },
     baseLaunchDate: new Date('2020-11-26T00:00:00Z'),
-    bondLaunchesAt: new Date('2020-12-05T00:00:00Z'),
-    boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
+    bondLaunchesAt: new Date('2020-12-03T15:00:00Z'),
+    boardroomLaunchesAt: new Date('2020-12-03T15:00:00Z'),
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
+    treasuryAllocationDelayInSec: 86400,
+    circSupply: Number(formatUnits(BigNumber.from(10).pow(22).mul(5))).toFixed(0),
   },
   production: {
     chainId: ChainId.MAINNET,
@@ -42,6 +46,8 @@ const configurations: { [env: string]: Configuration } = {
     boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
     refreshInterval: 30000,
     gasLimitMultiplier: 1.7,
+    treasuryAllocationDelayInSec: 86400,
+    circSupply: Number(formatUnits(BigNumber.from(10).pow(22).mul(5))).toFixed(0),
   },
 };
 
@@ -97,4 +103,4 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
 };
 
-export default configurations[process.env.NODE_ENV || 'production'];
+export default configurations.development;

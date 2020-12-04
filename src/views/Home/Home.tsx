@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   const [{ cash, bond, share }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
     const [cash, bond, share] = await Promise.all([
-      basisCash.getCashStat(),
+      basisCash.getCashStatFromUniswap(),
       basisCash.getBondStat(),
       basisCash.getShareStat(),
     ]);
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'Basis Bonds'}
+          title={'Basis Bond'}
           symbol="BAB"
           color="#ECF25C"
           address={bondAddr}

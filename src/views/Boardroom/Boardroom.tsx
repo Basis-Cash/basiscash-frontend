@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
 
@@ -14,12 +14,30 @@ import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom
 
 import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
+import Stat from './components/Stat';
+import ProgressCountdown from './components/ProgressCountdown';
+import useCashStatsFromTreasury from '../../hooks/token/useCashStatsFromTreasury';
+import useTreasuryAmount from '../../hooks/useTreasuryAmount';
+import Humanize from 'humanize-plus';
+import { getBalance } from '../../utils/formatBalance';
+import useLastTreasuryAllocationTime from '../../hooks/useLastTreasuryAllocationTime';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
   const { account } = useWallet();
   const { onRedeem } = useRedeemOnBoardroom();
   const stakedBalance = useStakedBalanceOnBoardroom();
+
+  const cashStat = useCashStatsFromTreasury();
+  const treasuryAmount = useTreasuryAmount();
+  const scalingFactor = useMemo(
+    () => (cashStat ? Number(cashStat.priceInDAI).toFixed(2) : null),
+    [cashStat],
+  );
+  const lastAllocation = useLastTreasuryAllocationTime();
+  const nextAllocation = new Date(
+    lastAllocation.getTime() + config.treasuryAllocationDelayInSec * 1000,
+  );
 
   const isLaunched = Date.now() >= config.boardroomLaunchesAt.getTime();
   if (!isLaunched) {
@@ -51,6 +69,32 @@ const Boardroom: React.FC = () => {
               title="Join the Boardroom"
               subtitle="Deposit Basis Shares and earn inflationary rewards"
             />
+            <StyledHeader>
+              <ProgressCountdown
+                base={lastAllocation}
+                deadline={nextAllocation}
+                description="Next Seigniorage"
+              />
+              <Stat
+                icon="💵"
+                title={cashStat ? `$${cashStat.priceInDAI}` : '-'}
+                description="BAC Price (TWAP)"
+              />
+              <Stat
+                icon="🚀"
+                title={scalingFactor ? `x${scalingFactor}` : '-'}
+                description="Scaling Factor"
+              />
+              <Stat
+                icon="💰"
+                title={
+                  treasuryAmount
+                    ? `~$${Humanize.compactInteger(getBalance(treasuryAmount), 2)}`
+                    : '-'
+                }
+                description="Treasury Amount"
+              />
+            </StyledHeader>
             <StyledBoardroom>
               <StyledCardsWrapper>
                 <StyledCardWrapper>
@@ -94,6 +138,25 @@ const StyledBoardroom = styled.div`
   display: flex;
   flex-direction: column;
   @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const StyledHeader = styled.div`
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: ${(props) => props.theme.spacing[5]}px;
+  width: 960px;
+
+  > * {
+    flex: 1;
+    height: 84px;
+    margin: 0 ${(props) => props.theme.spacing[2]}px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
     width: 100%;
   }
 `;

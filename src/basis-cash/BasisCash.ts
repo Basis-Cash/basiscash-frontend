@@ -76,12 +76,29 @@ export class BasisCash {
     };
   }
 
-  async getCashStat(): Promise<TokenStat> {
-    // const { Treasury } = this.contracts;
-    // const cashPrice: BigNumber = await Treasury.getCashPrice()
+  /**
+   * @returns Basis Cash (BAC) stats from Uniswap.
+   * It may differ from the BAC price used on Treasury (which is calculated in TWAP)
+   */
+  async getCashStatFromUniswap(): Promise<TokenStat> {
+    const supply = await this.BAC.displayedTotalSupply();
     return {
       priceInDAI: await this.getTokenPriceFromUniswap(this.BAC),
-      totalSupply: await this.BAC.displayedTotalSupply(),
+      totalSupply: this.config.circSupply,
+    };
+  }
+
+  /**
+   * @returns Basis Cash (BAC) stats from Treasury,
+   * calculated by Time-Weight Averaged Price (TWAP).
+   */
+  async getCashStatFromTreasury(): Promise<TokenStat> {
+    const supply = await this.BAC.displayedTotalSupply();
+    const { Treasury } = this.contracts;
+    const cashPrice: BigNumber = await Treasury.getCashPrice();
+    return {
+      priceInDAI: getDisplayBalance(cashPrice),
+      totalSupply: this.config.circSupply,
     };
   }
 
@@ -90,7 +107,7 @@ export class BasisCash {
     const decimals = BigNumber.from(10).pow(18);
 
     const cashPrice: BigNumber = await Treasury.getCashPrice();
-    const bondPrice = cashPrice.div(decimals).pow(2).mul(decimals);
+    const bondPrice = cashPrice.pow(2).div(decimals);
     return {
       priceInDAI: getDisplayBalance(bondPrice),
       totalSupply: await this.BAB.displayedTotalSupply(),
@@ -212,7 +229,7 @@ export class BasisCash {
 
   async getStakedSharesOnBoardroom(): Promise<BigNumber> {
     const { Boardroom } = this.contracts;
-    return await Boardroom.getBoardSeatBalance();
+    return await Boardroom.getShareOf(this.myAccount);
   }
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
