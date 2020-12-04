@@ -27,7 +27,7 @@ const TxButton: React.FC<TxButtonProps> = () => {
           <Button
             size="sm"
             text={
-              pendingTransactions > 0 ? `${pendingTransactions} Transaction(s)` : `Transactions`
+              pendingTransactions > 0 ? `${pendingTransactions} Pending` : `Transactions`
             }
             variant={pendingTransactions > 0 ? 'secondary' : 'default'}
             onClick={() => onPresentTransactionModal()}

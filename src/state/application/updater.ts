@@ -4,8 +4,6 @@ import { useWallet } from 'use-wallet';
 import useDebounce from '../../hooks/useDebounce';
 import useIsWindowVisible from '../../hooks/useIsWindowVisible';
 import { updateBlockNumber } from './actions';
-import { AppState } from '../index';
-import { shouldCheck } from '../transactions/updater';
 import { getDefaultProvider } from '../../utils/provider';
 
 export default function Updater(): null {
