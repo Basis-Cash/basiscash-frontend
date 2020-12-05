@@ -73,7 +73,7 @@ const Stake: React.FC = () => {
             <Label text="Basis Share Staked" />
           </StyledCardHeader>
           <StyledCardActions>
-            {approveStatus !== ApprovalState.APPROVED ? (
+            {!isOldBoardroomMember && approveStatus !== ApprovalState.APPROVED ? (
               <Button
                 disabled={approveStatus !== ApprovalState.NOT_APPROVED}
                 onClick={approve}
