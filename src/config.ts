@@ -9,7 +9,7 @@ const configurations: { [env: string]: Configuration } = {
     chainId: ChainId.ROPSTEN,
     etherscanUrl: 'https://ropsten.etherscan.io',
     defaultProvider: 'https://ropsten.infura.io/v3/e9783a0db20b4c85b1438019c6432dc3',
-    deployments: require('./basis-cash/deployments/deployments.ropsten.json'),
+    deployments: require('./basis-cash/deployments/deployments.local.json'),
     externalTokens: {
       DAI: ['0xd4A2e76D12f8AAb562f8072Ce029add7f25239d5', 18],
       yCRV: ['0xd4A2e76D12f8AAb562f8072Ce029add7f25239d5', 18],
