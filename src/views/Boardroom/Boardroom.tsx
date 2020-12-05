@@ -16,7 +16,7 @@ import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import Stat from './components/Stat';
 import ProgressCountdown from './components/ProgressCountdown';
-import useCashStatsFromTreasury from '../../hooks/token/useCashStatsFromTreasury';
+import useCashStatsFromTreasury from '../../hooks/useCashStatsFromTreasury';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import Humanize from 'humanize-plus';
 import { getBalance } from '../../utils/formatBalance';

@@ -8,13 +8,13 @@ import PageHeader from '../../components/PageHeader';
 import ExchangeCard from './components/ExchangeCard';
 import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
-import useBondStats from '../../hooks/token/useBondStats';
+import useBondStats from '../../hooks/useBondStats';
 import useBasisCash from '../../hooks/useBasisCash';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import ExchangeStat from './components/ExchangeStat';
-import useCashStatsFromTreasury from '../../hooks/token/useCashStatsFromTreasury';
+import useCashStatsFromTreasury from '../../hooks/useCashStatsFromTreasury';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
 
