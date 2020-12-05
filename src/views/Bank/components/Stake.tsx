@@ -42,7 +42,10 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
     <DepositModal
       max={tokenBalance}
       decimals={bank.depositToken.decimal}
-      onConfirm={(amount) => { onStake(amount); onDismissDeposit(); }}
+      onConfirm={(amount) => {
+        onStake(amount);
+        onDismissDeposit();
+      }}
       tokenName={bank.depositTokenName}
     />,
   );
@@ -51,7 +54,10 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
     <WithdrawModal
       max={stakedBalance}
       decimals={bank.depositToken.decimal}
-      onConfirm={(amount) => { onWithdraw(amount); onDismissWithdraw(); }}
+      onConfirm={(amount) => {
+        onWithdraw(amount);
+        onDismissWithdraw();
+      }}
       tokenName={bank.depositTokenName}
     />,
   );
@@ -84,7 +90,10 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
                 </IconButton>
                 <StyledActionSpacer />
                 {bank.depositTokenName !== 'YCRV_YAM_UNI_LP' && (
-                  <IconButton onClick={onPresentDeposit}>
+                  <IconButton
+                    disabled={bank.finished}
+                    onClick={() => (bank.finished ? onPresentDeposit() : null)}
+                  >
                     <AddIcon />
                   </IconButton>
                 )}

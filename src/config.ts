@@ -25,6 +25,7 @@ const configurations: { [env: string]: Configuration } = {
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
     treasuryAllocationDelayInSec: 86400,
+    // TODO: Subtract BAC supplies in the Treasury and Boardroom
     circSupply: '50001',
   },
   production: {
@@ -57,6 +58,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACDAIPool',
     depositTokenName: 'DAI',
     earnTokenName: 'BAC',
+    finished: true,
     sort: 1,
   },
   BACUSDCPool: {
@@ -64,6 +66,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACUSDCPool',
     depositTokenName: 'USDC',
     earnTokenName: 'BAC',
+    finished: true,
     sort: 2,
   },
   BACSUSDPool: {
@@ -71,6 +74,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACSUSDPool',
     depositTokenName: 'SUSD',
     earnTokenName: 'BAC',
+    finished: true,
     sort: 3,
   },
   BACUSDTPool: {
@@ -78,6 +82,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACUSDTPool',
     depositTokenName: 'USDT',
     earnTokenName: 'BAC',
+    finished: true,
     sort: 4,
   },
   BACyCRVPool: {
@@ -85,6 +90,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACyCRVPool',
     depositTokenName: 'yCRV',
     earnTokenName: 'BAC',
+    finished: true,
     sort: 5,
   },
   DAIBACLPTokenSharePool: {
@@ -92,6 +98,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'DAIBACLPTokenSharePool',
     depositTokenName: 'BAC_DAI-UNI-LPv2',
     earnTokenName: 'BAS',
+    finished: false,
     sort: 6,
   },
   DAIBASLPTokenSharePool: {
@@ -99,6 +106,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'DAIBASLPTokenSharePool',
     depositTokenName: 'BAS_DAI-UNI-LPv2',
     earnTokenName: 'BAS',
+    finished: false,
     sort: 7,
   },
 };
