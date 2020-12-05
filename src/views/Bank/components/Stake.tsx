@@ -89,14 +89,12 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
                   <RemoveIcon />
                 </IconButton>
                 <StyledActionSpacer />
-                {bank.depositTokenName !== 'YCRV_YAM_UNI_LP' && (
-                  <IconButton
-                    disabled={bank.finished}
-                    onClick={() => (bank.finished ? null : onPresentDeposit())}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                )}
+                <IconButton
+                  disabled={bank.finished}
+                  onClick={() => (bank.finished ? null : onPresentDeposit())}
+                >
+                  <AddIcon />
+                </IconButton>
               </>
             )}
           </StyledCardActions>
