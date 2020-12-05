@@ -21,7 +21,7 @@ const configurations: { [env: string]: Configuration } = {
     },
     baseLaunchDate: new Date('2020-11-26T00:00:00Z'),
     bondLaunchesAt: new Date('2020-12-03T15:00:00Z'),
-    boardroomLaunchesAt: new Date('2020-12-05T15:00:00Z'),
+    boardroomLaunchesAt: new Date('2020-12-03T15:00:00Z'),
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
     treasuryAllocationDelayInSec: 86400,

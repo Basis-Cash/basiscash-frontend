@@ -7,6 +7,7 @@ import HomeCard from './components/HomeCard';
 import { OverviewData } from './types';
 import useBasisCash from '../../hooks/useBasisCash';
 import config from '../../config';
+import Notice from '../../components/Notice';
 
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
@@ -42,7 +43,14 @@ const Home: React.FC = () => {
         subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
         title="Welcome to Basis Cash!"
       />
-      <Spacer />
+      <StyledNoticeContainer>
+        <Notice>
+          Boardroom Seigniorage starts at <b>Dec 09 (Wed) 12:00am UTC</b>.
+          For ones who have already deposit Basis Share into the Boardroom,&nbsp;
+         <b>we recommend you to withdraw basis shares and deposit into new boardroom contract</b>.
+        </Notice>
+      </StyledNoticeContainer>
+      <Spacer size="md" />
       <CardWrapper>
         <HomeCard
           title={'Basis Cash'}
@@ -93,6 +101,11 @@ const CardWrapper = styled.div`
     align-items: center;
   }
 `;
+
+const StyledNoticeContainer = styled.div`
+  width: 768px;
+`;
+
 const StyledSpacer = styled.div`
   height: ${props => props.theme.spacing[4]}px;
   width: ${props => props.theme.spacing[4]}px;

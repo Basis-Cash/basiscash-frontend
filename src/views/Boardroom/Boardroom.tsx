@@ -21,6 +21,7 @@ import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import Humanize from 'humanize-plus';
 import { getBalance } from '../../utils/formatBalance';
 import useLastTreasuryAllocationTime from '../../hooks/useLastTreasuryAllocationTime';
+import Notice from '../../components/Notice';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -69,6 +70,13 @@ const Boardroom: React.FC = () => {
               title="Join the Boardroom"
               subtitle="Deposit Basis Shares and earn inflationary rewards"
             />
+            <StyledNoticeWrapper>
+              <Notice color="yellow">
+                Boardroom Seigniorage starts at <b>Dec 09 (Wed) 12:00am UTC</b>.
+                For ones who have already deposit Basis Share into the Boardroom,&nbsp;
+                <b>we recommend you to withdraw basis shares and deposit into new boardroom contract</b>.
+              </Notice>
+            </StyledNoticeWrapper>
             <StyledHeader>
               <ProgressCountdown
                 base={lastAllocation}
@@ -159,6 +167,12 @@ const StyledHeader = styled.div`
     flex-direction: column;
     width: 100%;
   }
+`;
+
+const StyledNoticeWrapper = styled.div`
+  width: 960px;
+  margin-top: -20px;
+  margin-bottom: 40px;
 `;
 
 const StyledCardsWrapper = styled.div`
