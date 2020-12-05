@@ -223,9 +223,11 @@ export class BasisCash {
   }
 
   async isOldBoardroomMember(): Promise<boolean> {
-    const { Boardroom1 } = this.contracts;
-    const oldShares = await Boardroom1.getShareOf(this.myAccount);
-    return !!oldShares.gt(0);
+    // const { Boardroom1 } = this.contracts;
+    // const oldShares = await Boardroom1.getShareOf(this.myAccount);
+    // return !!oldShares.gt(0);
+    // TODO: uncomment after deploying Boardroom2
+    return true;
   }
 
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
