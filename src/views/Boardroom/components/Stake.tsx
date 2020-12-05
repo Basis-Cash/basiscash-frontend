@@ -23,22 +23,31 @@ import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardr
 import TokenSymbol from '../../../components/TokenSymbol';
 import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
 import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
+import useIsOldBoardroomMember from '../../../hooks/useIsOldBoardroomMember';
 
 const Stake: React.FC = () => {
-  const { BAS, contracts: { Boardroom } } = useBasisCash();
-  const [approveStatus, approve] = useApprove(BAS, Boardroom.address);
+  const {
+    BAS,
+    contracts: { Boardroom2 },
+  } = useBasisCash();
+  const [approveStatus, approve] = useApprove(BAS, Boardroom2.address);
 
   const tokenBalance = useTokenBalance(BAS);
   const stakedBalance = useStakedBalanceOnBoardroom();
+  const isOldBoardroomMember = useIsOldBoardroomMember();
 
   const { onStake } = useStakeToBoardroom();
   const { onWithdraw } = useWithdrawFromBoardroom();
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
-    <DepositModal max={tokenBalance} onConfirm={(value) => {
-      onStake(value);
-      onDismissDeposit();
-    }} tokenName={'Basis Share'} />,
+    <DepositModal
+      max={tokenBalance}
+      onConfirm={(value) => {
+        onStake(value);
+        onDismissDeposit();
+      }}
+      tokenName={'Basis Share'}
+    />,
   );
 
   const [onPresentWithdraw, onDismissWithdraw] = useModal(
@@ -76,7 +85,10 @@ const Stake: React.FC = () => {
                   <RemoveIcon />
                 </IconButton>
                 <StyledActionSpacer />
-                <IconButton onClick={onPresentDeposit}>
+                <IconButton
+                  disabled={isOldBoardroomMember}
+                  onClick={() => (!isOldBoardroomMember ? onPresentDeposit() : null)}
+                >
                   <AddIcon />
                 </IconButton>
               </>

@@ -222,33 +222,52 @@ export class BasisCash {
     return await pool.exit(this.gasOptions(gas));
   }
 
+  async isOldBoardroomMember(): Promise<boolean> {
+    const { Boardroom1 } = this.contracts;
+    const oldShares = await Boardroom1.getShareOf(this.myAccount);
+    return !!oldShares.gt(0);
+  }
+
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
-    const { Boardroom } = this.contracts;
+    if (await this.isOldBoardroomMember()) {
+      throw new Error("you're using old Boardroom. please withdraw and deposit the BAS again.")
+    }
+    const { Boardroom2: Boardroom } = this.contracts;
     return await Boardroom.stake(decimalToBalance(amount));
   }
 
   async getStakedSharesOnBoardroom(): Promise<BigNumber> {
-    const { Boardroom } = this.contracts;
+    const Boardroom = (await this.isOldBoardroomMember())
+      ? this.contracts.Boardroom1
+      : this.contracts.Boardroom2;
     return await Boardroom.getShareOf(this.myAccount);
   }
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
-    const { Boardroom } = this.contracts;
+    const Boardroom = (await this.isOldBoardroomMember())
+      ? this.contracts.Boardroom1
+      : this.contracts.Boardroom2;
     return await Boardroom.getCashEarningsOf(this.myAccount);
   }
 
   async withdrawShareFromBoardroom(amount: string): Promise<TransactionResponse> {
-    const { Boardroom } = this.contracts;
+    const Boardroom = (await this.isOldBoardroomMember())
+      ? this.contracts.Boardroom1
+      : this.contracts.Boardroom2;
     return await Boardroom.withdraw(decimalToBalance(amount));
   }
 
   async harvestCashFromBoardroom(): Promise<TransactionResponse> {
-    const { Boardroom } = this.contracts;
+    const Boardroom = (await this.isOldBoardroomMember())
+      ? this.contracts.Boardroom1
+      : this.contracts.Boardroom2;
     return await Boardroom.claimDividends();
   }
 
   async exitFromBoardroom(): Promise<TransactionResponse> {
-    const { Boardroom } = this.contracts;
+    const Boardroom = (await this.isOldBoardroomMember())
+      ? this.contracts.Boardroom1
+      : this.contracts.Boardroom2;
     return await Boardroom.exit();
   }
 }
