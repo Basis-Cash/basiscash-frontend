@@ -47,7 +47,7 @@ const configurations: { [env: string]: Configuration } = {
     boardroomLaunchesAt: new Date('2020-12-05T00:00:00Z'),
     refreshInterval: 30000,
     gasLimitMultiplier: 1.7,
-    treasuryAllocationDelayInSec: 4 * 86400,
+    treasuryAllocationDelayInSec: 7 * 86400,
     // TODO: it should be calculated by subtracting BAC supplies in the Treasury and Boardroom
     circSupply: '50001',
   },
