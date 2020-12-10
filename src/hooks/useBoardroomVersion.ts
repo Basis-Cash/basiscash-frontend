@@ -3,21 +3,22 @@ import { BigNumber } from 'ethers';
 import useBasisCash from './useBasisCash';
 import config from '../config';
 
-const useIsOldBoardroomMember = () => {
-  const [isOldBoardroomMember, setIsOldBoardroomMember] = useState(false);
+const useBoardroomVersion = () => {
+  const [boardroomVersion, setBoardroomVersion] = useState('latest');
   const basisCash = useBasisCash();
 
   const updateState = useCallback(async () => {
-    setIsOldBoardroomMember(await basisCash.isOldBoardroomMember());
+    setBoardroomVersion(await basisCash.fetchBoardroomVersionOfUser());
   }, [basisCash?.isUnlocked]);
 
+  // TODO: update state after withdrawing from old boardroom
   useEffect(() => {
     if (basisCash?.isUnlocked) {
       updateState().catch((err) => console.error(err.stack));
     }
-  }, [basisCash?.isUnlocked, setIsOldBoardroomMember]);
+  }, [basisCash?.isUnlocked, setBoardroomVersion]);
 
-  return isOldBoardroomMember;
+  return boardroomVersion;
 };
 
-export default useIsOldBoardroomMember;
+export default useBoardroomVersion;

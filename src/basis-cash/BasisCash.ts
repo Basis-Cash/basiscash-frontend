@@ -19,13 +19,14 @@ export class BasisCash {
   config: Configuration;
   contracts: { [name: string]: Contract };
   externalTokens: { [name: string]: ERC20 };
+  boardroomVersionOfUser?: string;
 
   BAC: ERC20;
   BAS: ERC20;
   BAB: ERC20;
 
   constructor(cfg: Configuration) {
-    const { defaultProvider, deployments, externalTokens, chainId } = cfg;
+    const { deployments, externalTokens } = cfg;
     const provider = getDefaultProvider();
 
     // loads contracts from deployments
@@ -62,6 +63,12 @@ export class BasisCash {
       token.connect(this.signer);
     }
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
+    this.fetchBoardroomVersionOfUser()
+      .then((version) => (this.boardroomVersionOfUser = version))
+      .catch((err) => {
+        console.error(`Failed to fetch boardroom version: ${err.stack}`);
+        this.boardroomVersionOfUser = 'latest';
+      });
   }
 
   get isUnlocked(): boolean {
@@ -222,54 +229,86 @@ export class BasisCash {
     return await pool.exit(this.gasOptions(gas));
   }
 
-  async isOldBoardroomMember(): Promise<boolean> {
-    // const { Boardroom1 } = this.contracts;
-    // const oldShares = await Boardroom1.getShareOf(this.myAccount);
-    // return !!oldShares.gt(0);
-    // TODO: uncomment after deploying Boardroom2
-    return true;
+  async fetchBoardroomVersionOfUser(): Promise<string> {
+    const { Boardroom1, Boardroom2 } = this.contracts;
+    const balance1 = await Boardroom1.getShareOf(this.myAccount);
+    if (balance1.gt(0)) {
+      console.log(
+        `👀 The user is using Boardroom v1. (Staked ${getDisplayBalance(balance1)} BAS)`,
+      );
+      return 'v1';
+    }
+    // TODO: uncomment after Boardroom3 update
+    // const balance2 = await Boardroom2.getShareOf(this.myAccount);
+    // if (balance2.gt(0)) {
+    //   console.log(`👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`);
+    //   return 'v2';
+    // }
+    return 'latest';
+  }
+
+  boardroomByVersion(version: string): Contract {
+    if (version === 'v1') {
+      return this.contracts.Boardroom1;
+    }
+    // TODO: uncomment after Boardroom3 update
+    // if (version === 'v2') {
+    //   return this.contracts.Boardroom2;
+    // }
+    // return this.contracts.Boardroom3;
+    return this.contracts.Boardroom2;
+  }
+
+  currentBoardroom(): Contract {
+    if (!this.boardroomVersionOfUser) {
+      throw new Error('you must unlock the wallet to continue.');
+    }
+    return this.boardroomByVersion(this.boardroomVersionOfUser);
+  }
+
+  isOldBoardroomMember(): boolean {
+    return this.boardroomVersionOfUser !== 'latest';
   }
 
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
-    if (await this.isOldBoardroomMember()) {
-      throw new Error("you're using old Boardroom. please withdraw and deposit the BAS again.")
+    if (this.isOldBoardroomMember()) {
+      throw new Error("you're using old Boardroom. please withdraw and deposit the BAS again.");
     }
-    const { Boardroom2: Boardroom } = this.contracts;
+    const Boardroom = this.currentBoardroom();
     return await Boardroom.stake(decimalToBalance(amount));
   }
 
   async getStakedSharesOnBoardroom(): Promise<BigNumber> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
-    return await Boardroom.getShareOf(this.myAccount);
+    const Boardroom = this.currentBoardroom();
+    if (this.boardroomVersionOfUser === 'v1') {
+      return await Boardroom.getShareOf(this.myAccount);
+    }
+    return await Boardroom.balanceOf(this.myAccount);
   }
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
-    return await Boardroom.getCashEarningsOf(this.myAccount);
+    const Boardroom = this.currentBoardroom();
+    if (this.boardroomVersionOfUser === 'v1') {
+      return await Boardroom.getCashEarningsOf(this.myAccount);
+    }
+    return await Boardroom.earned(this.myAccount);
   }
 
   async withdrawShareFromBoardroom(amount: string): Promise<TransactionResponse> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
+    const Boardroom = this.currentBoardroom();
     return await Boardroom.withdraw(decimalToBalance(amount));
   }
 
   async harvestCashFromBoardroom(): Promise<TransactionResponse> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
-    return await Boardroom.claimDividends();
+    const Boardroom = this.currentBoardroom();
+    if (this.boardroomVersionOfUser === 'v1') {
+      return await Boardroom.claimDividends();
+    }
+    return await Boardroom.claimReward();
   }
 
   async exitFromBoardroom(): Promise<TransactionResponse> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
+    const Boardroom = this.currentBoardroom();
     return await Boardroom.exit();
   }
 }

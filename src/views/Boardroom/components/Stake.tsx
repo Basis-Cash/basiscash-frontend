@@ -23,18 +23,20 @@ import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardr
 import TokenSymbol from '../../../components/TokenSymbol';
 import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
 import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
-import useIsOldBoardroomMember from '../../../hooks/useIsOldBoardroomMember';
+import useBoardroomVersion from '../../../hooks/useBoardroomVersion';
+import MigrationDisclaimerModal from '../../../components/MigrationDisclaimerModal';
 
 const Stake: React.FC = () => {
-  const {
-    BAS,
-    contracts: { Boardroom2 },
-  } = useBasisCash();
-  const [approveStatus, approve] = useApprove(BAS, Boardroom2.address);
+  const basisCash = useBasisCash();
+  const boardroomVersion = useBoardroomVersion();
+  const [approveStatus, approve] = useApprove(
+    basisCash.BAS,
+    basisCash.boardroomByVersion(boardroomVersion).address,
+  );
 
-  const tokenBalance = useTokenBalance(BAS);
+  const tokenBalance = useTokenBalance(basisCash.BAS);
   const stakedBalance = useStakedBalanceOnBoardroom();
-  const isOldBoardroomMember = useIsOldBoardroomMember();
+  const isOldBoardroomMember = boardroomVersion !== 'latest';
 
   const { onStake } = useStakeToBoardroom();
   const { onWithdraw } = useWithdrawFromBoardroom();
@@ -47,6 +49,13 @@ const Stake: React.FC = () => {
         onDismissDeposit();
       }}
       tokenName={'Basis Share'}
+    />,
+  );
+
+  const [showDisclaimerModal, dismissDisclaimerModal] = useModal(
+    <MigrationDisclaimerModal
+      onConfirm={() => onPresentDeposit()}
+      onDismiss={() => dismissDisclaimerModal()}
     />,
   );
 
@@ -87,7 +96,7 @@ const Stake: React.FC = () => {
                 <StyledActionSpacer />
                 <IconButton
                   disabled={isOldBoardroomMember}
-                  onClick={() => (!isOldBoardroomMember ? onPresentDeposit() : null)}
+                  onClick={() => (!isOldBoardroomMember ? showDisclaimerModal() : null)}
                 >
                   <AddIcon />
                 </IconButton>

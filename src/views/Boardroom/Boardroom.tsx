@@ -22,6 +22,7 @@ import Humanize from 'humanize-plus';
 import { getBalance } from '../../utils/formatBalance';
 import useLastTreasuryAllocationTime from '../../hooks/useLastTreasuryAllocationTime';
 import Notice from '../../components/Notice';
+import useBoardroomVersion from '../../hooks/useBoardroomVersion';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -39,6 +40,23 @@ const Boardroom: React.FC = () => {
   const nextAllocation = new Date(
     lastAllocation.getTime() + config.treasuryAllocationDelayInSec * 1000,
   );
+
+  const boardroomVersion = useBoardroomVersion();
+  const migrateNotice = useMemo(() => {
+    if (boardroomVersion === 'latest') {
+      return (
+        <StyledNoticeWrapper>
+          <Notice color="yellow">
+            <b>A new expansion of Boardroom will take place on Dec 12, 00:00 UTC.</b>
+            <br />
+            Once the upgrade is complete, you must ‘Settle and withdraw’ your stake <br />
+            and <b>stake again on the updated Boardroom</b> to keep earning seigniorage.
+          </Notice>
+        </StyledNoticeWrapper>
+      );
+    }
+    return <></>;
+  }, [boardroomVersion]);
 
   const isLaunched = Date.now() >= config.boardroomLaunchesAt.getTime();
   if (!isLaunched) {
@@ -70,13 +88,7 @@ const Boardroom: React.FC = () => {
               title="Join the Boardroom"
               subtitle="Deposit Basis Shares and earn inflationary rewards"
             />
-            <StyledNoticeWrapper>
-              <Notice color="yellow">
-                Boardroom Seigniorage starts at <b>Dec 11 (Fri) 12:00am UTC</b>.
-                For those who have already deposited Basis Shares into the Boardroom,&nbsp;
-                <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
-              </Notice>
-            </StyledNoticeWrapper>
+            {migrateNotice}
             <StyledHeader>
               <ProgressCountdown
                 base={lastAllocation}
@@ -170,7 +182,7 @@ const StyledHeader = styled.div`
 `;
 
 const StyledNoticeWrapper = styled.div`
-  width: 960px;
+  width: 640px;
   margin-top: -20px;
   margin-bottom: 40px;
 `;
