@@ -48,6 +48,8 @@ const Home: React.FC = () => {
           <b>Boardroom Expansion schedule</b><br />
           First Expansion: <b>December 11, 00:00 UTC</b><br />
           Second Expansion: <b>December 12, 00:00 UTC</b><br />
+          The Boardroom will be released in multiple phases. Once a new phase is active,
+          your stake will not earn seigniorage unless you must migrate to the latest phase.
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />
