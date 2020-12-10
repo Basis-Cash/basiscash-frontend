@@ -27,8 +27,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (basisCash) {
-      fetchStats()
-        .catch(err => console.error(err.stack));
+      fetchStats().catch((err) => console.error(err.stack));
     }
   }, [basisCash]);
 
@@ -45,11 +44,14 @@ const Home: React.FC = () => {
       />
       <StyledNoticeContainer>
         <Notice>
-          <b>Boardroom Expansion schedule</b><br />
-          First Expansion: <b>December 11, 00:00 UTC</b><br />
-          Second Expansion: <b>December 12, 00:00 UTC</b><br />
+          <b>Boardroom Expansion schedule</b>
+          <br />
+          First Expansion: <b>December 11, 00:00 UTC</b>
+          <br />
+          Second Expansion: <b>December 12, 00:00 UTC</b>
+          <br />
           The Boardroom will be released in multiple phases. Once a new phase is active,
-          your stake will not earn seigniorage unless you must migrate to the latest phase.
+          your stake will not seigniorage unless you migrate to the latest phase.
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />
@@ -109,14 +111,14 @@ const StyledNoticeContainer = styled.div`
 `;
 
 const StyledSpacer = styled.div`
-  height: ${props => props.theme.spacing[4]}px;
-  width: ${props => props.theme.spacing[4]}px;
+  height: ${(props) => props.theme.spacing[4]}px;
+  width: ${(props) => props.theme.spacing[4]}px;
 `;
 
 const StyledLink = styled.a`
   font-weight: 700;
   text-decoration: none;
-  color: ${props => props.theme.color.primary.main};
+  color: ${(props) => props.theme.color.primary.main};
 `;
 
 export default Home;
