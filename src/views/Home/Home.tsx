@@ -45,9 +45,9 @@ const Home: React.FC = () => {
       />
       <StyledNoticeContainer>
         <Notice>
-          Boardroom Seigniorage starts at <b>Dec 11 (Fri) 12:00am UTC</b>.
-          For those who have already deposited Basis Shares into the Boardroom,&nbsp;
-         <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
+          <b>Boardroom Expansion schedule</b><br />
+          First Expansion: <b>December 11, 00:00 UTC</b><br />
+          Second Expansion: <b>December 12, 00:00 UTC</b><br />
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />
