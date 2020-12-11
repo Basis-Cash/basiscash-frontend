@@ -47,11 +47,8 @@ const Home: React.FC = () => {
           <b>The boardroom upgrade was successful.</b>
           <br />
           Please settle and withdraw your stake from the legacy boardroom, then stake again on
-          the new boardroom contract to continue earning BAC seigniorage.
-          <br />
-          <br />
-          If you’ve never staked BAS in the Boardroom before, this does not affect your staking
-          process.
+          the new boardroom contract to continue earning BAC seigniorage. If you’ve never staked
+          BAS in the Boardroom before, this does not affect your staking process.
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />
