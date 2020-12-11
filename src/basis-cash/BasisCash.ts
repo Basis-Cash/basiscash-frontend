@@ -91,7 +91,7 @@ export class BasisCash {
     const supply = await this.BAC.displayedTotalSupply();
     return {
       priceInDAI: await this.getTokenPriceFromUniswap(this.BAC),
-      totalSupply: this.config.circSupply,
+      totalSupply: supply,
     };
   }
 
@@ -105,7 +105,7 @@ export class BasisCash {
     const cashPrice: BigNumber = await Treasury.getCashPrice();
     return {
       priceInDAI: getDisplayBalance(cashPrice),
-      totalSupply: this.config.circSupply,
+      totalSupply: supply,
     };
   }
 
