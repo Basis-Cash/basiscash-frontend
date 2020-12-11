@@ -51,8 +51,8 @@ const Boardroom: React.FC = () => {
             <b>Please Migrate into New Boardroom</b>
             <br />
             The boardroom upgrade was successful. Please settle and withdraw your stake from the
-            legacy boardroom, then stake your withdrawn BAS to the new boardroom to
-            <b> keep earning seigniorage.</b>
+            legacy boardroom, then stake again on the new boardroom contract{' '}
+            <b>to continue earning BAC seigniorage.</b>
           </Notice>
         </StyledNoticeWrapper>
       );

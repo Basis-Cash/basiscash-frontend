@@ -46,9 +46,9 @@ const Home: React.FC = () => {
         <Notice>
           <b>The boardroom upgrade was successful.</b>
           <br />
-          Please settle and withdraw your stake from the legacy boardroom, then stake your
-          withdrawn BAS to the new boardroom to keep earning seigniorage. Those who staked BAS
-          in the legacy boardroom will only have [Settle and withdraw] functionality enabled.
+          Please settle and withdraw your stake from the legacy boardroom, then stake again on
+          the new boardroom contract to continue earning BAC seigniorage.
+          <br />
           <br />
           If you’ve never staked BAS in the Boardroom before, this does not affect your staking
           process.
