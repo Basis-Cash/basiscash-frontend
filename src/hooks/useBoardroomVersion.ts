@@ -1,22 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BigNumber } from 'ethers';
 import useBasisCash from './useBasisCash';
-import config from '../config';
+import useStakedBalanceOnBoardroom from './useStakedBalanceOnBoardroom';
 
 const useBoardroomVersion = () => {
   const [boardroomVersion, setBoardroomVersion] = useState('latest');
   const basisCash = useBasisCash();
+  const stakedBalance = useStakedBalanceOnBoardroom();
 
   const updateState = useCallback(async () => {
     setBoardroomVersion(await basisCash.fetchBoardroomVersionOfUser());
-  }, [basisCash?.isUnlocked]);
+  }, [basisCash?.isUnlocked, stakedBalance]);
 
-  // TODO: update state after withdrawing from old boardroom
   useEffect(() => {
     if (basisCash?.isUnlocked) {
       updateState().catch((err) => console.error(err.stack));
     }
-  }, [basisCash?.isUnlocked, setBoardroomVersion]);
+  }, [basisCash?.isUnlocked, stakedBalance]);
 
   return boardroomVersion;
 };

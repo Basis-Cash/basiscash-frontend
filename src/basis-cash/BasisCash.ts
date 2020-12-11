@@ -238,12 +238,11 @@ export class BasisCash {
       );
       return 'v1';
     }
-    // TODO: uncomment after Boardroom3 update
-    // const balance2 = await Boardroom2.getShareOf(this.myAccount);
-    // if (balance2.gt(0)) {
-    //   console.log(`👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`);
-    //   return 'v2';
-    // }
+    const balance2 = await Boardroom2.balanceOf(this.myAccount);
+    if (balance2.gt(0)) {
+      console.log(`👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`);
+      return 'v2';
+    }
     return 'latest';
   }
 
@@ -251,12 +250,10 @@ export class BasisCash {
     if (version === 'v1') {
       return this.contracts.Boardroom1;
     }
-    // TODO: uncomment after Boardroom3 update
-    // if (version === 'v2') {
-    //   return this.contracts.Boardroom2;
-    // }
-    // return this.contracts.Boardroom3;
-    return this.contracts.Boardroom2;
+    if (version === 'v2') {
+      return this.contracts.Boardroom2;
+    }
+    return this.contracts.Boardroom3;
   }
 
   currentBoardroom(): Contract {
