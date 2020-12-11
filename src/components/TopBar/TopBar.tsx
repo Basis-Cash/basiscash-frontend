@@ -40,6 +40,7 @@ const StyledTopBarInner = styled.div`
   justify-content: space-between;
   max-width: ${props => props.theme.siteWidth}px;
   width: 100%;
+  flex-wrap: wrap;
 `
 
 export default TopBar
