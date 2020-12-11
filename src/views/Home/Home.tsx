@@ -50,22 +50,23 @@ const Home: React.FC = () => {
           withdrawn BAS to the new boardroom to keep earning seigniorage. Those who staked BAS
           in the legacy boardroom will only have [Settle and withdraw] functionality enabled.
           <br />
-          If you’ve never staked BAS in the Boardroom before, this does not affect your
-          staking process.
+          If you’ve never staked BAS in the Boardroom before, this does not affect your staking
+          process.
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />
       <CardWrapper>
         <HomeCard
-          title={'Basis Cash'}
+          title="Basis Cash"
           symbol="BAC"
           color="#EEA7ED"
+          supplyLabel="Circulating Supply"
           address={cashAddr}
           stat={cash}
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'Basis Share'}
+          title="Basis Share"
           symbol="BAS"
           color="#E83725"
           address={shareAddr}
@@ -73,7 +74,7 @@ const Home: React.FC = () => {
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'Basis Bond'}
+          title="Basis Bond"
           symbol="BAB"
           color="#ECF25C"
           address={bondAddr}
