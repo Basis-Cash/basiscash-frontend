@@ -189,7 +189,7 @@ const StyledHeader = styled.div`
 `;
 
 const StyledNoticeWrapper = styled.div`
-  width: 640px;
+  width: 768px;
   margin-top: -20px;
   margin-bottom: 40px;
 `;
