@@ -105,7 +105,8 @@ const CardWrapper = styled.div`
 `;
 
 const StyledNoticeContainer = styled.div`
-  width: 768px;
+  max-width: 768px;
+  width: 90vw;
 `;
 
 const StyledSpacer = styled.div`
