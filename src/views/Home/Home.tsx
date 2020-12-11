@@ -44,14 +44,14 @@ const Home: React.FC = () => {
       />
       <StyledNoticeContainer>
         <Notice>
-          <b>Boardroom Expansion schedule</b>
+          <b>The boardroom upgrade was successful.</b>
           <br />
-          First Expansion: <b>December 11, 00:00 UTC</b>
+          Please settle and withdraw your stake from the legacy boardroom, then stake your
+          withdrawn BAS to the new boardroom to keep earning seigniorage. Those who staked BAS
+          in the legacy boardroom will only have [Settle and withdraw] functionality enabled.
           <br />
-          Second Expansion: <b>December 12, 00:00 UTC</b>
-          <br />
-          The Boardroom will be released in multiple phases. Once a new phase is active,
-          your stake will not seigniorage unless you migrate to the latest phase.
+          If you’ve never staked BAS in the Boardroom before, this does not affect your
+          staking process.
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />

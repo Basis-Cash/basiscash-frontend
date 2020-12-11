@@ -42,15 +42,17 @@ const Boardroom: React.FC = () => {
   );
 
   const boardroomVersion = useBoardroomVersion();
+  const usingOldBoardroom = boardroomVersion !== 'latest';
   const migrateNotice = useMemo(() => {
-    if (boardroomVersion === 'latest') {
+    if (boardroomVersion === 'v2') {
       return (
         <StyledNoticeWrapper>
-          <Notice color="yellow">
-            <b>A new expansion of Boardroom will take place on Dec 12, 00:00 UTC.</b>
+          <Notice color="green">
+            <b>Please Migrate into New Boardroom</b>
             <br />
-            Once the upgrade is complete, you must ‘Settle and withdraw’ your stake <br />
-            and <b>stake again on the updated Boardroom</b> to keep earning seigniorage.
+            The boardroom upgrade was successful. Please settle and withdraw your stake from the
+            legacy boardroom, then stake your withdrawn BAS to the new boardroom to
+            <b> keep earning seigniorage.</b>
           </Notice>
         </StyledNoticeWrapper>
       );
@@ -126,14 +128,19 @@ const Boardroom: React.FC = () => {
                 </StyledCardWrapper>
               </StyledCardsWrapper>
               <Spacer size="lg" />
-              <div>
-                <Button
-                  disabled={stakedBalance.eq(0)}
-                  onClick={onRedeem}
-                  text="Settle & Withdraw"
-                />
-              </div>
-              <Spacer size="lg" />
+              {!usingOldBoardroom && (
+                // for old boardroom users, the button is displayed in Stake component
+                <>
+                  <div>
+                    <Button
+                      disabled={stakedBalance.eq(0)}
+                      onClick={onRedeem}
+                      text="Settle & Withdraw"
+                    />
+                  </div>
+                  <Spacer size="lg" />
+                </>
+              )}
             </StyledBoardroom>
           </>
         ) : (

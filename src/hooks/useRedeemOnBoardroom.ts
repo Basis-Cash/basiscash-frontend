@@ -2,12 +2,13 @@ import { useCallback } from 'react';
 import useBasisCash from './useBasisCash';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
-const useRedeemOnBoardroom = () => {
+const useRedeemOnBoardroom = (description?: string) => {
   const basisCash = useBasisCash();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleRedeem = useCallback(() => {
-    handleTransactionReceipt(basisCash.exitFromBoardroom(), 'Redeem BAS from Boardroom');
+    const alertDesc = description || 'Redeem BAS from Boardroom';
+    handleTransactionReceipt(basisCash.exitFromBoardroom(), alertDesc);
   }, [basisCash]);
   return { onRedeem: handleRedeem };
 };

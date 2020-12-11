@@ -24,7 +24,7 @@ import TokenSymbol from '../../../components/TokenSymbol';
 import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
 import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
 import useBoardroomVersion from '../../../hooks/useBoardroomVersion';
-import MigrationDisclaimerModal from '../../../components/MigrationDisclaimerModal';
+import useRedeemOnBoardroom from '../../../hooks/useRedeemOnBoardroom';
 
 const Stake: React.FC = () => {
   const basisCash = useBasisCash();
@@ -40,6 +40,7 @@ const Stake: React.FC = () => {
 
   const { onStake } = useStakeToBoardroom();
   const { onWithdraw } = useWithdrawFromBoardroom();
+  const { onRedeem } = useRedeemOnBoardroom('Redeem BAS for Boardroom Migration');
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -49,13 +50,6 @@ const Stake: React.FC = () => {
         onDismissDeposit();
       }}
       tokenName={'Basis Share'}
-    />,
-  );
-
-  const [showDisclaimerModal, dismissDisclaimerModal] = useModal(
-    <MigrationDisclaimerModal
-      onConfirm={() => onPresentDeposit()}
-      onDismiss={() => dismissDisclaimerModal()}
     />,
   );
 
@@ -88,16 +82,21 @@ const Stake: React.FC = () => {
                 onClick={approve}
                 text="Approve Basis Share"
               />
+            ) : isOldBoardroomMember ? (
+              <>
+                <Button
+                  onClick={onRedeem}
+                  variant="secondary"
+                  text="Settle & Withdraw"
+                />
+              </>
             ) : (
               <>
                 <IconButton onClick={onPresentWithdraw}>
                   <RemoveIcon />
                 </IconButton>
                 <StyledActionSpacer />
-                <IconButton
-                  disabled={isOldBoardroomMember}
-                  onClick={() => (!isOldBoardroomMember ? showDisclaimerModal() : null)}
-                >
+                <IconButton onClick={onPresentDeposit}>
                   <AddIcon />
                 </IconButton>
               </>
