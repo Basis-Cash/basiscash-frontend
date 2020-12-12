@@ -21,3 +21,8 @@ export type TokenStat = {
   priceInDAI: string;
   totalSupply: string;
 };
+
+export type TreasuryAllocationTime = {
+  prevAllocation: Date;
+  nextAllocation: Date;
+}

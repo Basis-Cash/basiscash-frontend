@@ -24,9 +24,6 @@ const configurations: { [env: string]: Configuration } = {
     boardroomLaunchesAt: new Date('2020-12-11T00:00:00Z'),
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
-    treasuryAllocationDelayInSec: 86400,
-    // TODO: it should be calculated by subtracting BAC supplies in the Treasury and Boardroom
-    circSupply: '50001',
   },
   production: {
     chainId: ChainId.MAINNET,
@@ -47,9 +44,6 @@ const configurations: { [env: string]: Configuration } = {
     boardroomLaunchesAt: new Date('2020-12-11T00:00:00Z'),
     refreshInterval: 30000,
     gasLimitMultiplier: 1.7,
-    treasuryAllocationDelayInSec: 86400,
-    // TODO: it should be calculated by subtracting BAC supplies in the Treasury and Boardroom
-    circSupply: '50001',
   },
 };
 

@@ -20,7 +20,7 @@ import useCashStatsFromTreasury from '../../hooks/useCashStatsFromTreasury';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import Humanize from 'humanize-plus';
 import { getBalance } from '../../utils/formatBalance';
-import useLastTreasuryAllocationTime from '../../hooks/useLastTreasuryAllocationTime';
+import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import Notice from '../../components/Notice';
 import useBoardroomVersion from '../../hooks/useBoardroomVersion';
 
@@ -36,10 +36,7 @@ const Boardroom: React.FC = () => {
     () => (cashStat ? Number(cashStat.priceInDAI).toFixed(2) : null),
     [cashStat],
   );
-  const lastAllocation = useLastTreasuryAllocationTime();
-  const nextAllocation = new Date(
-    lastAllocation.getTime() + config.treasuryAllocationDelayInSec * 1000,
-  );
+  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
 
   const boardroomVersion = useBoardroomVersion();
   const usingOldBoardroom = boardroomVersion !== 'latest';
@@ -93,7 +90,7 @@ const Boardroom: React.FC = () => {
             {migrateNotice}
             <StyledHeader>
               <ProgressCountdown
-                base={lastAllocation}
+                base={prevAllocation}
                 deadline={nextAllocation}
                 description="Next Seigniorage"
               />

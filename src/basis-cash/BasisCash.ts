@@ -1,6 +1,6 @@
 import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Configuration } from './config';
-import { ContractName, TokenStat } from './types';
+import { ContractName, TokenStat, TreasuryAllocationTime } from './types';
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -240,7 +240,9 @@ export class BasisCash {
     }
     const balance2 = await Boardroom2.balanceOf(this.myAccount);
     if (balance2.gt(0)) {
-      console.log(`👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`);
+      console.log(
+        `👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`,
+      );
       return 'v2';
     }
     return 'latest';
@@ -307,5 +309,15 @@ export class BasisCash {
   async exitFromBoardroom(): Promise<TransactionResponse> {
     const Boardroom = this.currentBoardroom();
     return await Boardroom.exit();
+  }
+
+  async getTreasuryNextAllocationTime(): Promise<TreasuryAllocationTime> {
+    const { Treasury } = this.contracts;
+    const nextEpochTimestamp: BigNumber = await Treasury.nextEpochPoint();
+    const period: BigNumber = await Treasury.PERIOD();
+
+    const nextAllocation = new Date(nextEpochTimestamp.mul(1000).toNumber());
+    const prevAllocation = new Date(nextAllocation.getTime() - period.toNumber() * 1000);
+    return { prevAllocation, nextAllocation };
   }
 }

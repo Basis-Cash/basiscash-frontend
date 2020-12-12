@@ -15,8 +15,6 @@ export type Configuration = {
 
   refreshInterval: number;
   gasLimitMultiplier: number;
-  treasuryAllocationDelayInSec: number;
-  circSupply: string;
 };
 
 export type EthereumConfig = {
