@@ -8,7 +8,7 @@ const useCashStatsFromTreasury = () => {
   const basisCash = useBasisCash();
 
   const fetchCashPrice = useCallback(async () => {
-    setStat(await basisCash.getCashStatFromTreasury());
+    setStat(await basisCash.getCashStatInTWAP());
   }, [basisCash]);
 
   useEffect(() => {

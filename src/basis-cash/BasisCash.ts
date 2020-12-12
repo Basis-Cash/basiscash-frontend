@@ -7,6 +7,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
+import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
 
 /**
  * An API module of Basis Cash contracts.
@@ -21,6 +22,7 @@ export class BasisCash {
   externalTokens: { [name: string]: ERC20 };
   boardroomVersionOfUser?: string;
 
+  bacDai: Contract;
   BAC: ERC20;
   BAS: ERC20;
   BAB: ERC20;
@@ -42,6 +44,13 @@ export class BasisCash {
     this.BAS = new ERC20(deployments.Share.address, provider, 'BAS');
     this.BAB = new ERC20(deployments.Bond.address, provider, 'BAB');
 
+    // Uniswap V2 Pair
+    this.bacDai = new Contract(
+      externalTokens['BAC_DAI-UNI-LPv2'][0],
+      IUniswapV2PairABI,
+      provider,
+    );
+
     this.config = cfg;
     this.provider = provider;
   }
@@ -62,6 +71,7 @@ export class BasisCash {
     for (const token of tokens) {
       token.connect(this.signer);
     }
+    this.bacDai = this.bacDai.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
       .then((version) => (this.boardroomVersionOfUser = version))
@@ -96,16 +106,29 @@ export class BasisCash {
   }
 
   /**
-   * @returns Basis Cash (BAC) stats from Treasury,
-   * calculated by Time-Weight Averaged Price (TWAP).
+   * @returns Estimated Basis Cash (BAC) price data,
+   * calculated by 1-day Time-Weight Averaged Price (TWAP).
    */
-  async getCashStatFromTreasury(): Promise<TokenStat> {
-    const supply = await this.BAC.displayedTotalSupply();
-    const { Treasury } = this.contracts;
-    const cashPrice: BigNumber = await Treasury.getCashPrice();
+  async getCashStatInTWAP(): Promise<TokenStat> {
+    const { Oracle } = this.contracts;
+
+    // estimate current TWAP price
+    const cumulativePrice: BigNumber = await this.bacDai.price0CumulativeLast();
+    const cumulativePriceLast = await Oracle.price0CumulativeLast();
+    const elapsedSec = Math.floor(Date.now() / 1000 - (await Oracle.blockTimestampLast()));
+
+    const denominator112 = BigNumber.from(2).pow(112);
+    const denominator1e18 = BigNumber.from(10).pow(18);
+    const cashPriceTWAP = cumulativePrice
+      .sub(cumulativePriceLast)
+      .mul(denominator1e18)
+      .div(elapsedSec)
+      .div(denominator112);
+
+    const totalSupply = await this.BAC.displayedTotalSupply();
     return {
-      priceInDAI: getDisplayBalance(cashPrice),
-      totalSupply: supply,
+      priceInDAI: getDisplayBalance(cashPriceTWAP),
+      totalSupply,
     };
   }
 
