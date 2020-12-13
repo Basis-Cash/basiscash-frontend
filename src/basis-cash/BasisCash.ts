@@ -121,7 +121,7 @@ export class BasisCash {
     const denominator112 = BigNumber.from(2).pow(112);
     const denominator1e18 = BigNumber.from(10).pow(18);
 
-    if (cumulativePrice.toString() == cumulativePriceLast.toString()) {
+    if (cumulativePrice.toString() === cumulativePriceLast.toString()) {
       const oldTWAPOracle = await Oracle.price0Average();
       const cashPriceTWAPOld = oldTWAPOracle.mul(denominator1e18).div(denominator112);
       return {
