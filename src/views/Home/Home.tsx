@@ -42,15 +42,6 @@ const Home: React.FC = () => {
         subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
         title="Welcome to Basis Cash!"
       />
-      <StyledNoticeContainer>
-        <Notice>
-          <b>The boardroom upgrade was successful.</b>
-          <br />
-          Please settle and withdraw your stake from the legacy boardroom, then stake again on
-          the new boardroom contract to continue earning BAC seigniorage. If you’ve never staked
-          BAS in the Boardroom before, this does not affect your staking process.
-        </Notice>
-      </StyledNoticeContainer>
       <Spacer size="md" />
       <CardWrapper>
         <HomeCard
