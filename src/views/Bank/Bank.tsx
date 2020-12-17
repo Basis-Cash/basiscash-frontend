@@ -9,8 +9,6 @@ import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
 import Harvest from './components/Harvest';
 import Stake from './components/Stake';
-
-import config from '../../config';
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
 import { Bank as BankEntity } from '../../basis-cash';

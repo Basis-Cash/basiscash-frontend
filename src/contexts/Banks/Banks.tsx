@@ -12,6 +12,15 @@ const Banks: React.FC = ({ children }) => {
     const banks: Bank[] = [];
 
     for (const bankInfo of Object.values(bankDefinitions)) {
+      if (bankInfo.finished) {
+        if (!basisCash.isUnlocked) continue;
+
+        // only show pools staked by user
+        const balance = await basisCash.stakedBalanceOnBank(bankInfo.contract, basisCash.myAccount);
+        if (balance.lte(0)) {
+          continue;
+        }
+      }
       banks.push({
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,
