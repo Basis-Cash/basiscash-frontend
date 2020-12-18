@@ -47,7 +47,7 @@ const Bond: React.FC = () => {
     [basisCash, addTransaction],
   );
   const cashIsOverpriced = useMemo(() => Number(cashStat?.priceInDAI) > 1.0, [cashStat]);
-  const cashIsUnderPriced = useMemo(() => Number(cashStat?.priceInDAI) < 1.0, [cashStat]);
+  const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
 
   const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
   if (!isLaunched) {
@@ -91,8 +91,10 @@ const Bond: React.FC = () => {
                   priceDesc={
                     cashIsOverpriced
                       ? 'BAC is over $1'
-                      : bondStat
-                      ? `${Math.floor((100 / Number(bondStat.priceInDAI)) - 100)}% return when BAC > $1`
+                      : cashIsUnderPriced
+                      ? `${Math.floor(
+                          100 / Number(bondStat.priceInDAI) - 100,
+                        )}% return when BAC > $1`
                       : '-'
                   }
                   onExchange={handleBuyBonds}
@@ -172,7 +174,6 @@ const StyledStatsWrapper = styled.div`
     width: 80%;
     margin: 16px 0;
   }
-
 `;
 
 export default Bond;
