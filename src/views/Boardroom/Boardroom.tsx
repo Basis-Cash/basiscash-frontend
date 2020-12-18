@@ -16,7 +16,7 @@ import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import Stat from './components/Stat';
 import ProgressCountdown from './components/ProgressCountdown';
-import useCashStatsFromTreasury from '../../hooks/useCashStatsFromTreasury';
+import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import Humanize from 'humanize-plus';
 import { getBalance } from '../../utils/formatBalance';
@@ -30,7 +30,7 @@ const Boardroom: React.FC = () => {
   const { onRedeem } = useRedeemOnBoardroom();
   const stakedBalance = useStakedBalanceOnBoardroom();
 
-  const cashStat = useCashStatsFromTreasury();
+  const cashStat = useCashPriceInEstimatedTWAP();
   const treasuryAmount = useTreasuryAmount();
   const scalingFactor = useMemo(
     () => (cashStat ? Number(cashStat.priceInDAI).toFixed(2) : null),

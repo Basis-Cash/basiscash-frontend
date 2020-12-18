@@ -110,7 +110,7 @@ export class BasisCash {
    * @returns Estimated Basis Cash (BAC) price data,
    * calculated by 1-day Time-Weight Averaged Price (TWAP).
    */
-  async getCashStatInTWAP(): Promise<TokenStat> {
+  async getCashStatInEstimatedTWAP(): Promise<TokenStat> {
     const { Oracle } = this.contracts;
 
     // estimate current TWAP price
@@ -133,11 +133,15 @@ export class BasisCash {
     };
   }
 
+  async getCashPriceInLastTWAP(): Promise<BigNumber> {
+    const { Treasury } = this.contracts;
+    return Treasury.getCashPrice();
+  }
+
   async getBondStat(): Promise<TokenStat> {
     const decimals = BigNumber.from(10).pow(18);
 
-    const { Treasury } = this.contracts;
-    const cashPrice: BigNumber = await Treasury.getCashPrice();
+    const cashPrice: BigNumber = await this.getCashPriceInLastTWAP();
     const bondPrice = cashPrice.pow(2).div(decimals);
 
     return {

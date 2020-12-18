@@ -14,9 +14,9 @@ import { useTransactionAdder } from '../../state/transactions/hooks';
 import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import ExchangeStat from './components/ExchangeStat';
-import useCashStatsFromTreasury from '../../hooks/useCashStatsFromTreasury';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
+import useCashPriceInLastTWAP from '../../hooks/useCashPriceInLastTWAP';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -24,19 +24,19 @@ const Bond: React.FC = () => {
   const basisCash = useBasisCash();
   const addTransaction = useTransactionAdder();
   const bondStat = useBondStats();
-  const cashStat = useCashStatsFromTreasury();
+  const cashPrice = useCashPriceInLastTWAP();
 
   const bondBalance = useTokenBalance(basisCash?.BAB);
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
       const tx = await basisCash.buyBonds(amount);
-      const bondAmount = Number(amount) / Number(cashStat.priceInDAI);
+      const bondAmount = Number(amount) / Number(getDisplayBalance(cashPrice));
       addTransaction(tx, {
         summary: `Buy ${bondAmount.toFixed(2)} BAB with ${amount} BAC`,
       });
     },
-    [basisCash, addTransaction, cashStat],
+    [basisCash, addTransaction, cashPrice],
   );
 
   const handleRedeemBonds = useCallback(
@@ -46,7 +46,7 @@ const Bond: React.FC = () => {
     },
     [basisCash, addTransaction],
   );
-  const cashIsOverpriced = useMemo(() => Number(cashStat?.priceInDAI) > 1.0, [cashStat]);
+  const cashIsOverpriced = useMemo(() => cashPrice.gt(1.0), [cashPrice]);
   const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
 
   const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
@@ -104,13 +104,13 @@ const Bond: React.FC = () => {
               <StyledStatsWrapper>
                 <ExchangeStat
                   tokenName="BAC"
-                  description="Current Price (TWAP)"
-                  price={cashStat?.priceInDAI || '-'}
+                  description="Base Price (Last-Day TWAP)"
+                  price={getDisplayBalance(cashPrice, 18, 2)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
                   tokenName="BAB"
-                  description="Current Price (BAC)^2"
+                  description="Current Price: (BAC)^2"
                   price={bondStat?.priceInDAI || '-'}
                 />
               </StyledStatsWrapper>
