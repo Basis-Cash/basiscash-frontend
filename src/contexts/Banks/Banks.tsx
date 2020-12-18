@@ -30,14 +30,14 @@ const Banks: React.FC = ({ children }) => {
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));
     setBanks(banks);
-  }, [basisCash, setBanks]);
+  }, [basisCash, basisCash?.isUnlocked, setBanks]);
 
   useEffect(() => {
     if (basisCash) {
       fetchPools()
         .catch(err => console.error(`Failed to fetch pools: ${err.stack}`));
     }
-  }, [basisCash, fetchPools]);
+  }, [basisCash, basisCash?.isUnlocked, fetchPools]);
 
   return <Context.Provider value={{ banks }}>{children}</Context.Provider>;
 };

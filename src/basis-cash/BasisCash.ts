@@ -8,6 +8,7 @@ import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
+import { parseUnits } from 'ethers/lib/utils';
 
 /**
  * An API module of Basis Cash contracts.
@@ -133,10 +134,10 @@ export class BasisCash {
   }
 
   async getBondStat(): Promise<TokenStat> {
-    const { Treasury } = this.contracts;
     const decimals = BigNumber.from(10).pow(18);
 
-    const cashPrice: BigNumber = await Treasury.getCashPrice();
+    const { priceInDAI } = await this.getCashStatInTWAP();
+    const cashPrice = parseUnits(priceInDAI, 18);
     const bondPrice = cashPrice.pow(2).div(decimals);
     return {
       priceInDAI: getDisplayBalance(bondPrice),
