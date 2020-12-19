@@ -23,6 +23,7 @@ import { getBalance } from '../../utils/formatBalance';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import Notice from '../../components/Notice';
 import useBoardroomVersion from '../../hooks/useBoardroomVersion';
+import moment from 'moment';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -37,6 +38,15 @@ const Boardroom: React.FC = () => {
     [cashStat],
   );
   const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
+
+  const prevEpoch = useMemo(
+    () =>
+      nextAllocation.getTime() <= Date.now()
+        ? moment().utc().startOf('day').toDate()
+        : prevAllocation,
+    [prevAllocation, nextAllocation],
+  );
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(1, 'days').toDate(), [prevEpoch]);
 
   const boardroomVersion = useBoardroomVersion();
   const usingOldBoardroom = boardroomVersion !== 'latest';
@@ -90,9 +100,9 @@ const Boardroom: React.FC = () => {
             {migrateNotice}
             <StyledHeader>
               <ProgressCountdown
-                base={prevAllocation}
-                deadline={nextAllocation}
-                description="Next Seigniorage"
+                base={prevEpoch}
+                deadline={nextEpoch}
+                description="Next Epoch"
               />
               <Stat
                 icon="💵"
