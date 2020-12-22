@@ -135,13 +135,18 @@ export class BasisCash {
 
   async getCashPriceInLastTWAP(): Promise<BigNumber> {
     const { Treasury } = this.contracts;
-    return Treasury.getCashPrice();
+    return Treasury.getSeigniorageOraclePrice();
+  }
+
+  async getBondOraclePriceInLastTWAP(): Promise<BigNumber> {
+    const { Treasury } = this.contracts;
+    return Treasury.getBondOraclePrice();
   }
 
   async getBondStat(): Promise<TokenStat> {
     const decimals = BigNumber.from(10).pow(18);
 
-    const cashPrice: BigNumber = await this.getCashPriceInLastTWAP();
+    const cashPrice: BigNumber = await this.getBondOraclePriceInLastTWAP();
     const bondPrice = cashPrice.pow(2).div(decimals);
 
     return {
@@ -343,7 +348,7 @@ export class BasisCash {
   async getTreasuryNextAllocationTime(): Promise<TreasuryAllocationTime> {
     const { Treasury } = this.contracts;
     const nextEpochTimestamp: BigNumber = await Treasury.nextEpochPoint();
-    const period: BigNumber = await Treasury.PERIOD();
+    const period: BigNumber = await Treasury.getPeriod();
 
     const nextAllocation = new Date(nextEpochTimestamp.mul(1000).toNumber());
     const prevAllocation = new Date(nextAllocation.getTime() - period.toNumber() * 1000);
