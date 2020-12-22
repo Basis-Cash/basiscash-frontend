@@ -10,13 +10,13 @@ import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
 import useBondStats from '../../hooks/useBondStats';
 import useBasisCash from '../../hooks/useBasisCash';
+import useBondOraclePriceInLastTWAP from '../../hooks/useBondOraclePriceInLastTWAP';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
-import useCashPriceInLastTWAP from '../../hooks/useCashPriceInLastTWAP';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -24,7 +24,7 @@ const Bond: React.FC = () => {
   const basisCash = useBasisCash();
   const addTransaction = useTransactionAdder();
   const bondStat = useBondStats();
-  const cashPrice = useCashPriceInLastTWAP();
+  const cashPrice = useBondOraclePriceInLastTWAP();
 
   const bondBalance = useTokenBalance(basisCash?.BAB);
 
