@@ -36,15 +36,15 @@ const LaunchCountdown: React.FC<LaunchCountdownProps> = ({
     <StyledCard>
       <Dial value={percentage}>
         <StyledCountdownWrapper>
-          <StyledCountdownTitle>Starting In...</StyledCountdownTitle>
+          <StyledCountdownTitle>Staking opens In...</StyledCountdownTitle>
           <Countdown date={deadline} renderer={countdownRenderer} />
         </StyledCountdownWrapper>
       </Dial>
-      <StyledDescriptionButton>
-        <StyledExternalLink href={descriptionLink} target="_blank">
-          {description}
-        </StyledExternalLink>
-      </StyledDescriptionButton>
+      {/*<StyledDescriptionButton>*/}
+      {/*  <StyledExternalLink href={descriptionLink} target="_blank">*/}
+      {/*    {description}*/}
+      {/*  </StyledExternalLink>*/}
+      {/*</StyledDescriptionButton>*/}
     </StyledCard>
   );
 };

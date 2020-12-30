@@ -11,6 +11,7 @@ import ModalsProvider from './contexts/Modals';
 import Banks from './views/Banks';
 import Home from './views/Home';
 import Bond from './views/Bond';
+import Info from './views/Info';
 
 import store from './state';
 import theme from './theme';
@@ -35,6 +36,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/boardroom">
             <Boardroom />
+          </Route>
+          <Route path="/info">
+            <Info />
           </Route>
         </Switch>
       </Router>

@@ -11,18 +11,32 @@ export interface BankInfo {
   finished: boolean;
 }
 
-export interface Bank extends  BankInfo {
+export interface Bank extends BankInfo {
   address: string;
   depositToken: ERC20;
   earnToken: ERC20;
 }
 
 export type TokenStat = {
-  priceInDAI: string;
+  priceInUSDT: string;
   totalSupply: string;
 };
 
 export type TreasuryAllocationTime = {
   prevAllocation: Date;
   nextAllocation: Date;
+}
+
+export type SushiSwapPoolMISRemain = {
+  USDTMICStakePoolRemain: string;
+  USDTMISStakePoolRemain: string;
+}
+
+export type ShareMetric = {
+  USDTMICStakePoolRemain: string;
+  USDTMISStakePoolRemain: string;
+  circulatingSupply: string;
+  boardroomBalance: string;
+  USDTMISPoolBalance: string;
+  unstakedBalance: string;
 }

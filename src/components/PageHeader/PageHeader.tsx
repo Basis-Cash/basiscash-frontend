@@ -1,31 +1,45 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import handUp from '../../assets/img/hand-up.svg'
+import handDown from '../../assets/img/hand-down.svg'
+
 interface PageHeaderProps {
-  icon: React.ReactNode,
   subtitle?: string,
   title?: string,
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ icon, subtitle, title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ subtitle, title }) => {
   return (
     <StyledPageHeader>
-      <StyledIcon>{icon}</StyledIcon>
-      <StyledTitle>{title}</StyledTitle>
-      <StyledSubtitle>{subtitle}</StyledSubtitle>
+      <StyledMagicHand src={handDown}/>
+      <StyledPageTitle>
+        <StyledTitle>{title}</StyledTitle>
+        <StyledSubtitle>{subtitle}</StyledSubtitle>
+      </StyledPageTitle>
+      <StyledMagicHand src={handUp}/>
     </StyledPageHeader>
   )
 }
 
 const StyledPageHeader = styled.div`
+  display: flex;
+`
+
+const StyledMagicHand = styled.img`
+  padding-left: ${props => props.theme.spacing[4]}px;
+  padding-right: ${props => props.theme.spacing[4]}px;
+`
+
+const StyledPageTitle = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
   padding-bottom: ${props => props.theme.spacing[6]}px;
   padding-top: ${props => props.theme.spacing[6]}px;
-  max-width: 512px;
   width: 100%;
   margin: 0 auto;
+  white-space: nowrap;
 `
 
 const StyledIcon = styled.div`
@@ -37,7 +51,7 @@ const StyledIcon = styled.div`
 `
 
 const StyledTitle = styled.h1`
-  color: ${props => props.theme.color.grey[100]};
+  color: ${props => props.theme.color.gold};
   font-size: 36px;
   font-weight: 700;
   margin: 0;
@@ -45,7 +59,7 @@ const StyledTitle = styled.h1`
 `
 
 const StyledSubtitle = styled.h3`
-  color: ${props => props.theme.color.grey[400]};
+  color: ${props => props.theme.color.gold};
   font-size: 18px;
   font-weight: 400;
   margin: 0;

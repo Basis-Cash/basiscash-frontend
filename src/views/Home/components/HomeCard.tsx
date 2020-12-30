@@ -3,14 +3,13 @@ import styled, { ThemeContext } from 'styled-components';
 import Label from '../../../components/Label';
 import { TokenStat } from '../../../basis-cash/types';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import TokenSymbol from '../../../components/TokenSymbol';
 import { commify } from 'ethers/lib/utils';
 import config from '../../../config';
 
 interface HomeCardProps {
   title: string;
-  symbol: string;
-  color: string;
+  backgroundImg: string;
+  headerColor: string;
   supplyLabel?: string;
   address: string;
   stat?: TokenStat;
@@ -18,33 +17,42 @@ interface HomeCardProps {
 
 const HomeCard: React.FC<HomeCardProps> = ({
   title,
-  symbol,
-  color,
+  backgroundImg,
+  headerColor,
   address,
   supplyLabel = 'Total Supply',
   stat,
 }) => {
   const tokenUrl = `${config.etherscanUrl}/token/${address}`;
+  const { color } = useContext(ThemeContext);
+
   return (
     <Wrapper>
-      <CardHeader>{title}</CardHeader>
+      <CardHeader color={headerColor}>{title}</CardHeader>
       <StyledCards>
-        <TokenSymbol symbol={symbol} />
-        <CardSection>
-          {stat ? (
-            <StyledValue>{(stat.priceInDAI !== '-' ? '$' : '') + stat.priceInDAI}</StyledValue>
-          ) : (
-            <ValueSkeleton />
-          )}
-          <Label text="Current Price" color={color} />
-        </CardSection>
+        <CardBody backgroundImg={backgroundImg}>
+          <CardContent>
+            <CardSection>
+              {stat ? (
+                <StyledValue>{(stat.priceInUSDT !== '-' ? '$' : '') + stat.priceInUSDT}</StyledValue>
+              ) : (
+                <ValueSkeleton />
+              )}
+              <Label text="Current Price" color={color.gold} />
+            </CardSection>
 
-        <CardSection>
-          {stat ? <StyledValue>{commify(stat.totalSupply)}</StyledValue> : <ValueSkeleton />}
-          <StyledSupplyLabel href={tokenUrl} target="_blank" color={color}>
-            {supplyLabel}
-          </StyledSupplyLabel>
-        </CardSection>
+            <CardSection>
+              {stat ? (
+                <StyledValue>{commify(stat.totalSupply)}</StyledValue>
+              ) : (
+                <ValueSkeleton />
+              )}
+              <StyledSupplyLabel href={tokenUrl} target="_blank" color={color.gold}>
+                {supplyLabel}
+              </StyledSupplyLabel>
+            </CardSection>
+          </CardContent>
+        </CardBody>
       </StyledCards>
     </Wrapper>
   );
@@ -57,43 +65,60 @@ const Wrapper = styled.div`
 `;
 
 const CardHeader = styled.h2`
-  color: #fff;
+  color: ${(props) => props.color};
   text-align: center;
 `;
 
+interface StyledCardsProps {
+  backgroundImg: string;
+}
+
 const StyledCards = styled.div`
-  min-width: 200px;
-  padding: ${(props) => props.theme.spacing[3]}px;
   color: ${(props) => props.theme.color.white};
-  background-color: ${(props) => props.theme.color.grey[900]};
-  border-radius: 5px;
+  padding: ${(props) => props.theme.spacing[3]}px;
+  background-color: #26272D;
+  border-radius: 20px;
   @media (max-width: 768px) {
     width: 100%;
   }
 `;
 
+const CardBody = styled.div<StyledCardsProps>`
+  width: 267px;
+  height: 347px;
+  background-image: url("${(props) => props.backgroundImg}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+`;
+
+const CardContent = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 51%;
+  height: 50%;
+  box-sizing: border-box;
+  padding: 24px;
+`;
+
 const StyledValue = styled.span`
   display: inline-block;
-  font-size: 36px;
-  color: #eeeeee;
+  font-size: 24px;
+  font-weight: bold;
+  color: ${(props) => props.theme.color.gold};
 `;
 
 const CardSection = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[4]}px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 const ValueSkeletonPadding = styled.div`
-  padding-top: ${(props) => props.theme.spacing[3]}px;
-  padding-bottom: ${(props) => props.theme.spacing[2]}px;
 `;
 
 const StyledSupplyLabel = styled.a`
   display: block;
-  color: ${(props) => props.color};
+  color: ${(props) => props.theme.color.gold};
 `;
 
 const ValueSkeleton = () => {

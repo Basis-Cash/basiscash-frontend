@@ -1,8 +1,9 @@
 body {
-  background: #000000;
+  background: #1e1f23;
   margin: 0;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Lora', sans-serif;
   font-size: 16px;
+  letter-spacing: 0.05em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -82,8 +82,8 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
             {approveStatus !== ApprovalState.APPROVED && !disabled ? (
               <Button
                 disabled={
-                  approveStatus == ApprovalState.PENDING ||
-                  approveStatus == ApprovalState.UNKNOWN
+                  approveStatus === ApprovalState.PENDING ||
+                  approveStatus === ApprovalState.UNKNOWN
                 }
                 onClick={() => catchError(approve(), `Unable to approve ${fromTokenName}`)}
                 text={`Approve ${fromTokenName}`}

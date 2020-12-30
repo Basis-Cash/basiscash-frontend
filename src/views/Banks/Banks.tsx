@@ -17,9 +17,8 @@ const Banks: React.FC = () => {
       <Page>
         <Route exact path={path}>
           <PageHeader
-            icon={'🏦'}
-            title="Pick a Bank."
-            subtitle="Earn Basis Shares by providing liquidity"
+            title="Pick a Bank"
+            subtitle="Earn MITH Shares by providing liquidity"
           />
           {!!account ? (
             <BankCards />

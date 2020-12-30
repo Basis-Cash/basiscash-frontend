@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import farmer from '../../assets/img/farmer.png';
+import mithCash from '../../assets/img/mithCash.svg';
 
 const Logo: React.FC = () => {
   return (
     <StyledLogo>
-      <img src={farmer} height="32" style={{ marginTop: -4 }} />
-      <StyledLink href="/">Basis Cash</StyledLink>
+      <img src={mithCash} height="32" style={{ marginTop: -4 }} />
+      <StyledLink href="/">MITH Cash</StyledLink>
     </StyledLogo>
   );
 };

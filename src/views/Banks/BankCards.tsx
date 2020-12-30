@@ -46,7 +46,7 @@ const BankCards: React.FC = () => {
         {activeBanks.map((bank, i) => (
           <React.Fragment key={bank.name}>
             <BankCard bank={bank} />
-            {i < activeBanks.length - 1 && <StyledSpacer />}
+            {i < activeBanks.length - 1 && i % 3 !== 2 && <StyledSpacer />}
           </React.Fragment>
         ))}
       </StyledRow>
@@ -91,7 +91,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
             <StyledTitle>{bank.name}</StyledTitle>
             <StyledDetails>
               <StyledDetail>Deposit {bank.depositTokenName.toUpperCase()}</StyledDetail>
-              <StyledDetail>Earn {`Basis ${bank.earnTokenName}`}</StyledDetail>
+              <StyledDetail>Earn {`MITH ${bank.earnTokenName}`}</StyledDetail>
             </StyledDetails>
             <Button text="Select" to={`/bank/${bank.contract}`} />
           </StyledContent>
@@ -184,6 +184,7 @@ const StyledCardWrapper = styled.div`
   display: flex;
   width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
   position: relative;
+  margin-top: ${(props) => props.theme.spacing[4]}px;
 `;
 
 const StyledTitle = styled.h4`
@@ -199,6 +200,8 @@ const StyledContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
 `;
 
 const StyledSpacer = styled.div`

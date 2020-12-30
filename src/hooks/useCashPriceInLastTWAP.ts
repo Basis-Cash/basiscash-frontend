@@ -12,7 +12,7 @@ const useCashPriceInLastTWAP = () => {
   }, [basisCash]);
 
   useEffect(() => {
-    fetchCashPrice().catch((err) => console.error(`Failed to fetch BAC price: ${err.stack}`));
+    fetchCashPrice().catch((err) => console.error(`Failed to fetch MIC price: ${err.stack}`));
     const refreshInterval = setInterval(fetchCashPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
   }, [setPrice, basisCash]);

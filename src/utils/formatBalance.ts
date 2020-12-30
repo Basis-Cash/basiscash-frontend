@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers';
+import BN from 'bignumber.js';
 
 export const getDisplayBalance = (balance: BigNumber, decimals = 18, fractionDigits = 3) => {
   const number = getBalance(balance, decimals - fractionDigits);
@@ -6,7 +7,7 @@ export const getDisplayBalance = (balance: BigNumber, decimals = 18, fractionDig
 };
 
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
-  return getDisplayBalance(balance, decimals);
+  return new BN(balance.toString()).div(10 ** decimals).toFixed(decimals);
 };
 
 export function getBalance(balance: BigNumber, decimals = 18) : number {

@@ -7,29 +7,19 @@ import HomeCard from './components/HomeCard';
 import { OverviewData } from './types';
 import useBasisCash from '../../hooks/useBasisCash';
 import config from '../../config';
-import Notice from '../../components/Notice';
+
+import micCardBorder from '../../assets/img/mic-card-border.svg';
+import misCardBorder from '../../assets/img/mis-card-border.svg';
+import mibCardBorder from '../../assets/img/mib-card-border.svg';
+import useCashStats from '../../hooks/useCashStats';
+import useBondStats from '../../hooks/useBondStats';
+import useShareStats from '../../hooks/useShareStats';
 
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
-
-  const [{ cash, bond, share }, setStats] = useState<OverviewData>({});
-  const fetchStats = useCallback(async () => {
-    const [cash, bond, share] = await Promise.all([
-      basisCash.getCashStatFromUniswap(),
-      basisCash.getBondStat(),
-      basisCash.getShareStat(),
-    ]);
-    if (Date.now() < config.bondLaunchesAt.getTime()) {
-      bond.priceInDAI = '-';
-    }
-    setStats({ cash, bond, share });
-  }, [basisCash, setStats]);
-
-  useEffect(() => {
-    if (basisCash) {
-      fetchStats().catch((err) => console.error(err.stack));
-    }
-  }, [basisCash]);
+  const cashStat = useCashStats();
+  const bondStat = useBondStats();
+  const shareStat = useShareStats();
 
   const cashAddr = useMemo(() => basisCash?.BAC.address, [basisCash]);
   const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
@@ -38,35 +28,34 @@ const Home: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon="👋"
-        subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
-        title="Welcome to Basis Cash!"
+        title="Welcome to MITH Cash!"
+        subtitle="Buy, sell, and provide liquidity for MITH Cash and MITH Shares on SushiSwap"
       />
       <Spacer size="md" />
       <CardWrapper>
         <HomeCard
-          title="Basis Cash"
-          symbol="BAC"
-          color="#EEA7ED"
+          title="MITH Cash"
+          backgroundImg={micCardBorder}
+          headerColor="#4D6756"
           supplyLabel="Circulating Supply"
           address={cashAddr}
-          stat={cash}
+          stat={cashStat}
         />
         <Spacer size="lg" />
         <HomeCard
-          title="Basis Share"
-          symbol="BAS"
-          color="#E83725"
+          title="MITH Share"
+          backgroundImg={misCardBorder}
+          headerColor="#426687"
           address={shareAddr}
-          stat={share}
+          stat={shareStat}
         />
         <Spacer size="lg" />
         <HomeCard
-          title="Basis Bond"
-          symbol="BAB"
-          color="#ECF25C"
+          title="MITH Bond"
+          backgroundImg={mibCardBorder}
+          headerColor="#6D55A1"
           address={bondAddr}
-          stat={bond}
+          stat={bondStat}
         />
       </CardWrapper>
     </Page>

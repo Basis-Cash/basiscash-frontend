@@ -34,7 +34,7 @@ const Boardroom: React.FC = () => {
   const cashStat = useCashPriceInEstimatedTWAP();
   const treasuryAmount = useTreasuryAmount();
   const scalingFactor = useMemo(
-    () => (cashStat ? Number(cashStat.priceInDAI).toFixed(2) : null),
+    () => (cashStat ? Number(cashStat.priceInUSDT).toFixed(2) : null),
     [cashStat],
   );
   const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
@@ -73,9 +73,8 @@ const Boardroom: React.FC = () => {
       <Switch>
         <Page>
           <PageHeader
-            icon={'🤝'}
             title="Join the Boardroom"
-            subtitle="Deposit Basis Shares and earn inflationary rewards"
+            subtitle="Deposit MITH Shares and earn inflationary rewards"
           />
           <LaunchCountdown
             deadline={config.boardroomLaunchesAt}
@@ -93,9 +92,8 @@ const Boardroom: React.FC = () => {
         {!!account ? (
           <>
             <PageHeader
-              icon={'🤝'}
               title="Join the Boardroom"
-              subtitle="Deposit Basis Shares and earn inflationary rewards"
+              subtitle="Deposit MITH Shares and earn inflationary rewards"
             />
             {migrateNotice}
             <StyledHeader>
@@ -106,8 +104,8 @@ const Boardroom: React.FC = () => {
               />
               <Stat
                 icon="💵"
-                title={cashStat ? `$${cashStat.priceInDAI}` : '-'}
-                description="BAC Price (TWAP)"
+                title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
+                description="MIC Price (TWAP)"
               />
               <Stat
                 icon="🚀"

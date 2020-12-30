@@ -17,6 +17,7 @@ import LaunchCountdown from '../../components/LaunchCountdown';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
+import { BigNumber } from 'ethers';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -33,7 +34,7 @@ const Bond: React.FC = () => {
       const tx = await basisCash.buyBonds(amount);
       const bondAmount = Number(amount) / Number(getDisplayBalance(cashPrice));
       addTransaction(tx, {
-        summary: `Buy ${bondAmount.toFixed(2)} BAB with ${amount} BAC`,
+        summary: `Buy ${bondAmount.toFixed(2)} MIB with ${amount} MIC`,
       });
     },
     [basisCash, addTransaction, cashPrice],
@@ -46,8 +47,8 @@ const Bond: React.FC = () => {
     },
     [basisCash, addTransaction],
   );
-  const cashIsOverpriced = useMemo(() => cashPrice.gt(1.0), [cashPrice]);
-  const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
+  const cashIsOverpriced = useMemo(() => cashPrice.gt(BigNumber.from(10).pow(18)), [cashPrice]);
+  const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInUSDT) < 1.0, [bondStat]);
 
   const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
   if (!isLaunched) {
@@ -55,14 +56,13 @@ const Bond: React.FC = () => {
       <Switch>
         <Page>
           <PageHeader
-            icon={'🏦'}
             title="Buy & Redeem Bonds"
             subtitle="Earn premiums upon redemption"
           />
           <LaunchCountdown
             deadline={config.bondLaunchesAt}
-            description="How does Basis bond work?"
-            descriptionLink="https://docs.basis.cash/mechanisms/stabilization-mechanism"
+            description="How does MITH bond work?"
+            descriptionLink="https://docs.basis.cash/mechanisms/stabilization-mechanism" // todo: change link
           />
         </Page>
       </Switch>
@@ -75,7 +75,6 @@ const Bond: React.FC = () => {
           <>
             <Route exact path={path}>
               <PageHeader
-                icon={'🏦'}
                 title="Buy & Redeem Bonds"
                 subtitle="Earn premiums upon redemption"
               />
@@ -85,16 +84,16 @@ const Bond: React.FC = () => {
                 <ExchangeCard
                   action="Purchase"
                   fromToken={basisCash.BAC}
-                  fromTokenName="Basis Cash"
+                  fromTokenName="MITH Cash"
                   toToken={basisCash.BAB}
-                  toTokenName="Basis Bond"
+                  toTokenName="MITH Bond"
                   priceDesc={
                     cashIsOverpriced
-                      ? 'BAC is over $1'
+                      ? 'MIC is over $1'
                       : cashIsUnderPriced
                       ? `${Math.floor(
-                          100 / Number(bondStat.priceInDAI) - 100,
-                        )}% return when BAC > $1`
+                          100 / Number(bondStat.priceInUSDT) - 100,
+                        )}% return when MIC > $1`
                       : '-'
                   }
                   onExchange={handleBuyBonds}
@@ -103,25 +102,25 @@ const Bond: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="BAC"
-                  description="Base Price (Last-Day TWAP)"
+                  tokenName="MIC"
+                  description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 2)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="BAB"
-                  description="Current Price: (BAC)^2"
-                  price={bondStat?.priceInDAI || '-'}
+                  tokenName="MIB"
+                  description="Current Price: (MIC)^2"
+                  price={bondStat?.priceInUSDT || '-'}
                 />
               </StyledStatsWrapper>
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Redeem"
                   fromToken={basisCash.BAB}
-                  fromTokenName="Basis Bond"
+                  fromTokenName="MITH Bond"
                   toToken={basisCash.BAC}
-                  toTokenName="Basis Cash"
-                  priceDesc={`${getDisplayBalance(bondBalance)} BAB Available`}
+                  toTokenName="MITH Cash"
+                  priceDesc={`${getDisplayBalance(bondBalance)} MIB Available`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || cashIsUnderPriced}
                 />

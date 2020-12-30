@@ -1,6 +1,6 @@
-import { Fetcher, Route, Token } from '@uniswap/sdk';
+import { Fetcher, Route, Token } from '@sushiswap/sdk';
 import { Configuration } from './config';
-import { ContractName, TokenStat, TreasuryAllocationTime } from './types';
+import { ContractName, ShareMetric, SushiSwapPoolMISRemain, TokenStat, TreasuryAllocationTime } from './types';
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -24,6 +24,7 @@ export class BasisCash {
   boardroomVersionOfUser?: string;
 
   bacDai: Contract;
+  basDai: Contract;
   BAC: ERC20;
   BAS: ERC20;
   BAB: ERC20;
@@ -41,16 +42,21 @@ export class BasisCash {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal); // TODO: add decimal
     }
-    this.BAC = new ERC20(deployments.Cash.address, provider, 'BAC');
-    this.BAS = new ERC20(deployments.Share.address, provider, 'BAS');
-    this.BAB = new ERC20(deployments.Bond.address, provider, 'BAB');
+    this.BAC = new ERC20(deployments.Cash.address, provider, 'MIC');
+    this.BAS = new ERC20(deployments.Share.address, provider, 'MIS');
+    this.BAB = new ERC20(deployments.Bond.address, provider, 'MIB');
 
-    // Uniswap V2 Pair
+    // SushiSwap Pair
     this.bacDai = new Contract(
-      externalTokens['BAC_DAI-UNI-LPv2'][0],
+      externalTokens['MIC_USDT-SUSHI-LPv2'][0],
       IUniswapV2PairABI,
       provider,
     );
+    this.basDai = new Contract(
+      externalTokens['MIS_USDT-SUSHI-LPv2'][0],
+      IUniswapV2PairABI,
+      provider,
+    )
 
     this.config = cfg;
     this.provider = provider;
@@ -95,13 +101,13 @@ export class BasisCash {
   }
 
   /**
-   * @returns Basis Cash (BAC) stats from Uniswap.
+   * @returns Basis Cash (BAC) stats from SushiSwap.
    * It may differ from the BAC price used on Treasury (which is calculated in TWAP)
    */
-  async getCashStatFromUniswap(): Promise<TokenStat> {
+  async getCashStatFromSushiSwap(): Promise<TokenStat> {
     const supply = await this.BAC.displayedTotalSupply();
     return {
-      priceInDAI: await this.getTokenPriceFromUniswap(this.BAC),
+      priceInUSDT: await this.getTokenPriceFromSushiSwap(this.BAC),
       totalSupply: supply,
     };
   }
@@ -128,7 +134,7 @@ export class BasisCash {
 
     const totalSupply = await this.BAC.displayedTotalSupply();
     return {
-      priceInDAI: getDisplayBalance(cashPriceTWAP),
+      priceInUSDT: getDisplayBalance(cashPriceTWAP, 6),
       totalSupply,
     };
   }
@@ -150,31 +156,76 @@ export class BasisCash {
     const bondPrice = cashPrice.pow(2).div(decimals);
 
     return {
-      priceInDAI: getDisplayBalance(bondPrice),
+      priceInUSDT: getDisplayBalance(bondPrice),
       totalSupply: await this.BAB.displayedTotalSupply(),
     };
   }
 
+  async getShareMetric(): Promise<ShareMetric> {
+    const totalSupply = await this.BAS.totalSupply();
+
+    const { USDTMICLPTokenSharePool, USDTMISLPTokenSharePool } = this.contracts;
+    const [
+      USDTMICStakePoolRemain,
+      USDTMISStakePoolRemain
+    ] = await Promise.all([
+      this.BAS.balanceOf(USDTMICLPTokenSharePool.address),
+      this.BAS.balanceOf(USDTMISLPTokenSharePool.address),
+    ])
+
+    const circulatingSupply = BigNumber.from(totalSupply)
+      .sub(USDTMICStakePoolRemain)
+      .sub(USDTMISStakePoolRemain);
+
+    const boardroomBalance = await this.BAS.balanceOf(this.contracts.Boardroom1.address);
+    const USDTMISPoolBalance = await this.BAS.balanceOf(this.basDai.address);
+    const unstakedBalance = circulatingSupply.sub(boardroomBalance).sub(USDTMISPoolBalance);
+
+    return {
+      USDTMICStakePoolRemain: getDisplayBalance(USDTMICStakePoolRemain, 18, 0),
+      USDTMISStakePoolRemain: getDisplayBalance(USDTMISStakePoolRemain, 18, 0),
+      circulatingSupply: getDisplayBalance(circulatingSupply, 18, 0),
+      USDTMISPoolBalance: getDisplayBalance(USDTMISPoolBalance, 18, 0),
+      boardroomBalance: getDisplayBalance(boardroomBalance, 18, 0),
+      unstakedBalance: getDisplayBalance(unstakedBalance, 18, 0),
+    }
+  }
+
+  async getSushiSwapStakePoolMISRemain(): Promise<SushiSwapPoolMISRemain> {
+    const { USDTMICLPTokenSharePool, USDTMISLPTokenSharePool } = this.contracts;
+    const [
+      USDTMICPoolBalance,
+      USDTMISPoolBalance,
+    ] = await Promise.all([
+      this.BAS.balanceOf(USDTMICLPTokenSharePool.address),
+      this.BAS.balanceOf(USDTMISLPTokenSharePool.address),
+    ]);
+    return {
+      USDTMICStakePoolRemain: getDisplayBalance(USDTMICPoolBalance, 18, 0),
+      USDTMISStakePoolRemain: getDisplayBalance(USDTMISPoolBalance, 18, 0),
+    }
+  }
+
   async getShareStat(): Promise<TokenStat> {
     return {
-      priceInDAI: await this.getTokenPriceFromUniswap(this.BAS),
+      priceInUSDT: await this.getTokenPriceFromSushiSwap(this.BAS),
       totalSupply: await this.BAS.displayedTotalSupply(),
     };
   }
 
-  async getTokenPriceFromUniswap(tokenContract: ERC20): Promise<string> {
+  async getTokenPriceFromSushiSwap(tokenContract: ERC20): Promise<string> {
     await this.provider.ready;
 
     const { chainId } = this.config;
-    const { DAI } = this.config.externalTokens;
+    const { USDT } = this.config.externalTokens;
 
-    const dai = new Token(chainId, DAI[0], 18);
+    const usdt = new Token(chainId, USDT[0], USDT[1]);
     const token = new Token(chainId, tokenContract.address, 18);
 
     try {
-      const daiToToken = await Fetcher.fetchPairData(dai, token, this.provider);
-      const priceInDAI = new Route([daiToToken], token);
-      return priceInDAI.midPrice.toSignificant(3);
+      const usdtToToken = await Fetcher.fetchPairData(usdt, token, this.provider);
+      const priceInUSDT = new Route([usdtToToken], token);
+      return priceInUSDT.midPrice.toSignificant(3);
     } catch (err) {
       console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
     }
@@ -186,7 +237,7 @@ export class BasisCash {
    */
   async buyBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.buyBonds(decimalToBalance(amount));
+    return await Treasury.buyBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
   }
 
   /**
@@ -195,7 +246,7 @@ export class BasisCash {
    */
   async redeemBonds(amount: string): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.redeemBonds(decimalToBalance(amount));
+    return await Treasury.redeemBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
@@ -264,32 +315,11 @@ export class BasisCash {
   }
 
   async fetchBoardroomVersionOfUser(): Promise<string> {
-    const { Boardroom1, Boardroom2 } = this.contracts;
-    const balance1 = await Boardroom1.getShareOf(this.myAccount);
-    if (balance1.gt(0)) {
-      console.log(
-        `👀 The user is using Boardroom v1. (Staked ${getDisplayBalance(balance1)} BAS)`,
-      );
-      return 'v1';
-    }
-    const balance2 = await Boardroom2.balanceOf(this.myAccount);
-    if (balance2.gt(0)) {
-      console.log(
-        `👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`,
-      );
-      return 'v2';
-    }
     return 'latest';
   }
 
   boardroomByVersion(version: string): Contract {
-    if (version === 'v1') {
-      return this.contracts.Boardroom1;
-    }
-    if (version === 'v2') {
-      return this.contracts.Boardroom2;
-    }
-    return this.contracts.Boardroom3;
+    return this.contracts.Boardroom1;
   }
 
   currentBoardroom(): Contract {

@@ -25,7 +25,6 @@ const Bank: React.FC = () => {
   return account && bank ? (
     <>
       <PageHeader
-        icon="🏦"
         subtitle={`Deposit ${bank?.depositTokenName} and earn ${bank?.earnTokenName}`}
         title={bank?.name}
       />
@@ -57,17 +56,17 @@ const Bank: React.FC = () => {
 
 const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let pairName: string;
-  let uniswapUrl: string;
-  if (bank.depositTokenName.includes('BAC')) {
-    pairName = 'BAC-DAI pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0x3449FC1Cd036255BA1EB19d65fF4BA2b8903A69a/0x6B175474E89094C44Da98b954EedeAC495271d0F';
+  let sushiswapUrl: string;
+  if (bank.depositTokenName.includes('MIC')) {
+    pairName = 'MIC-USDT pair';
+    sushiswapUrl = 'https://sushiswap.fi/pair/0xC9cB53B48A2f3A9e75982685644c1870F1405CCb';
   } else {
-    pairName = 'BAS-DAI pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0xa7ED29B253D8B4E3109ce07c80fc570f81B63696/0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    pairName = 'MIS-USDT pair';
+    sushiswapUrl = 'https://sushiswap.fi/pair/0x066F3A3B7C8Fa077c71B9184d862ed0A4D5cF3e0';
   }
   return (
-    <StyledLink href={uniswapUrl} target="_blank">
-      {`🦄  Provide liquidity to ${pairName} on Uniswap  🦄`}
+    <StyledLink href={sushiswapUrl} target="_blank">
+      {`🍣  Provide liquidity to ${pairName} on SushiSwap  🍣`}
     </StyledLink>
   );
 };
@@ -76,9 +75,8 @@ const BankNotFound = () => {
   return (
     <Center>
       <PageHeader
-        icon="🏚"
         title="Not Found"
-        subtitle="You've hit a bank just robbed by unicorns."
+        subtitle="You've hit a bank just robbed by chefs."
       />
     </Center>
   );

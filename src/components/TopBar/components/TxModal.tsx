@@ -26,7 +26,7 @@ const TxModal: React.FC<ModalProps> = ({ onDismiss }) => {
     .filter((tx) => tx.receipt)
     .slice(0, MAX_TRANSACTION_HISTORY);
 
-  const isEmpty = (confirmed?.length + pending?.length) == 0;
+  const isEmpty = (confirmed?.length + pending?.length) === 0;
   return (
     <StyledModal>
       <StyledTitleArea>
