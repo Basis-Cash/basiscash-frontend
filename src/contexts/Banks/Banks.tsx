@@ -12,6 +12,15 @@ const Banks: React.FC = ({ children }) => {
     const banks: Bank[] = [];
 
     for (const bankInfo of Object.values(bankDefinitions)) {
+      if (bankInfo.finished) {
+        if (!basisCash.isUnlocked) continue;
+
+        // only show pools staked by user
+        const balance = await basisCash.stakedBalanceOnBank(bankInfo.contract, basisCash.myAccount);
+        if (balance.lte(0)) {
+          continue;
+        }
+      }
       banks.push({
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,
@@ -21,14 +30,14 @@ const Banks: React.FC = ({ children }) => {
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));
     setBanks(banks);
-  }, [basisCash, setBanks]);
+  }, [basisCash, basisCash?.isUnlocked, setBanks]);
 
   useEffect(() => {
     if (basisCash) {
       fetchPools()
         .catch(err => console.error(`Failed to fetch pools: ${err.stack}`));
     }
-  }, [basisCash, fetchPools]);
+  }, [basisCash, basisCash?.isUnlocked, fetchPools]);
 
   return <Context.Provider value={{ banks }}>{children}</Context.Provider>;
 };

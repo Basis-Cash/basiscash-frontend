@@ -1,12 +1,14 @@
 import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Configuration } from './config';
-import { ContractName, TokenStat } from './types';
+import { ContractName, TokenStat, TreasuryAllocationTime } from './types';
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
+import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
+import { parseUnits } from 'ethers/lib/utils';
 
 /**
  * An API module of Basis Cash contracts.
@@ -19,13 +21,15 @@ export class BasisCash {
   config: Configuration;
   contracts: { [name: string]: Contract };
   externalTokens: { [name: string]: ERC20 };
+  boardroomVersionOfUser?: string;
 
+  bacDai: Contract;
   BAC: ERC20;
   BAS: ERC20;
   BAB: ERC20;
 
   constructor(cfg: Configuration) {
-    const { defaultProvider, deployments, externalTokens, chainId } = cfg;
+    const { deployments, externalTokens } = cfg;
     const provider = getDefaultProvider();
 
     // loads contracts from deployments
@@ -40,6 +44,13 @@ export class BasisCash {
     this.BAC = new ERC20(deployments.Cash.address, provider, 'BAC');
     this.BAS = new ERC20(deployments.Share.address, provider, 'BAS');
     this.BAB = new ERC20(deployments.Bond.address, provider, 'BAB');
+
+    // Uniswap V2 Pair
+    this.bacDai = new Contract(
+      externalTokens['BAC_DAI-UNI-LPv2'][0],
+      IUniswapV2PairABI,
+      provider,
+    );
 
     this.config = cfg;
     this.provider = provider;
@@ -61,7 +72,14 @@ export class BasisCash {
     for (const token of tokens) {
       token.connect(this.signer);
     }
+    this.bacDai = this.bacDai.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
+    this.fetchBoardroomVersionOfUser()
+      .then((version) => (this.boardroomVersionOfUser = version))
+      .catch((err) => {
+        console.error(`Failed to fetch boardroom version: ${err.stack}`);
+        this.boardroomVersionOfUser = 'latest';
+      });
   }
 
   get isUnlocked(): boolean {
@@ -84,30 +102,48 @@ export class BasisCash {
     const supply = await this.BAC.displayedTotalSupply();
     return {
       priceInDAI: await this.getTokenPriceFromUniswap(this.BAC),
-      totalSupply: this.config.circSupply,
+      totalSupply: supply,
     };
   }
 
   /**
-   * @returns Basis Cash (BAC) stats from Treasury,
-   * calculated by Time-Weight Averaged Price (TWAP).
+   * @returns Estimated Basis Cash (BAC) price data,
+   * calculated by 1-day Time-Weight Averaged Price (TWAP).
    */
-  async getCashStatFromTreasury(): Promise<TokenStat> {
-    const supply = await this.BAC.displayedTotalSupply();
-    const { Treasury } = this.contracts;
-    const cashPrice: BigNumber = await Treasury.getCashPrice();
+  async getCashStatInEstimatedTWAP(): Promise<TokenStat> {
+    const { Oracle } = this.contracts;
+
+    // estimate current TWAP price
+    const cumulativePrice: BigNumber = await this.bacDai.price0CumulativeLast();
+    const cumulativePriceLast = await Oracle.price0CumulativeLast();
+    const elapsedSec = Math.floor(Date.now() / 1000 - (await Oracle.blockTimestampLast()));
+
+    const denominator112 = BigNumber.from(2).pow(112);
+    const denominator1e18 = BigNumber.from(10).pow(18);
+    const cashPriceTWAP = cumulativePrice
+      .sub(cumulativePriceLast)
+      .mul(denominator1e18)
+      .div(elapsedSec)
+      .div(denominator112);
+
+    const totalSupply = await this.BAC.displayedTotalSupply();
     return {
-      priceInDAI: getDisplayBalance(cashPrice),
-      totalSupply: this.config.circSupply,
+      priceInDAI: getDisplayBalance(cashPriceTWAP),
+      totalSupply,
     };
   }
 
-  async getBondStat(): Promise<TokenStat> {
+  async getCashPriceInLastTWAP(): Promise<BigNumber> {
     const { Treasury } = this.contracts;
+    return Treasury.getCashPrice();
+  }
+
+  async getBondStat(): Promise<TokenStat> {
     const decimals = BigNumber.from(10).pow(18);
 
-    const cashPrice: BigNumber = await Treasury.getCashPrice();
+    const cashPrice: BigNumber = await this.getCashPriceInLastTWAP();
     const bondPrice = cashPrice.pow(2).div(decimals);
+
     return {
       priceInDAI: getDisplayBalance(bondPrice),
       totalSupply: await this.BAB.displayedTotalSupply(),
@@ -222,54 +258,95 @@ export class BasisCash {
     return await pool.exit(this.gasOptions(gas));
   }
 
-  async isOldBoardroomMember(): Promise<boolean> {
-    // const { Boardroom1 } = this.contracts;
-    // const oldShares = await Boardroom1.getShareOf(this.myAccount);
-    // return !!oldShares.gt(0);
-    // TODO: uncomment after deploying Boardroom2
-    return true;
+  async fetchBoardroomVersionOfUser(): Promise<string> {
+    const { Boardroom1, Boardroom2 } = this.contracts;
+    const balance1 = await Boardroom1.getShareOf(this.myAccount);
+    if (balance1.gt(0)) {
+      console.log(
+        `👀 The user is using Boardroom v1. (Staked ${getDisplayBalance(balance1)} BAS)`,
+      );
+      return 'v1';
+    }
+    const balance2 = await Boardroom2.balanceOf(this.myAccount);
+    if (balance2.gt(0)) {
+      console.log(
+        `👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`,
+      );
+      return 'v2';
+    }
+    return 'latest';
+  }
+
+  boardroomByVersion(version: string): Contract {
+    if (version === 'v1') {
+      return this.contracts.Boardroom1;
+    }
+    if (version === 'v2') {
+      return this.contracts.Boardroom2;
+    }
+    return this.contracts.Boardroom3;
+  }
+
+  currentBoardroom(): Contract {
+    if (!this.boardroomVersionOfUser) {
+      throw new Error('you must unlock the wallet to continue.');
+    }
+    return this.boardroomByVersion(this.boardroomVersionOfUser);
+  }
+
+  isOldBoardroomMember(): boolean {
+    return this.boardroomVersionOfUser !== 'latest';
   }
 
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
-    if (await this.isOldBoardroomMember()) {
-      throw new Error("you're using old Boardroom. please withdraw and deposit the BAS again.")
+    if (this.isOldBoardroomMember()) {
+      throw new Error("you're using old Boardroom. please withdraw and deposit the BAS again.");
     }
-    const { Boardroom2: Boardroom } = this.contracts;
+    const Boardroom = this.currentBoardroom();
     return await Boardroom.stake(decimalToBalance(amount));
   }
 
   async getStakedSharesOnBoardroom(): Promise<BigNumber> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
-    return await Boardroom.getShareOf(this.myAccount);
+    const Boardroom = this.currentBoardroom();
+    if (this.boardroomVersionOfUser === 'v1') {
+      return await Boardroom.getShareOf(this.myAccount);
+    }
+    return await Boardroom.balanceOf(this.myAccount);
   }
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
-    return await Boardroom.getCashEarningsOf(this.myAccount);
+    const Boardroom = this.currentBoardroom();
+    if (this.boardroomVersionOfUser === 'v1') {
+      return await Boardroom.getCashEarningsOf(this.myAccount);
+    }
+    return await Boardroom.earned(this.myAccount);
   }
 
   async withdrawShareFromBoardroom(amount: string): Promise<TransactionResponse> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
+    const Boardroom = this.currentBoardroom();
     return await Boardroom.withdraw(decimalToBalance(amount));
   }
 
   async harvestCashFromBoardroom(): Promise<TransactionResponse> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
-    return await Boardroom.claimDividends();
+    const Boardroom = this.currentBoardroom();
+    if (this.boardroomVersionOfUser === 'v1') {
+      return await Boardroom.claimDividends();
+    }
+    return await Boardroom.claimReward();
   }
 
   async exitFromBoardroom(): Promise<TransactionResponse> {
-    const Boardroom = (await this.isOldBoardroomMember())
-      ? this.contracts.Boardroom1
-      : this.contracts.Boardroom2;
+    const Boardroom = this.currentBoardroom();
     return await Boardroom.exit();
+  }
+
+  async getTreasuryNextAllocationTime(): Promise<TreasuryAllocationTime> {
+    const { Treasury } = this.contracts;
+    const nextEpochTimestamp: BigNumber = await Treasury.nextEpochPoint();
+    const period: BigNumber = await Treasury.PERIOD();
+
+    const nextAllocation = new Date(nextEpochTimestamp.mul(1000).toNumber());
+    const prevAllocation = new Date(nextAllocation.getTime() - period.toNumber() * 1000);
+    return { prevAllocation, nextAllocation };
   }
 }

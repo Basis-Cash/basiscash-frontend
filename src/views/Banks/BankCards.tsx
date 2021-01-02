@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Countdown, { CountdownRenderProps } from 'react-countdown';
+import React from 'react';
 import styled from 'styled-components';
 
 import { Bank } from '../../basis-cash';
@@ -7,15 +6,18 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import CardContent from '../../components/CardContent';
 import CardIcon from '../../components/CardIcon';
-import Loader from '../../components/Loader';
 import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
+import Notice from '../../components/Notice';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
 
+  const activeBanks = banks.filter((bank) => !bank.finished);
+  const inactiveBanks = banks.filter((bank) => bank.finished);
+
   let finishedFirstRow = false;
-  const rows = banks.reduce<Bank[][]>(
+  const inactiveRows = inactiveBanks.reduce<Bank[][]>(
     (bankRows, bank) => {
       const newBankRows = [...bankRows];
       if (newBankRows[newBankRows.length - 1].length === (finishedFirstRow ? 2 : 3)) {
@@ -31,21 +33,37 @@ const BankCards: React.FC = () => {
 
   return (
     <StyledCards>
-      {!!rows[0].length ? (
-        rows.map((bankRow, i) => (
-          <StyledRow key={i}>
-            {bankRow.map((bank, j) => (
-              <React.Fragment key={j}>
-                <BankCard bank={bank} />
-                {j < bankRow.length - 1 && <StyledSpacer />}
-              </React.Fragment>
-            ))}
-          </StyledRow>
-        ))
-      ) : (
-        <StyledLoadingWrapper>
-          <Loader text="Loading bank" />
-        </StyledLoadingWrapper>
+      {inactiveRows[0].length > 0 && (
+        <StyledInactiveNoticeContainer>
+          <Notice color="grey">
+            <b>You have banks where the mining has finished.</b>
+            <br />
+            Please withdraw and settle your stakes.
+          </Notice>
+        </StyledInactiveNoticeContainer>
+      )}
+      <StyledRow>
+        {activeBanks.map((bank, i) => (
+          <React.Fragment key={bank.name}>
+            <BankCard bank={bank} />
+            {i < activeBanks.length - 1 && <StyledSpacer />}
+          </React.Fragment>
+        ))}
+      </StyledRow>
+      {inactiveRows[0].length > 0 && (
+        <>
+          <StyledInactiveBankTitle>Inactive Banks</StyledInactiveBankTitle>
+          {inactiveRows.map((bankRow, i) => (
+            <StyledRow key={i}>
+              {bankRow.map((bank, j) => (
+                <React.Fragment key={j}>
+                  <BankCard bank={bank} />
+                  {j < bankRow.length - 1 && <StyledSpacer />}
+                </React.Fragment>
+              ))}
+            </StyledRow>
+          ))}
+        </>
       )}
     </StyledCards>
   );
@@ -134,6 +152,9 @@ const StyledCardSuperAccent = styled.div`
 `;
 
 const StyledCards = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 900px;
   @media (max-width: 768px) {
     width: 100%;
@@ -193,6 +214,19 @@ const StyledDetails = styled.div`
 
 const StyledDetail = styled.div`
   color: ${(props) => props.theme.color.grey[300]};
+`;
+
+const StyledInactiveNoticeContainer = styled.div`
+  width: 598px;
+  margin-bottom: ${(props) => props.theme.spacing[6]}px;
+`;
+
+const StyledInactiveBankTitle = styled.p`
+  font-size: 24px;
+  font-weight: 600;
+  color: ${(props) => props.theme.color.grey[400]};
+  margin-top: ${(props) => props.theme.spacing[5]}px;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
 `;
 
 export default BankCards;

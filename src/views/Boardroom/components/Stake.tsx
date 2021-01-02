@@ -23,21 +23,24 @@ import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardr
 import TokenSymbol from '../../../components/TokenSymbol';
 import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
 import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
-import useIsOldBoardroomMember from '../../../hooks/useIsOldBoardroomMember';
+import useBoardroomVersion from '../../../hooks/useBoardroomVersion';
+import useRedeemOnBoardroom from '../../../hooks/useRedeemOnBoardroom';
 
 const Stake: React.FC = () => {
-  const {
-    BAS,
-    contracts: { Boardroom2 },
-  } = useBasisCash();
-  const [approveStatus, approve] = useApprove(BAS, Boardroom2.address);
+  const basisCash = useBasisCash();
+  const boardroomVersion = useBoardroomVersion();
+  const [approveStatus, approve] = useApprove(
+    basisCash.BAS,
+    basisCash.boardroomByVersion(boardroomVersion).address,
+  );
 
-  const tokenBalance = useTokenBalance(BAS);
+  const tokenBalance = useTokenBalance(basisCash.BAS);
   const stakedBalance = useStakedBalanceOnBoardroom();
-  const isOldBoardroomMember = useIsOldBoardroomMember();
+  const isOldBoardroomMember = boardroomVersion !== 'latest';
 
   const { onStake } = useStakeToBoardroom();
   const { onWithdraw } = useWithdrawFromBoardroom();
+  const { onRedeem } = useRedeemOnBoardroom('Redeem BAS for Boardroom Migration');
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -79,16 +82,21 @@ const Stake: React.FC = () => {
                 onClick={approve}
                 text="Approve JAM JAZZ ( Shares )"
               />
+            ) : isOldBoardroomMember ? (
+              <>
+                <Button
+                  onClick={onRedeem}
+                  variant="secondary"
+                  text="Settle & Withdraw"
+                />
+              </>
             ) : (
               <>
                 <IconButton onClick={onPresentWithdraw}>
                   <RemoveIcon />
                 </IconButton>
                 <StyledActionSpacer />
-                <IconButton
-                  disabled={isOldBoardroomMember}
-                  onClick={() => (!isOldBoardroomMember ? onPresentDeposit() : null)}
-                >
+                <IconButton onClick={onPresentDeposit}>
                   <AddIcon />
                 </IconButton>
               </>

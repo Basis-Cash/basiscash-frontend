@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Card from '../../../components/Card';
-import config from '../../../config';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
 
 interface ProgressCountdownProps {
@@ -16,7 +15,9 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({
   description,
 }) => {
   const percentage =
-    ((Date.now() - base.getTime()) / (deadline.getTime() - base.getTime())) * 100;
+    Date.now() >= deadline.getTime()
+      ? 100
+      : ((Date.now() - base.getTime()) / (deadline.getTime() - base.getTime())) * 100;
 
   const countdownRenderer = (countdownProps: CountdownRenderProps) => {
     const { days, hours, minutes, seconds } = countdownProps;
@@ -42,7 +43,6 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({
   );
 };
 
-
 const StyledCountdown = styled.p`
   font-size: 20px;
   font-weight: 700;
@@ -57,13 +57,12 @@ const StyledProgressOuter = styled.div`
   background: ${(props) => props.theme.color.grey[700]};
 `;
 
-const StyledProgress = styled.div<{progress: number}>`
+const StyledProgress = styled.div<{ progress: number }>`
   width: ${(props) => props.progress}%;
   height: 100%;
   border-radius: 3px;
   background: ${(props) => props.theme.color.grey[100]};
 `;
-
 
 const StyledDesc = styled.span`
   color: ${(props) => props.theme.color.grey[500]};

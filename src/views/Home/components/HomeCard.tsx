@@ -11,11 +11,19 @@ interface HomeCardProps {
   title: string;
   symbol: string;
   color: string;
+  supplyLabel?: string;
   address: string;
   stat?: TokenStat;
 }
 
-const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, address, stat }) => {
+const HomeCard: React.FC<HomeCardProps> = ({
+  title,
+  symbol,
+  color,
+  address,
+  supplyLabel = 'Total Supply',
+  stat,
+}) => {
   const tokenUrl = `${config.etherscanUrl}/token/${address}`;
   return (
     <Wrapper>
@@ -34,7 +42,7 @@ const HomeCard: React.FC<HomeCardProps> = ({ title, symbol, color, address, stat
         <CardSection>
           {stat ? <StyledValue>{commify(stat.totalSupply)}</StyledValue> : <ValueSkeleton />}
           <StyledSupplyLabel href={tokenUrl} target="_blank" color={color}>
-            Circulating Supply
+            {supplyLabel}
           </StyledSupplyLabel>
         </CardSection>
       </StyledCards>
