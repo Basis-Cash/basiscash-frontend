@@ -10,9 +10,9 @@ import USDCLogo from '../../assets/img/USDC.png';
 import USDTLogo from '../../assets/img/USDT.png';
 
 const logosBySymbol: {[title: string]: string} = {
-  'BAC': bacLogo,
-  'BAB': babLogo,
-  'BAS': basLogo,
+  'JAM': bacLogo,
+  'JAB': babLogo,
+  'JAZZ': basLogo,
   'yCRV': yCRVLogo,
   'DAI': DAILogo,
   'SUSD': sUSDLogo,
