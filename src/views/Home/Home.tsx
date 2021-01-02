@@ -36,6 +36,19 @@ const Home: React.FC = () => {
   const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
   const bondAddr = useMemo(() => basisCash?.BAB.address, [basisCash]);
 
+  //make time for aus
+  const dateToTime = (date: Date) => date.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric'
+});
+
+const dateString = "2020-12-11T00:00:00Z";
+const userOffset = new Date().getTimezoneOffset()*60*1000;
+const localDate = new Date(dateString);
+const utcDate = new Date(localDate.getTime() + userOffset);
+
+ console.log(`${dateToTime(utcDate)} (${dateToTime(localDate)} Your Time)`);
+
   return (
     <Page>
       <PageHeader
@@ -45,9 +58,18 @@ const Home: React.FC = () => {
       />
       <StyledNoticeContainer>
         <Notice>
-          Boardroom Seigniorage starts at <b>Dec 11 (Fri) 12:00am UTC</b>.
+          Boardroom Seigniorage starts at <b>JAMUARY 11 (Fri) 12:00am UTC</b>.
           For those who have already deposited Basis Shares into the Boardroom,&nbsp;
          <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
+
+         <h3>Fix the time</h3>
+         
+         UTC Date: Friday {dateToTime(utcDate)} 
+         <br></br>
+         
+         Local Date: Friday {dateToTime(localDate)}
+
+         
         </Notice>
       </StyledNoticeContainer>
       <Spacer size="md" />
