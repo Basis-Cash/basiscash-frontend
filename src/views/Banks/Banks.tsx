@@ -14,7 +14,7 @@ const Banks: React.FC = () => {
           <PageHeader
             icon={'🏦'}
             title="Pick a Bank."
-            subtitle="Earn JAM ( Cash ) / JAM JAZZ ( Shares ) by providing liquidity"
+            subtitle="Earn Basis Cash / Basis Shares by providing liquidity"
           />
           <BankCards />
         </Route>

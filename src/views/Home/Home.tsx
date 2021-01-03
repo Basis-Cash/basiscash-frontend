@@ -53,16 +53,16 @@ const utcDate = new Date(localDate.getTime() + userOffset);
     <Page>
       <PageHeader
         icon="👋"
-        subtitle="Buy, sell, and provide liquidity for JAM (Cash) and JAZZ (Shares) on Uniswap"
-        title="Welcome to JAM Cash!"
+        subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
+        title="Welcome to Basis Cash!"
       />
       <StyledNoticeContainer>
         <Notice>
           Boardroom Seigniorage starts at <b>JAMUARY 11 (Fri) 12:00am UTC</b>.
-         
-         <b></b>.
+          For those who have already deposited Basis Shares into the Boardroom,&nbsp;
+         <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
 
-         <h3>TimeZones</h3>
+         <h3>Fix the time</h3>
          
          UTC Date: Friday {dateToTime(utcDate)} 
          <br></br>
@@ -75,24 +75,24 @@ const utcDate = new Date(localDate.getTime() + userOffset);
       <Spacer size="md" />
       <CardWrapper>
         <HomeCard
-          title={'JAM Cash'}
-          symbol="JAM"
+          title={'Basis Cash'}
+          symbol="BAC"
           color="#EEA7ED"
           address={cashAddr}
           stat={cash}
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'JAM JAZZ (Share)'}
-          symbol="JAZZ"
+          title={'Basis Share'}
+          symbol="BAS"
           color="#E83725"
           address={shareAddr}
           stat={share}
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'JAM JAB'}
-          symbol="JAB"
+          title={'Basis Bond'}
+          symbol="BAB"
           color="#ECF25C"
           address={bondAddr}
           stat={bond}

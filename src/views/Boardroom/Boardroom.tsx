@@ -48,7 +48,7 @@ const Boardroom: React.FC = () => {
           <PageHeader
             icon={'🤝'}
             title="Join the Boardroom"
-            subtitle="Deposit JAZZ ( Shares ) and earn inflationary rewards"
+            subtitle="Deposit Basis Shares and earn inflationary rewards"
           />
           <LaunchCountdown
             deadline={config.boardroomLaunchesAt}
@@ -68,12 +68,12 @@ const Boardroom: React.FC = () => {
             <PageHeader
               icon={'🤝'}
               title="Join the Boardroom"
-              subtitle="Deposit JAZZ ( Shares ) and earn inflationary rewards"
+              subtitle="Deposit Basis Shares and earn inflationary rewards"
             />
             <StyledNoticeWrapper>
               <Notice color="yellow">
-                Boardroom Seigniorage starts at <b>JAMuary 11 (Fri) 12:00am UTC</b>.
-                For those who have already deposited Deposit JAZZ ( Shares ) into the Boardroom,&nbsp;
+                Boardroom Seigniorage starts at <b>Dec 11 (Fri) 12:00am UTC</b>.
+                For those who have already deposited Basis Shares into the Boardroom,&nbsp;
                 <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
               </Notice>
             </StyledNoticeWrapper>
@@ -86,7 +86,7 @@ const Boardroom: React.FC = () => {
               <Stat
                 icon="💵"
                 title={cashStat ? `$${cashStat.priceInDAI}` : '-'}
-                description="JAM Price (TWAP)"
+                description="BAC Price (TWAP)"
               />
               <Stat
                 icon="🚀"

@@ -49,7 +49,7 @@ const Stake: React.FC = () => {
         onStake(value);
         onDismissDeposit();
       }}
-      tokenName={'JAM JAZZ ( Shares )'}
+      tokenName={'Basis Share'}
     />,
   );
 
@@ -60,7 +60,7 @@ const Stake: React.FC = () => {
         onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={'JAM JAZZ ( Shares )'}
+      tokenName={'Basis Share'}
     />,
   );
 
@@ -73,14 +73,14 @@ const Stake: React.FC = () => {
               <TokenSymbol symbol="BAS" />
             </CardIcon>
             <Value value={getDisplayBalance(stakedBalance)} />
-            <Label text="JAM JAZZ ( Shares ) Staked" />
+            <Label text="Basis Share Staked" />
           </StyledCardHeader>
           <StyledCardActions>
             {!isOldBoardroomMember && approveStatus !== ApprovalState.APPROVED ? (
               <Button
                 disabled={approveStatus !== ApprovalState.NOT_APPROVED}
                 onClick={approve}
-                text="Approve JAM JAZZ ( Shares )"
+                text="Approve Basis Share"
               />
             ) : isOldBoardroomMember ? (
               <>

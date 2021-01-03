@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import farmer from '../../assets/img/jamstacklogo.png';
+import farmer from '../../assets/img/farmer.png';
 
 const Logo: React.FC = () => {
   return (
     <StyledLogo>
       <img src={farmer} height="32" style={{ marginTop: -4 }} />
-      <StyledLink href="/">JAM CASH</StyledLink>
+      <StyledLink href="/">Basis Cash</StyledLink>
     </StyledLogo>
   );
 };
