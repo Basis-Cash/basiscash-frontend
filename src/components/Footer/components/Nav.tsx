@@ -23,9 +23,9 @@ const Nav: React.FC = () => {
       <StyledLink href="https://discord.gg/accqdzVhaP" target="_blank">
         Discord
       </StyledLink>
-      {/* <StyledLink href="https://medium.com/basis-cash" target="_blank">
+      <StyledLink href="https://medium.com/elasticbtc" target="_blank">
         Medium
-      </StyledLink> */}
+      </StyledLink>
     </StyledNav>
   );
 };
