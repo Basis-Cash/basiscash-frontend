@@ -1,6 +1,6 @@
 import React from 'react';
 
-import bacLogo from '../../assets/img/basis-cash-logo.svg';
+import bacLogo from '../../assets/img/Jamstack_Icon_Original_Transparent.png';
 import basLogo from '../../assets/img/basis-share-logo.svg';
 import babLogo from '../../assets/img/basis-bond-logo.svg';
 import yCRVLogo from '../../assets/img/ycrv.png';
