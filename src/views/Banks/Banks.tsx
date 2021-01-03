@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import styled from 'styled-components';
+import { useWallet } from 'use-wallet';
+import Button from '../../components/Button';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
 import Bank from '../Bank';
 import BankCards from './BankCards';
-import { useWallet } from 'use-wallet';
-import Button from '../../components/Button';
-import styled from 'styled-components';
 
 const Banks: React.FC = () => {
   const { path } = useRouteMatch();
@@ -16,13 +16,16 @@ const Banks: React.FC = () => {
     <Switch>
       <Page>
         <Route exact path={path}>
-          <PageHeader
-            icon={'🏦'}
-            title="Pick a Bank."
-            subtitle="Earn Basis Shares by providing liquidity"
-          />
           {!!account ? (
-            <BankCards />
+            <>
+              <PageHeader
+                icon={'🏦'}
+                title="Pick a Bank."
+                subtitle="Earn Elastic BTC Shares by providing liquidity"
+              />
+
+              <BankCards />
+            </>
           ) : (
             <Center>
               <Button onClick={() => connect('injected')} text="Unlock Wallet" />

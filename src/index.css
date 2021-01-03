@@ -1,5 +1,12 @@
 body {
-  background: #000000;
+  background: linear-gradient(
+    -90deg,
+    rgba(150, 101, 26, 1) 0%,
+    rgba(115, 71, 28, 1) 18%,
+    rgba(76, 52, 35, 1) 33%,
+    rgba(33, 36, 41, 1) 58%,
+    rgba(14, 16, 17, 1) 100%
+  );
   margin: 0;
   font-family: 'Nunito', sans-serif;
   font-size: 16px;
@@ -8,6 +15,5 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

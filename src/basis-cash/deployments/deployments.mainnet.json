@@ -3454,7 +3454,7 @@
       }
     ]
   },
-  "BACDAIPool": {
+  "EBTCDAIPool": {
     "address": "0xEBd12620E29Dc6c452dB7B96E1F190F3Ee02BDE8",
     "abi": [
       {
@@ -3937,7 +3937,7 @@
       }
     ]
   },
-  "BACSUSDPool": {
+  "EBTCSUSDPool": {
     "address": "0xDc42a21e38C3b8028b01A6B00D8dBC648f93305C",
     "abi": [
       {
@@ -4420,7 +4420,7 @@
       }
     ]
   },
-  "BACUSDCPool": {
+  "EBTCUSDCPool": {
     "address": "0x51882184b7F9BEEd6Db9c617846140DA1d429fD4",
     "abi": [
       {
@@ -4903,7 +4903,7 @@
       }
     ]
   },
-  "BACUSDTPool": {
+  "EBTCUSDTPool": {
     "address": "0x2833bdc5B31269D356BDf92d0fD8f3674E877E44",
     "abi": [
       {
@@ -5386,7 +5386,7 @@
       }
     ]
   },
-  "BACyCRVPool": {
+  "EBTCyCRVPool": {
     "address": "0xC462d8ee54953E7d7bF276612b75387Ea114c3bf",
     "abi": [
       {
@@ -5869,7 +5869,7 @@
       }
     ]
   },
-  "DAIBACLPTokenSharePool": {
+  "DAIEBTCLPTokenSharePool": {
     "address": "0x067d4D3CE63450E74F880F86b5b52ea3edF9Db0f",
     "abi": [
       {
@@ -6346,7 +6346,7 @@
       }
     ]
   },
-  "DAIBASLPTokenSharePool": {
+  "DAIEBSLPTokenSharePool": {
     "address": "0x9569d4CD7AC5B010DA5697E952EFB1EC0Efb0D0a",
     "abi": [
       {

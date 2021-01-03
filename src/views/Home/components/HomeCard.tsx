@@ -32,7 +32,7 @@ const HomeCard: React.FC<HomeCardProps> = ({
         <TokenSymbol symbol={symbol} />
         <CardSection>
           {stat ? (
-            <StyledValue>{(stat.priceInDAI !== '-' ? '$' : '') + stat.priceInDAI}</StyledValue>
+            <StyledValue>{(stat.priceInDAI !== '-' ? '₿' : '') + stat.priceInDAI}</StyledValue>
           ) : (
             <ValueSkeleton />
           )}

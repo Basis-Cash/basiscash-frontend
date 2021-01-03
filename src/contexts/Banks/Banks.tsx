@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Context from './context';
-import useBasisCash from '../../hooks/useBasisCash';
 import { Bank } from '../../basis-cash';
 import config, { bankDefinitions } from '../../config';
+import useBasisCash from '../../hooks/useBasisCash';
+import Context from './context';
 
 const Banks: React.FC = ({ children }) => {
   const [banks, setBanks] = useState<Bank[]>([]);
@@ -16,7 +16,10 @@ const Banks: React.FC = ({ children }) => {
         if (!basisCash.isUnlocked) continue;
 
         // only show pools staked by user
-        const balance = await basisCash.stakedBalanceOnBank(bankInfo.contract, basisCash.myAccount);
+        const balance = await basisCash.stakedBalanceOnBank(
+          bankInfo.contract,
+          basisCash.myAccount,
+        );
         if (balance.lte(0)) {
           continue;
         }
@@ -25,7 +28,7 @@ const Banks: React.FC = ({ children }) => {
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,
         depositToken: basisCash.externalTokens[bankInfo.depositTokenName],
-        earnToken: bankInfo.earnTokenName == 'BAC' ? basisCash.BAC : basisCash.BAS,
+        earnToken: bankInfo.earnTokenName == 'EBTC' ? basisCash.EBTC : basisCash.EBS,
       });
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));
@@ -34,8 +37,7 @@ const Banks: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (basisCash) {
-      fetchPools()
-        .catch(err => console.error(`Failed to fetch pools: ${err.stack}`));
+      fetchPools().catch((err) => console.error(`Failed to fetch pools: ${err.stack}`));
     }
   }, [basisCash, basisCash?.isUnlocked, fetchPools]);
 

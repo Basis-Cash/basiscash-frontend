@@ -1,21 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import { Contract } from 'ethers';
-
+import { Bank } from '../../../basis-cash';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
 import CardIcon from '../../../components/CardIcon';
 import Label from '../../../components/Label';
+import TokenSymbol from '../../../components/TokenSymbol';
 import Value from '../../../components/Value';
-
 import useEarnings from '../../../hooks/useEarnings';
 import useHarvest from '../../../hooks/useHarvest';
-
 import { getDisplayBalance } from '../../../utils/formatBalance';
-import TokenSymbol from '../../../components/TokenSymbol';
-import { Bank } from '../../../basis-cash';
 
 interface HarvestProps {
   bank: Bank;
@@ -25,7 +20,7 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
   const earnings = useEarnings(bank.contract);
   const { onReward } = useHarvest(bank);
 
-  const tokenName = bank.earnTokenName === 'BAS' ? 'Share' : 'Cash';
+  const tokenName = bank.earnTokenName === 'EBS' ? 'Share' : 'Cash';
   return (
     <Card>
       <CardContent>
@@ -38,7 +33,7 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
             <Label text={`Basis ${tokenName} Earned`} />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button onClick={onReward} disabled={earnings.eq(0)} text="Settle"  />
+            <Button onClick={onReward} disabled={earnings.eq(0)} text="Settle" />
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>

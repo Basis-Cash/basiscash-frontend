@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import Button from '../../../components/Button';
-import TokenSymbol from '../../../components/TokenSymbol';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
-import Label from '../../../components/Label';
-import Value from '../../../components/Value';
 import CardIcon from '../../../components/CardIcon';
-import useHarvestFromBoardroom from '../../../hooks/useHarvestFromBoardroom';
+import Label from '../../../components/Label';
+import TokenSymbol from '../../../components/TokenSymbol';
+import Value from '../../../components/Value';
 import useEarningsOnBoardroom from '../../../hooks/useEarningsOnBoardroom';
+import useHarvestFromBoardroom from '../../../hooks/useHarvestFromBoardroom';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 const Harvest: React.FC = ({}) => {
@@ -22,10 +21,10 @@ const Harvest: React.FC = ({}) => {
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>
-              <TokenSymbol symbol="BAC" />
+              <TokenSymbol symbol="EBTC" />
             </CardIcon>
             <Value value={getDisplayBalance(earnings)} />
-            <Label text="Basis Cash Earned" />
+            <Label text="Elastic Bitcoin Earned" />
           </StyledCardHeader>
           <StyledCardActions>
             <Button onClick={onReward} text="Claim Reward" disabled={earnings.eq(0)} />

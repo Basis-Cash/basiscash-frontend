@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import { Bank } from '../../basis-cash';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import CardContent from '../../components/CardContent';
 import CardIcon from '../../components/CardIcon';
-import useBanks from '../../hooks/useBanks';
-import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
+import TokenSymbol from '../../components/TokenSymbol';
+import useBanks from '../../hooks/useBanks';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
@@ -77,7 +76,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
   return (
     <StyledCardWrapper>
       {bank.depositTokenName.includes('LP') &&
-        (bank.depositTokenName.includes('BAS_DAI') ? (
+        (bank.depositTokenName.includes('EBS_DAI') ? (
           <StyledCardSuperAccent />
         ) : (
           <StyledCardAccent />

@@ -1,23 +1,22 @@
+import { BigNumber } from 'ethers';
 import React, { useCallback, useMemo } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
-
 import Button from '../../components/Button';
+import LaunchCountdown from '../../components/LaunchCountdown';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
-import ExchangeCard from './components/ExchangeCard';
-import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
-import useBondStats from '../../hooks/useBondStats';
+import config from '../../config';
 import useBasisCash from '../../hooks/useBasisCash';
 import useBondOraclePriceInLastTWAP from '../../hooks/useBondOraclePriceInLastTWAP';
-import { useTransactionAdder } from '../../state/transactions/hooks';
-import config from '../../config';
-import LaunchCountdown from '../../components/LaunchCountdown';
-import ExchangeStat from './components/ExchangeStat';
+import useBondStats from '../../hooks/useBondStats';
 import useTokenBalance from '../../hooks/useTokenBalance';
+import { useTransactionAdder } from '../../state/transactions/hooks';
 import { getDisplayBalance } from '../../utils/formatBalance';
-import { BigNumber } from 'ethers';
+import ExchangeCard from './components/ExchangeCard';
+import ExchangeStat from './components/ExchangeStat';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -27,14 +26,14 @@ const Bond: React.FC = () => {
   const bondStat = useBondStats();
   const cashPrice = useBondOraclePriceInLastTWAP();
 
-  const bondBalance = useTokenBalance(basisCash?.BAB);
+  const bondBalance = useTokenBalance(basisCash?.EBB);
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
       const tx = await basisCash.buyBonds(amount);
       const bondAmount = Number(amount) / Number(getDisplayBalance(cashPrice));
       addTransaction(tx, {
-        summary: `Buy ${bondAmount.toFixed(2)} BAB with ${amount} BAC`,
+        summary: `Buy ${bondAmount.toFixed(2)} EBB with ${amount} EBTC`,
       });
     },
     [basisCash, addTransaction, cashPrice],
@@ -43,7 +42,7 @@ const Bond: React.FC = () => {
   const handleRedeemBonds = useCallback(
     async (amount: string) => {
       const tx = await basisCash.redeemBonds(amount);
-      addTransaction(tx, { summary: `Redeem ${amount} BAB` });
+      addTransaction(tx, { summary: `Redeem ${amount} EBB` });
     },
     [basisCash, addTransaction],
   );
@@ -62,7 +61,7 @@ const Bond: React.FC = () => {
           />
           <LaunchCountdown
             deadline={config.bondLaunchesAt}
-            description="How does Basis bond work?"
+            description="How does Elastic BTC Bond work?"
             descriptionLink="https://docs.basis.cash/mechanisms/stabilization-mechanism"
           />
         </Page>
@@ -85,17 +84,17 @@ const Bond: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Purchase"
-                  fromToken={basisCash.BAC}
-                  fromTokenName="Basis Cash"
-                  toToken={basisCash.BAB}
-                  toTokenName="Basis Bond"
+                  fromToken={basisCash.EBTC}
+                  fromTokenName="Elastic Bitcoin"
+                  toToken={basisCash.EBB}
+                  toTokenName="Elastic BTC Bond"
                   priceDesc={
                     cashIsOverpriced
-                      ? 'BAC is over $1'
+                      ? 'EBTC is over ₿ 1'
                       : cashIsUnderPriced
                       ? `${Math.floor(
                           100 / Number(bondStat.priceInDAI) - 100,
-                        )}% return when BAC > $1`
+                        )}% return when EBTC > ₿ 1`
                       : '-'
                   }
                   onExchange={handleBuyBonds}
@@ -104,25 +103,25 @@ const Bond: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="BAC"
+                  tokenName="EBTC"
                   description="Base Price (Last-Day TWAP)"
                   price={getDisplayBalance(cashPrice, 18, 2)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="BAB"
-                  description="Current Price: (BAC)^2"
+                  tokenName="EBB"
+                  description="Current Price: (EBTC)^2"
                   price={bondStat?.priceInDAI || '-'}
                 />
               </StyledStatsWrapper>
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Redeem"
-                  fromToken={basisCash.BAB}
-                  fromTokenName="Basis Bond"
-                  toToken={basisCash.BAC}
-                  toTokenName="Basis Cash"
-                  priceDesc={`${getDisplayBalance(bondBalance)} BAB Available`}
+                  fromToken={basisCash.EBB}
+                  fromTokenName="Elastic BTC Bond"
+                  toToken={basisCash.EBTC}
+                  toTokenName="Elastic Bitcoin"
+                  priceDesc={`${getDisplayBalance(bondBalance)} EBB Available`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || cashIsUnderPriced}
                 />

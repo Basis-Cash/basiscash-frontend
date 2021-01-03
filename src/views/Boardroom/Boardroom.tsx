@@ -1,29 +1,27 @@
+import Humanize from 'humanize-plus';
+import moment from 'moment';
 import React, { useEffect, useMemo } from 'react';
+import { Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
-
 import Button from '../../components/Button';
+import LaunchCountdown from '../../components/LaunchCountdown';
+import Notice from '../../components/Notice';
+import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
-import Harvest from './components/Harvest';
-import Stake from './components/Stake';
-import { Switch } from 'react-router-dom';
-import Page from '../../components/Page';
+import config from '../../config';
+import useBoardroomVersion from '../../hooks/useBoardroomVersion';
+import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import useRedeemOnBoardroom from '../../hooks/useRedeemOnBoardroom';
 import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom';
-
-import config from '../../config';
-import LaunchCountdown from '../../components/LaunchCountdown';
-import Stat from './components/Stat';
-import ProgressCountdown from './components/ProgressCountdown';
-import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
-import useTreasuryAmount from '../../hooks/useTreasuryAmount';
-import Humanize from 'humanize-plus';
-import { getBalance } from '../../utils/formatBalance';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
-import Notice from '../../components/Notice';
-import useBoardroomVersion from '../../hooks/useBoardroomVersion';
-import moment from 'moment';
+import useTreasuryAmount from '../../hooks/useTreasuryAmount';
+import { getBalance } from '../../utils/formatBalance';
+import Harvest from './components/Harvest';
+import ProgressCountdown from './components/ProgressCountdown';
+import Stake from './components/Stake';
+import Stat from './components/Stat';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -59,7 +57,7 @@ const Boardroom: React.FC = () => {
             <br />
             The boardroom upgrade was successful. Please settle and withdraw your stake from the
             legacy boardroom, then stake again on the new boardroom contract{' '}
-            <b>to continue earning BAC seigniorage.</b>
+            <b>to continue earning EBTC seigniorage.</b>
           </Notice>
         </StyledNoticeWrapper>
       );
@@ -75,7 +73,7 @@ const Boardroom: React.FC = () => {
           <PageHeader
             icon={'🤝'}
             title="Join the Boardroom"
-            subtitle="Deposit Basis Shares and earn inflationary rewards"
+            subtitle="HODL Elastic BTC Shares and earn inflationary rewards"
           />
           <LaunchCountdown
             deadline={config.boardroomLaunchesAt}
@@ -95,7 +93,7 @@ const Boardroom: React.FC = () => {
             <PageHeader
               icon={'🤝'}
               title="Join the Boardroom"
-              subtitle="Deposit Basis Shares and earn inflationary rewards"
+              subtitle="HODL Elastic BTC Shares and earn inflationary rewards"
             />
             {migrateNotice}
             <StyledHeader>
@@ -106,8 +104,8 @@ const Boardroom: React.FC = () => {
               />
               <Stat
                 icon="💵"
-                title={cashStat ? `$${cashStat.priceInDAI}` : '-'}
-                description="BAC Price (TWAP)"
+                title={cashStat ? `₿ ${cashStat.priceInDAI}` : '-'}
+                description="EBTC Price (TWAP)"
               />
               <Stat
                 icon="🚀"
@@ -118,7 +116,7 @@ const Boardroom: React.FC = () => {
                 icon="💰"
                 title={
                   treasuryAmount
-                    ? `~$${Humanize.compactInteger(getBalance(treasuryAmount), 2)}`
+                    ? `~₿ ${Humanize.compactInteger(getBalance(treasuryAmount), 2)}`
                     : '-'
                 }
                 description="Treasury Amount"

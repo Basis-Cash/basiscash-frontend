@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
-
+import { Bank as BankEntity } from '../../basis-cash';
 import Button from '../../components/Button';
 import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
-import Harvest from './components/Harvest';
-import Stake from './components/Stake';
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-import { Bank as BankEntity } from '../../basis-cash';
+import Harvest from './components/Harvest';
+import Stake from './components/Stake';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -58,12 +56,14 @@ const Bank: React.FC = () => {
 const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let pairName: string;
   let uniswapUrl: string;
-  if (bank.depositTokenName.includes('BAC')) {
-    pairName = 'BAC-DAI pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0x3449FC1Cd036255BA1EB19d65fF4BA2b8903A69a/0x6B175474E89094C44Da98b954EedeAC495271d0F';
+  if (bank.depositTokenName.includes('EBTC')) {
+    pairName = 'EBTC-DAI pair';
+    uniswapUrl =
+      'https://app.uniswap.org/#/add/0x3449FC1Cd036255BA1EB19d65fF4BA2b8903A69a/0x6B175474E89094C44Da98b954EedeAC495271d0F';
   } else {
-    pairName = 'BAS-DAI pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0xa7ED29B253D8B4E3109ce07c80fc570f81B63696/0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    pairName = 'EBS-DAI pair';
+    uniswapUrl =
+      'https://app.uniswap.org/#/add/0xa7ED29B253D8B4E3109ce07c80fc570f81B63696/0x6B175474E89094C44Da98b954EedeAC495271d0F';
   }
   return (
     <StyledLink href={uniswapUrl} target="_blank">

@@ -1,17 +1,16 @@
-import { Fetcher, Route, Token } from '@uniswap/sdk';
-import { Configuration } from './config';
-import { ContractName, TokenStat, TreasuryAllocationTime } from './types';
-import { BigNumber, Contract, ethers, Overrides } from 'ethers';
-import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
-import ERC20 from './ERC20';
+import { Fetcher, Route, Token } from '@uniswap/sdk';
+import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
+import { Configuration } from './config';
+import ERC20 from './ERC20';
+import { decimalToBalance } from './ether-utils';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
-import { parseUnits } from 'ethers/lib/utils';
+import { ContractName, TokenStat, TreasuryAllocationTime } from './types';
 
 /**
- * An API module of Basis Cash contracts.
+ * An API module of Elastic Bitcoin contracts.
  * All contract-interacting domain logic should be defined in here.
  */
 export class BasisCash {
@@ -24,9 +23,9 @@ export class BasisCash {
   boardroomVersionOfUser?: string;
 
   bacDai: Contract;
-  BAC: ERC20;
-  BAS: ERC20;
-  BAB: ERC20;
+  EBTC: ERC20;
+  EBS: ERC20;
+  EBB: ERC20;
 
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
@@ -41,13 +40,13 @@ export class BasisCash {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal); // TODO: add decimal
     }
-    this.BAC = new ERC20(deployments.Cash.address, provider, 'BAC');
-    this.BAS = new ERC20(deployments.Share.address, provider, 'BAS');
-    this.BAB = new ERC20(deployments.Bond.address, provider, 'BAB');
+    this.EBTC = new ERC20(deployments.Cash.address, provider, 'EBTC');
+    this.EBS = new ERC20(deployments.Share.address, provider, 'EBS');
+    this.EBB = new ERC20(deployments.Bond.address, provider, 'EBB');
 
     // Uniswap V2 Pair
     this.bacDai = new Contract(
-      externalTokens['BAC_DAI-UNI-LPv2'][0],
+      externalTokens['EBTC_DAI-UNI-LPv2'][0],
       IUniswapV2PairABI,
       provider,
     );
@@ -68,7 +67,7 @@ export class BasisCash {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    const tokens = [this.BAC, this.BAS, this.BAB, ...Object.values(this.externalTokens)];
+    const tokens = [this.EBTC, this.EBS, this.EBB, ...Object.values(this.externalTokens)];
     for (const token of tokens) {
       token.connect(this.signer);
     }
@@ -95,19 +94,19 @@ export class BasisCash {
   }
 
   /**
-   * @returns Basis Cash (BAC) stats from Uniswap.
-   * It may differ from the BAC price used on Treasury (which is calculated in TWAP)
+   * @returns Elastic Bitcoin (EBTC) stats from Uniswap.
+   * It may differ from the EBTC price used on Treasury (which is calculated in TWAP)
    */
   async getCashStatFromUniswap(): Promise<TokenStat> {
-    const supply = await this.BAC.displayedTotalSupply();
+    const supply = await this.EBTC.displayedTotalSupply();
     return {
-      priceInDAI: await this.getTokenPriceFromUniswap(this.BAC),
+      priceInDAI: await this.getTokenPriceFromUniswap(this.EBTC),
       totalSupply: supply,
     };
   }
 
   /**
-   * @returns Estimated Basis Cash (BAC) price data,
+   * @returns Estimated Elastic Bitcoin (EBTC) price data,
    * calculated by 1-day Time-Weight Averaged Price (TWAP).
    */
   async getCashStatInEstimatedTWAP(): Promise<TokenStat> {
@@ -126,7 +125,7 @@ export class BasisCash {
       .div(elapsedSec)
       .div(denominator112);
 
-    const totalSupply = await this.BAC.displayedTotalSupply();
+    const totalSupply = await this.EBTC.displayedTotalSupply();
     return {
       priceInDAI: getDisplayBalance(cashPriceTWAP),
       totalSupply,
@@ -151,14 +150,14 @@ export class BasisCash {
 
     return {
       priceInDAI: getDisplayBalance(bondPrice),
-      totalSupply: await this.BAB.displayedTotalSupply(),
+      totalSupply: await this.EBB.displayedTotalSupply(),
     };
   }
 
   async getShareStat(): Promise<TokenStat> {
     return {
-      priceInDAI: await this.getTokenPriceFromUniswap(this.BAS),
-      totalSupply: await this.BAS.displayedTotalSupply(),
+      priceInDAI: await this.getTokenPriceFromUniswap(this.EBS),
+      totalSupply: await this.EBS.displayedTotalSupply(),
     };
   }
 
@@ -186,7 +185,10 @@ export class BasisCash {
    */
   async buyBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.buyBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
+    return await Treasury.buyBonds(
+      decimalToBalance(amount),
+      await this.getBondOraclePriceInLastTWAP(),
+    );
   }
 
   /**
@@ -195,7 +197,10 @@ export class BasisCash {
    */
   async redeemBonds(amount: string): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.redeemBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
+    return await Treasury.redeemBonds(
+      decimalToBalance(amount),
+      await this.getBondOraclePriceInLastTWAP(),
+    );
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
@@ -268,14 +273,14 @@ export class BasisCash {
     const balance1 = await Boardroom1.getShareOf(this.myAccount);
     if (balance1.gt(0)) {
       console.log(
-        `👀 The user is using Boardroom v1. (Staked ${getDisplayBalance(balance1)} BAS)`,
+        `👀 The user is using Boardroom v1. (Staked ${getDisplayBalance(balance1)} EBS)`,
       );
       return 'v1';
     }
     const balance2 = await Boardroom2.balanceOf(this.myAccount);
     if (balance2.gt(0)) {
       console.log(
-        `👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} BAS)`,
+        `👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} EBS)`,
       );
       return 'v2';
     }
@@ -283,13 +288,14 @@ export class BasisCash {
   }
 
   boardroomByVersion(version: string): Contract {
-    if (version === 'v1') {
-      return this.contracts.Boardroom1;
-    }
-    if (version === 'v2') {
-      return this.contracts.Boardroom2;
-    }
-    return this.contracts.Boardroom3;
+    // if (version === 'v1') {
+    //   return this.contracts.Boardroom1;
+    // }
+    // if (version === 'v2') {
+    //   return this.contracts.Boardroom2;
+    // }
+    // return this.contracts.Boardroom3;
+    return this.contracts.Boardroom;
   }
 
   currentBoardroom(): Contract {
@@ -305,7 +311,7 @@ export class BasisCash {
 
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
     if (this.isOldBoardroomMember()) {
-      throw new Error("you're using old Boardroom. please withdraw and deposit the BAS again.");
+      throw new Error("you're using old Boardroom. please withdraw and deposit the EBS again.");
     }
     const Boardroom = this.currentBoardroom();
     return await Boardroom.stake(decimalToBalance(amount));

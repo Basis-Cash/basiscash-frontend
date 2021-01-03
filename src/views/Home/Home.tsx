@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
+import config from '../../config';
+import useBasisCash from '../../hooks/useBasisCash';
 import HomeCard from './components/HomeCard';
 import { OverviewData } from './types';
-import useBasisCash from '../../hooks/useBasisCash';
-import config from '../../config';
-import Notice from '../../components/Notice';
 
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
@@ -29,24 +28,24 @@ const Home: React.FC = () => {
     if (basisCash) {
       fetchStats().catch((err) => console.error(err.stack));
     }
-  }, [basisCash]);
+  }, [basisCash, fetchStats]);
 
-  const cashAddr = useMemo(() => basisCash?.BAC.address, [basisCash]);
-  const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
-  const bondAddr = useMemo(() => basisCash?.BAB.address, [basisCash]);
+  const cashAddr = useMemo(() => basisCash?.EBTC.address, [basisCash]);
+  const shareAddr = useMemo(() => basisCash?.EBS.address, [basisCash]);
+  const bondAddr = useMemo(() => basisCash?.EBB.address, [basisCash]);
 
   return (
     <Page>
       <PageHeader
         icon="👋"
-        subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
-        title="Welcome to Basis Cash!"
+        subtitle="Buy, sell, and provide liquidity for Elastic Bitcoin and Elastic BTC Shares on Uniswap"
+        title="Welcome to Elastic Bitcoin!"
       />
       <Spacer size="md" />
       <CardWrapper>
         <HomeCard
-          title="Basis Cash"
-          symbol="BAC"
+          title="Elastic Bitcoin"
+          symbol="EBTC"
           color="#EEA7ED"
           supplyLabel="Circulating Supply"
           address={cashAddr}
@@ -54,16 +53,16 @@ const Home: React.FC = () => {
         />
         <Spacer size="lg" />
         <HomeCard
-          title="Basis Share"
-          symbol="BAS"
+          title="Elastic BTC Share"
+          symbol="EBS"
           color="#E83725"
           address={shareAddr}
           stat={share}
         />
         <Spacer size="lg" />
         <HomeCard
-          title="Basis Bond"
-          symbol="BAB"
+          title="Elastic BTC Bond"
+          symbol="EBB"
           color="#ECF25C"
           address={bondAddr}
           stat={bond}

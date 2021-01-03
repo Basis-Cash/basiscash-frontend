@@ -1,8 +1,8 @@
-![Basis Cash Title Image](https://raw.githubusercontent.com/Basis-Cash/basiscash-protocol/master/assets/bg.jpeg)
+![Elastic Bitcoin Title Image](https://raw.githubusercontent.com/elasticbtc/elasticbtc-frontend/master/public/header.jpg)
 
-# Basis Cash  Interface
+# Elastic Bitcoin Interface
 
-This is front-end repository of the [basis.cash](https://basis.cash/).
+This is front-end repository of the [Elastic Bitcoin](https://elasticbtc.fi/).
 
 ## 💻 Set Up Environment
 
@@ -29,7 +29,7 @@ After it, you can launch the development server with following command.
 ## 👩‍🌾 If You Want to Bring Your Own Contract...
 
 If you want to use different contract deployment on development,
-please build [basiscash-protocol](https://github.com/Basis-Cash/basiscash-protocol) and copy-n-paste 
+please build [elasticbtc-protocol](https://github.com/elasticbtc/elasticbtc-protocol) and copy-n-paste
 the deployment information generated on `build/deployment.<network>.json` into this project's deployment directory,
 which is `src/basis-cash/deployments`.
 
