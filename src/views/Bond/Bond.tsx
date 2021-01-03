@@ -1,8 +1,8 @@
-import { BigNumber } from 'ethers';
 import React, { useCallback, useMemo } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
+import { BOND_REDEEM_PRICE, BOND_REDEEM_PRICE_BN } from '../../basis-cash/constants';
 import Button from '../../components/Button';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import Page from '../../components/Page';
@@ -46,8 +46,8 @@ const Bond: React.FC = () => {
     },
     [basisCash, addTransaction],
   );
-  const cashIsOverpriced = useMemo(() => cashPrice.gt(BigNumber.from(10).pow(18)), [cashPrice]);
-  const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
+  const isBondRedeemable = useMemo(() => cashPrice.gt(BOND_REDEEM_PRICE_BN), [cashPrice]);
+  const isBondPurchasable = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
 
   const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
   if (!isLaunched) {
@@ -89,22 +89,20 @@ const Bond: React.FC = () => {
                   toToken={basisCash.EBB}
                   toTokenName="Elastic BTC Bond"
                   priceDesc={
-                    cashIsOverpriced
+                    !isBondPurchasable
                       ? 'EBTC is over ₿ 1'
-                      : cashIsUnderPriced
-                      ? `${Math.floor(
+                      : `${Math.floor(
                           100 / Number(bondStat.priceInDAI) - 100,
                         )}% return when EBTC > ₿ 1`
-                      : '-'
                   }
                   onExchange={handleBuyBonds}
-                  disabled={!bondStat || cashIsOverpriced}
+                  disabled={!bondStat || isBondRedeemable}
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
                   tokenName="EBTC"
-                  description="Base Price (Last-Day TWAP)"
+                  description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 2)}
                 />
                 <Spacer size="md" />
@@ -123,7 +121,10 @@ const Bond: React.FC = () => {
                   toTokenName="Elastic Bitcoin"
                   priceDesc={`${getDisplayBalance(bondBalance)} EBB Available`}
                   onExchange={handleRedeemBonds}
-                  disabled={!bondStat || bondBalance.eq(0) || cashIsUnderPriced}
+                  disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
+                  disabledDescription={
+                    !isBondRedeemable ? `Enabled when BAC > $${BOND_REDEEM_PRICE}` : null
+                  }
                 />
               </StyledCardWrapper>
             </StyledBond>

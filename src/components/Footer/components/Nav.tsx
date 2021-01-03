@@ -1,9 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import config from '../../../config';
 
 const Nav: React.FC = () => {
   return (
     <StyledNav>
+      <StyledLink href={buyBAS} target="_blank">
+        Get BAS
+      </StyledLink>
+      <StyledLink href={buyBAC} target="_blank">
+        Get BAC
+      </StyledLink>
       <StyledLink href="https://github.com/ElasticBTC" target="_blank">
         GitHub
       </StyledLink>
@@ -13,7 +20,7 @@ const Nav: React.FC = () => {
       <StyledLink href="https://t.me/basiscash" target="_blank">
         Telegram
       </StyledLink>
-      <StyledLink href="https://discord.gg/UEZq3HF5Eu" target="_blank">
+      <StyledLink href="https://discord.gg/accqdzVhaP" target="_blank">
         Discord
       </StyledLink>
       <StyledLink href="https://medium.com/basis-cash" target="_blank">
@@ -38,4 +45,6 @@ const StyledLink = styled.a`
   }
 `;
 
+const buyBAS = `https://uniswap.exchange/swap?inputCurrency=${config.externalTokens.WBTC[0]}&outputCurrency=${config.deployments.Share}`;
+const buyBAC = `https://uniswap.exchange/swap?inputCurrency=${config.externalTokens.WBTC[0]}&outputCurrency=${config.deployments.Cash}`;
 export default Nav;
