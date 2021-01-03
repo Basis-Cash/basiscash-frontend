@@ -8,7 +8,7 @@ const configurations: { [env: string]: Configuration } = {
   development: {
     chainId: ChainId.MAINNET,
     etherscanUrl: 'https://etherscan.io',
-    defaultProvider: 'https://mainnet.infura.io/v3/9afe2a08386146b9b2b833ba4b51e90a',
+    defaultProvider: 'https://mainnet.infura.io/v3/06ecf536272c43c78adfba29b908a68d',
     deployments: require('./basis-cash/deployments/deployments.mainnet.json'),
     externalTokens: {
       DAI: ['0x6B175474E89094C44Da98b954EedeAC495271d0F', 18],
@@ -28,7 +28,7 @@ const configurations: { [env: string]: Configuration } = {
   production: {
     chainId: ChainId.MAINNET,
     etherscanUrl: 'https://etherscan.io',
-    defaultProvider: 'https://mainnet.infura.io/v3/9afe2a08386146b9b2b833ba4b51e90a',
+    defaultProvider: 'https://mainnet.infura.io/v3/06ecf536272c43c78adfba29b908a68d',
     deployments: require('./basis-cash/deployments/deployments.mainnet.json'),
     externalTokens: {
       DAI: ['0x6B175474E89094C44Da98b954EedeAC495271d0F', 18],

@@ -10,13 +10,14 @@ import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
 import useBondStats from '../../hooks/useBondStats';
 import useBasisCash from '../../hooks/useBasisCash';
+import useBondOraclePriceInLastTWAP from '../../hooks/useBondOraclePriceInLastTWAP';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
-import useCashPriceInLastTWAP from '../../hooks/useCashPriceInLastTWAP';
+import { BOND_REDEEM_PRICE, BOND_REDEEM_PRICE_BN } from '../../basis-cash/constants';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -24,7 +25,7 @@ const Bond: React.FC = () => {
   const basisCash = useBasisCash();
   const addTransaction = useTransactionAdder();
   const bondStat = useBondStats();
-  const cashPrice = useCashPriceInLastTWAP();
+  const cashPrice = useBondOraclePriceInLastTWAP();
 
   const bondBalance = useTokenBalance(basisCash?.BAB);
 
@@ -46,8 +47,8 @@ const Bond: React.FC = () => {
     },
     [basisCash, addTransaction],
   );
-  const cashIsOverpriced = useMemo(() => cashPrice.gt(1.0), [cashPrice]);
-  const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
+  const isBondRedeemable = useMemo(() => cashPrice.gt(BOND_REDEEM_PRICE_BN), [cashPrice]);
+  const isBondPurchasable = useMemo(() => Number(bondStat?.priceInDAI) < 1.0, [bondStat]);
 
   const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
   if (!isLaunched) {
@@ -89,22 +90,20 @@ const Bond: React.FC = () => {
                   toToken={basisCash.BAB}
                   toTokenName="Basis Bond"
                   priceDesc={
-                    cashIsOverpriced
+                    !isBondPurchasable
                       ? 'BAC is over $1'
-                      : cashIsUnderPriced
-                      ? `${Math.floor(
+                      : `${Math.floor(
                           100 / Number(bondStat.priceInDAI) - 100,
                         )}% return when BAC > $1`
-                      : '-'
                   }
                   onExchange={handleBuyBonds}
-                  disabled={!bondStat || cashIsOverpriced}
+                  disabled={!bondStat || isBondRedeemable}
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
                   tokenName="BAC"
-                  description="Base Price (Last-Day TWAP)"
+                  description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 2)}
                 />
                 <Spacer size="md" />
@@ -123,7 +122,8 @@ const Bond: React.FC = () => {
                   toTokenName="Basis Cash"
                   priceDesc={`${getDisplayBalance(bondBalance)} BAB Available`}
                   onExchange={handleRedeemBonds}
-                  disabled={!bondStat || bondBalance.eq(0) || cashIsUnderPriced}
+                  disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
+                  disabledDescription={!isBondRedeemable ? `Enabled when BAC > $${BOND_REDEEM_PRICE}` : null}
                 />
               </StyledCardWrapper>
             </StyledBond>

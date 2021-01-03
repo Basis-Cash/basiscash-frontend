@@ -27,27 +27,13 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (basisCash) {
-      fetchStats()
-        .catch(err => console.error(err.stack));
+      fetchStats().catch((err) => console.error(err.stack));
     }
   }, [basisCash]);
 
   const cashAddr = useMemo(() => basisCash?.BAC.address, [basisCash]);
   const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
   const bondAddr = useMemo(() => basisCash?.BAB.address, [basisCash]);
-
-  //make time for aus
-  const dateToTime = (date: Date) => date.toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric'
-});
-
-const dateString = "2020-12-11T00:00:00Z";
-const userOffset = new Date().getTimezoneOffset()*60*1000;
-const localDate = new Date(dateString);
-const utcDate = new Date(localDate.getTime() + userOffset);
-
- console.log(`${dateToTime(utcDate)} (${dateToTime(localDate)} Your Time)`);
 
   return (
     <Page>
@@ -56,34 +42,19 @@ const utcDate = new Date(localDate.getTime() + userOffset);
         subtitle="Buy, sell, and provide liquidity for Basis Cash and Basis Shares on Uniswap"
         title="Welcome to Basis Cash!"
       />
-      <StyledNoticeContainer>
-        <Notice>
-          Boardroom Seigniorage starts at <b>JAMUARY 11 (Fri) 12:00am UTC</b>.
-          For those who have already deposited Basis Shares into the Boardroom,&nbsp;
-         <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
-
-         <h3>Fix the time</h3>
-         
-         UTC Date: Friday {dateToTime(utcDate)} 
-         <br></br>
-         
-         Local Date: Friday {dateToTime(localDate)}
-
-         
-        </Notice>
-      </StyledNoticeContainer>
       <Spacer size="md" />
       <CardWrapper>
         <HomeCard
-          title={'Basis Cash'}
+          title="Basis Cash"
           symbol="BAC"
           color="#EEA7ED"
+          supplyLabel="Circulating Supply"
           address={cashAddr}
           stat={cash}
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'Basis Share'}
+          title="Basis Share"
           symbol="BAS"
           color="#E83725"
           address={shareAddr}
@@ -91,7 +62,7 @@ const utcDate = new Date(localDate.getTime() + userOffset);
         />
         <Spacer size="lg" />
         <HomeCard
-          title={'Basis Bond'}
+          title="Basis Bond"
           symbol="BAB"
           color="#ECF25C"
           address={bondAddr}
@@ -125,18 +96,19 @@ const CardWrapper = styled.div`
 `;
 
 const StyledNoticeContainer = styled.div`
-  width: 768px;
+  max-width: 768px;
+  width: 90vw;
 `;
 
 const StyledSpacer = styled.div`
-  height: ${props => props.theme.spacing[4]}px;
-  width: ${props => props.theme.spacing[4]}px;
+  height: ${(props) => props.theme.spacing[4]}px;
+  width: ${(props) => props.theme.spacing[4]}px;
 `;
 
 const StyledLink = styled.a`
   font-weight: 700;
   text-decoration: none;
-  color: ${props => props.theme.color.primary.main};
+  color: ${(props) => props.theme.color.primary.main};
 `;
 
 export default Home;

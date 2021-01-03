@@ -20,6 +20,7 @@
     "bignumber.js": "^9.0.0",
     "ethers": "^5.0.12",
     "humanize-plus": "^1.8.2",
+    "moment": "^2.29.1",
     "numeral": "^2.0.6",
     "react": "^16.13.1",
     "react-circular-progressbar": "^2.0.3",
@@ -40,8 +41,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI= GENERATE_SOURCEMAP=false react-scripts build",
-    "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
-    "crossenvbuild": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

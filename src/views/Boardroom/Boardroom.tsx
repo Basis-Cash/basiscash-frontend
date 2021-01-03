@@ -16,12 +16,14 @@ import config from '../../config';
 import LaunchCountdown from '../../components/LaunchCountdown';
 import Stat from './components/Stat';
 import ProgressCountdown from './components/ProgressCountdown';
-import useCashStatsFromTreasury from '../../hooks/useCashStatsFromTreasury';
+import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import Humanize from 'humanize-plus';
 import { getBalance } from '../../utils/formatBalance';
-import useLastTreasuryAllocationTime from '../../hooks/useLastTreasuryAllocationTime';
+import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import Notice from '../../components/Notice';
+import useBoardroomVersion from '../../hooks/useBoardroomVersion';
+import moment from 'moment';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -29,16 +31,41 @@ const Boardroom: React.FC = () => {
   const { onRedeem } = useRedeemOnBoardroom();
   const stakedBalance = useStakedBalanceOnBoardroom();
 
-  const cashStat = useCashStatsFromTreasury();
+  const cashStat = useCashPriceInEstimatedTWAP();
   const treasuryAmount = useTreasuryAmount();
   const scalingFactor = useMemo(
     () => (cashStat ? Number(cashStat.priceInDAI).toFixed(2) : null),
     [cashStat],
   );
-  const lastAllocation = useLastTreasuryAllocationTime();
-  const nextAllocation = new Date(
-    lastAllocation.getTime() + config.treasuryAllocationDelayInSec * 1000,
+  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
+
+  const prevEpoch = useMemo(
+    () =>
+      nextAllocation.getTime() <= Date.now()
+        ? moment().utc().startOf('day').toDate()
+        : prevAllocation,
+    [prevAllocation, nextAllocation],
   );
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(1, 'days').toDate(), [prevEpoch]);
+
+  const boardroomVersion = useBoardroomVersion();
+  const usingOldBoardroom = boardroomVersion !== 'latest';
+  const migrateNotice = useMemo(() => {
+    if (boardroomVersion === 'v2') {
+      return (
+        <StyledNoticeWrapper>
+          <Notice color="green">
+            <b>Please Migrate into New Boardroom</b>
+            <br />
+            The boardroom upgrade was successful. Please settle and withdraw your stake from the
+            legacy boardroom, then stake again on the new boardroom contract{' '}
+            <b>to continue earning BAC seigniorage.</b>
+          </Notice>
+        </StyledNoticeWrapper>
+      );
+    }
+    return <></>;
+  }, [boardroomVersion]);
 
   const isLaunched = Date.now() >= config.boardroomLaunchesAt.getTime();
   if (!isLaunched) {
@@ -70,18 +97,12 @@ const Boardroom: React.FC = () => {
               title="Join the Boardroom"
               subtitle="Deposit Basis Shares and earn inflationary rewards"
             />
-            <StyledNoticeWrapper>
-              <Notice color="yellow">
-                Boardroom Seigniorage starts at <b>Dec 11 (Fri) 12:00am UTC</b>.
-                For those who have already deposited Basis Shares into the Boardroom,&nbsp;
-                <b>we recommend that you withdraw your tokens and deposit them into the new boardroom contract</b>.
-              </Notice>
-            </StyledNoticeWrapper>
+            {migrateNotice}
             <StyledHeader>
               <ProgressCountdown
-                base={lastAllocation}
-                deadline={nextAllocation}
-                description="Next Seigniorage"
+                base={prevEpoch}
+                deadline={nextEpoch}
+                description="Next Epoch"
               />
               <Stat
                 icon="💵"
@@ -114,14 +135,19 @@ const Boardroom: React.FC = () => {
                 </StyledCardWrapper>
               </StyledCardsWrapper>
               <Spacer size="lg" />
-              <div>
-                <Button
-                  disabled={stakedBalance.eq(0)}
-                  onClick={onRedeem}
-                  text="Settle & Withdraw"
-                />
-              </div>
-              <Spacer size="lg" />
+              {!usingOldBoardroom && (
+                // for old boardroom users, the button is displayed in Stake component
+                <>
+                  <div>
+                    <Button
+                      disabled={stakedBalance.eq(0)}
+                      onClick={onRedeem}
+                      text="Settle & Withdraw"
+                    />
+                  </div>
+                  <Spacer size="lg" />
+                </>
+              )}
             </StyledBoardroom>
           </>
         ) : (
@@ -170,7 +196,7 @@ const StyledHeader = styled.div`
 `;
 
 const StyledNoticeWrapper = styled.div`
-  width: 960px;
+  width: 768px;
   margin-top: -20px;
   margin-bottom: 40px;
 `;

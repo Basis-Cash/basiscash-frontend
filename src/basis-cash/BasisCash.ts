@@ -8,7 +8,6 @@ import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
-import { parseUnits } from 'ethers/lib/utils';
 
 /**
  * An API module of Basis Cash contracts.
@@ -135,13 +134,18 @@ export class BasisCash {
 
   async getCashPriceInLastTWAP(): Promise<BigNumber> {
     const { Treasury } = this.contracts;
-    return Treasury.getCashPrice();
+    return Treasury.getSeigniorageOraclePrice();
+  }
+
+  async getBondOraclePriceInLastTWAP(): Promise<BigNumber> {
+    const { Treasury } = this.contracts;
+    return Treasury.getBondOraclePrice();
   }
 
   async getBondStat(): Promise<TokenStat> {
     const decimals = BigNumber.from(10).pow(18);
 
-    const cashPrice: BigNumber = await this.getCashPriceInLastTWAP();
+    const cashPrice: BigNumber = await this.getBondOraclePriceInLastTWAP();
     const bondPrice = cashPrice.pow(2).div(decimals);
 
     return {
@@ -181,7 +185,7 @@ export class BasisCash {
    */
   async buyBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.buyBonds(decimalToBalance(amount));
+    return await Treasury.buyBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
   }
 
   /**
@@ -190,7 +194,7 @@ export class BasisCash {
    */
   async redeemBonds(amount: string): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.redeemBonds(decimalToBalance(amount));
+    return await Treasury.redeemBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
@@ -343,7 +347,7 @@ export class BasisCash {
   async getTreasuryNextAllocationTime(): Promise<TreasuryAllocationTime> {
     const { Treasury } = this.contracts;
     const nextEpochTimestamp: BigNumber = await Treasury.nextEpochPoint();
-    const period: BigNumber = await Treasury.PERIOD();
+    const period: BigNumber = await Treasury.getPeriod();
 
     const nextAllocation = new Date(nextEpochTimestamp.mul(1000).toNumber());
     const prevAllocation = new Date(nextAllocation.getTime() - period.toNumber() * 1000);
