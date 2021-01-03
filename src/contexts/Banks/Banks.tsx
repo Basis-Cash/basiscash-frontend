@@ -15,13 +15,19 @@ const Banks: React.FC = ({ children }) => {
       if (bankInfo.finished) {
         if (!basisCash.isUnlocked) continue;
 
-        // only show pools staked by user
-        const balance = await basisCash.stakedBalanceOnBank(
-          bankInfo.contract,
-          basisCash.myAccount,
-        );
-        if (balance.lte(0)) {
-          continue;
+        try {
+          // only show pools staked by user
+          const balance = await basisCash.stakedBalanceOnBank(
+            bankInfo.contract,
+            basisCash.myAccount,
+          );
+          if (balance.lte(0)) {
+            continue;
+          }
+        } catch (e) {
+          const nextErr = new Error(`could not fetch pool ${bankInfo.contract}: ${e.message}`);
+          nextErr.stack = e.stack;
+          throw nextErr;
         }
       }
       banks.push({
@@ -37,7 +43,7 @@ const Banks: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (basisCash) {
-      fetchPools().catch((err) => console.error(`Failed to fetch pools: ${err.stack}`));
+      fetchPools().catch((err) => console.error(`Failed to fetch pools: ${err.message}`, err));
     }
   }, [basisCash, basisCash?.isUnlocked, fetchPools]);
 
