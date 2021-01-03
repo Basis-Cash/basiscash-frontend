@@ -114,4 +114,6 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
 };
 
-export default configurations[process.env.ETH_NETWORK || 'mainnet'];
+const urlParams = new URLSearchParams(window.location.search);
+
+export default configurations[urlParams.get('network') || 'mainnet'];
