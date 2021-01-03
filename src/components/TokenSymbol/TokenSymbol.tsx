@@ -13,7 +13,7 @@ const logosBySymbol: { [title: string]: string } = {
   EBTC: bacLogo,
   EBB: babLogo,
   EBS: basLogo,
-  'EBTC_DAI-UNI-LPv2': bacLogo,
+  'EBTC_WBTC-UNI-LPv2': bacLogo,
   'EBS_DAI-UNI-LPv2': basLogo,
 
   // farms

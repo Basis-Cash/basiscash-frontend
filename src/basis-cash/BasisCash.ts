@@ -46,7 +46,7 @@ export class BasisCash {
 
     // Uniswap V2 Pair
     this.bacDai = new Contract(
-      externalTokens['EBTC_DAI-UNI-LPv2'][0],
+      externalTokens['EBTC_WBTC-UNI-LPv2'][0],
       IUniswapV2PairABI,
       provider,
     );
