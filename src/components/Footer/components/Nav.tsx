@@ -45,6 +45,6 @@ const StyledLink = styled.a`
   }
 `;
 
-const buyBAS = `https://uniswap.exchange/swap?inputCurrency=${config.externalTokens.WBTC[0]}&outputCurrency=${config.deployments.Share}`;
-const buyBAC = `https://uniswap.exchange/swap?inputCurrency=${config.externalTokens.WBTC[0]}&outputCurrency=${config.deployments.Cash}`;
+const buyBAS = `https://uniswap.exchange/swap?inputCurrency=${config.externalTokens.WBTC[0]}&outputCurrency=${config.deployments.Share.address}`;
+const buyBAC = `https://uniswap.exchange/swap?inputCurrency=${config.externalTokens.WBTC[0]}&outputCurrency=${config.deployments.Cash.address}`;
 export default Nav;
