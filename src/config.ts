@@ -3,10 +3,10 @@ import { BankInfo } from './basis-cash';
 import { Configuration } from './basis-cash/config';
 
 const configurations: { [env: string]: Configuration } = {
-  development: {
+  kovan: {
     chainId: ChainId.KOVAN,
     etherscanUrl: 'https://etherscan.io',
-    defaultProvider: 'https://kovan.infura.io/v3/06ecf536272c43c78adfba29b908a68d',
+    defaultProvider: 'https://kovan.infura.io/v3/94f21f1a0b3742edb96db570b952930b',
     deployments: require('./basis-cash/deployments/deployments.kovan.json'),
     externalTokens: {
       WBTC: ['0xf66fedfe24fc5f0b548d5b28ac4608ddf87648bb', 8],
@@ -24,10 +24,10 @@ const configurations: { [env: string]: Configuration } = {
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
   },
-  production: {
+  mainnet: {
     chainId: ChainId.MAINNET,
     etherscanUrl: 'https://etherscan.io',
-    defaultProvider: 'https://mainnet.infura.io/v3/06ecf536272c43c78adfba29b908a68d',
+    defaultProvider: 'https://mainnet.infura.io/v3/94f21f1a0b3742edb96db570b952930b',
     deployments: require('./basis-cash/deployments/deployments.mainnet.json'),
     externalTokens: {
       WBTC: ['0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 8],
@@ -114,4 +114,4 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
 };
 
-export default configurations[process.env.NODE_ENV || 'development'];
+export default configurations[process.env.ETH_NETWORK || 'mainnet'];
