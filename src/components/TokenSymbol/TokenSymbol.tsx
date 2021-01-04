@@ -1,8 +1,8 @@
 import React from 'react';
 
-import bacLogo from '../../assets/img/Jamstack_Icon_Original_Transparent.png';
-import basLogo from '../../assets/img/basis-share-logo.svg';
-import babLogo from '../../assets/img/basis-bond-logo.svg';
+import bacLogo from '../../assets/img/jam.png';
+import basLogo from '../../assets/img/jazz.png';
+import babLogo from '../../assets/img/jab.png';
 import yCRVLogo from '../../assets/img/ycrv.png';
 import DAILogo from '../../assets/img/DAI.png';
 import sUSDLogo from '../../assets/img/sUSD.png';

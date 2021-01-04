@@ -65,7 +65,7 @@ const StyledCards = styled.div`
   min-width: 200px;
   padding: ${(props) => props.theme.spacing[3]}px;
   color: ${(props) => props.theme.color.white};
-  background-color: ${(props) => props.theme.color.grey[900]};
+  background-color: #333333;
   border-radius: 5px;
   @media (max-width: 768px) {
     width: 100%;

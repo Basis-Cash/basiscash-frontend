@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import farmer from '../../assets/img/Jamstack_Icon_Original_Transparent.png';
+import farmer from '../../assets/img/full.png';
 
 const Logo: React.FC = () => {
   return (
