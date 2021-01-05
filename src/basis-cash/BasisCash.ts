@@ -112,20 +112,34 @@ export class BasisCash {
   async getCashStatInEstimatedTWAP(): Promise<TokenStat> {
     const { Oracle } = this.contracts;
 
+    const totalSupply = await this.BAC.displayedTotalSupply();
+
     // estimate current TWAP price
     const cumulativePrice: BigNumber = await this.bacDai.price0CumulativeLast();
     const cumulativePriceLast = await Oracle.price0CumulativeLast();
-    const elapsedSec = Math.floor(Date.now() / 1000 - (await Oracle.blockTimestampLast()));
 
     const denominator112 = BigNumber.from(2).pow(112);
     const denominator1e18 = BigNumber.from(10).pow(18);
+
+    if (cumulativePrice.toString() === cumulativePriceLast.toString()) {
+      const oldTWAPOracle = await Oracle.price0Average();
+      const cashPriceTWAPOld = oldTWAPOracle.mul(denominator1e18).div(denominator112);
+      return {
+        priceInDAI: getDisplayBalance(cashPriceTWAPOld),
+        totalSupply,
+      };
+    }
+
+    const bacDaiReserves = await this.bacDai.getReserves();
+    const blockTimestampLastUniswap = BigNumber.from(bacDaiReserves[2]);
+    const elapsedSec = blockTimestampLastUniswap.sub(await Oracle.blockTimestampLast());
+
     const cashPriceTWAP = cumulativePrice
       .sub(cumulativePriceLast)
       .mul(denominator1e18)
       .div(elapsedSec)
       .div(denominator112);
 
-    const totalSupply = await this.BAC.displayedTotalSupply();
     return {
       priceInDAI: getDisplayBalance(cashPriceTWAP),
       totalSupply,
