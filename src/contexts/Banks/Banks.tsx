@@ -12,11 +12,19 @@ const Banks: React.FC = ({ children }) => {
     const banks: Bank[] = [];
 
     for (const bankInfo of Object.values(bankDefinitions)) {
+      console.log("==============basisCash=============")
+      console.log(basisCash)
+      console.log("===================================")
+
       if (bankInfo.finished) {
         if (!basisCash.isUnlocked) continue;
 
         // only show pools staked by user
+        console.log("==============balance=============")
+        console.log(bankInfo)
+        console.log("===================================")
         const balance = await basisCash.stakedBalanceOnBank(bankInfo.contract, basisCash.myAccount);
+
         if (balance.lte(0)) {
           continue;
         }
@@ -25,7 +33,7 @@ const Banks: React.FC = ({ children }) => {
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,
         depositToken: basisCash.externalTokens[bankInfo.depositTokenName],
-        earnToken: bankInfo.earnTokenName == 'BAC' ? basisCash.BAC : basisCash.BAS,
+        earnToken: bankInfo.earnTokenName == 'JAM' ? basisCash.JAM : basisCash.JAZZ,
       });
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));

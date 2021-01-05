@@ -12,7 +12,7 @@ import Notice from '../../components/Notice';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
-
+  
   const activeBanks = banks.filter((bank) => !bank.finished);
   const inactiveBanks = banks.filter((bank) => bank.finished);
 
@@ -92,7 +92,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
             <StyledTitle>{bank.name}</StyledTitle>
             <StyledDetails>
               <StyledDetail>Deposit {bank.depositTokenName.toUpperCase()}</StyledDetail>
-              <StyledDetail>Earn {`Basis ${bank.earnTokenName}`}</StyledDetail>
+              <StyledDetail>Earn {`${bank.earnTokenName}`}</StyledDetail>
             </StyledDetails>
             <Button text="Select" to={`/bank/${bank.contract}`} />
           </StyledContent>

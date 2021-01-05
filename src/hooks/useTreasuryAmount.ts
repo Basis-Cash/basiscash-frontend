@@ -10,7 +10,7 @@ const useTreasuryAmount = () => {
   useEffect(() => {
     if (basisCash) {
       const { Treasury } = basisCash.contracts;
-      basisCash.BAC.balanceOf(Treasury.address).then(setAmount);
+      basisCash.JAM.balanceOf(Treasury.address).then(setAmount);
     }
   }, [basisCash]);
   return amount;

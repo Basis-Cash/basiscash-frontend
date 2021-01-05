@@ -18,8 +18,8 @@ const logosBySymbol: {[title: string]: string} = {
   'SUSD': sUSDLogo,
   'USDC': USDCLogo,
   'USDT': USDTLogo,
-  'BAC_DAI-UNI-LPv2': bacLogo,
-  'BAS_DAI-UNI-LPv2': basLogo,
+  'JAM_DAI-UNI-LPv2': bacLogo,
+  'JAZZ_DAI-UNI-LPv2': basLogo,
 };
 
 type BasisLogoProps = {

@@ -19,7 +19,7 @@ const Banks: React.FC = () => {
           <PageHeader
             icon={'🏦'}
             title="Pick a Bank."
-            subtitle="Earn Basis Shares by providing liquidity"
+            subtitle="Earn JAZZ by providing liquidity"
           />
           {!!account ? (
             <BankCards />
