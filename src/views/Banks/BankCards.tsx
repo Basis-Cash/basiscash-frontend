@@ -74,6 +74,7 @@ interface BankCardProps {
 }
 
 const BankCard: React.FC<BankCardProps> = ({ bank }) => {
+
   return (
     <StyledCardWrapper>
       {bank.depositTokenName.includes('LP') &&

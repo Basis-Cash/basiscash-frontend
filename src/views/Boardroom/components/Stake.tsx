@@ -70,17 +70,17 @@ const Stake: React.FC = () => {
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>
-              <TokenSymbol symbol="BAS" />
+              <TokenSymbol symbol="JAZZ" />
             </CardIcon>
             <Value value={getDisplayBalance(stakedBalance)} />
-            <Label text="Basis Share Staked" />
+            <Label text="JAZZ Staked" />
           </StyledCardHeader>
           <StyledCardActions>
             {!isOldBoardroomMember && approveStatus !== ApprovalState.APPROVED ? (
               <Button
                 disabled={approveStatus !== ApprovalState.NOT_APPROVED}
                 onClick={approve}
-                text="Approve Basis Share"
+                text="Approve JAZZ"
               />
             ) : isOldBoardroomMember ? (
               <>

@@ -46,7 +46,7 @@ const Home: React.FC = () => {
       <CardWrapper>
         <HomeCard
           title="JAM Cash"
-          symbol="BAC"
+          symbol="JAM"
           color="#EEA7ED"
           supplyLabel="Circulating Supply"
           address={cashAddr}
@@ -55,15 +55,15 @@ const Home: React.FC = () => {
         <Spacer size="lg" />
         <HomeCard
           title="JAM Share (JAZZ)"
-          symbol="BAS"
+          symbol="JAZZ"
           color="#E83725"
           address={shareAddr}
           stat={share}
         />
         <Spacer size="lg" />
         <HomeCard
-          title="Basis Bond"
-          symbol="BAB"
+          title="JAB"
+          symbol="JAB"
           color="#ECF25C"
           address={bondAddr}
           stat={bond}
