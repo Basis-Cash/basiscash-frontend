@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Context from './context';
 import useBasisCash from '../../hooks/useBasisCash';
-import { Bank } from '../../basis-cash';
+import { Bank } from '../../jam-cash';
 import config, { bankDefinitions } from '../../config';
 
 const Banks: React.FC = ({ children }) => {

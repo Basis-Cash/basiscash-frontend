@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import useBasisCash from './useBasisCash';
-import { Bank } from '../basis-cash';
+import { Bank } from '../jam-cash';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import { parseUnits } from 'ethers/lib/utils';
 

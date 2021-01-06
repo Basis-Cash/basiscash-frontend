@@ -40,7 +40,7 @@ export class BasisCash {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal); // TODO: add decimal
     }
-    this.JAM = new ERC20(deployments.Cash.address, provider, 'JAM');
+    this.JAM = new ERC20(deployments.JAM.address, provider, 'JAM');
     this.JAZZ = new ERC20(deployments.Share.address, provider, 'JAZZ');
     this.JAB = new ERC20(deployments.Bond.address, provider, 'JAB');
 

@@ -15,7 +15,7 @@ import useHarvest from '../../../hooks/useHarvest';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
-import { Bank } from '../../../basis-cash';
+import { Bank } from '../../../jam-cash';
 
 interface HarvestProps {
   bank: Bank;

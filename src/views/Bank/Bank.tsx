@@ -11,7 +11,7 @@ import Harvest from './components/Harvest';
 import Stake from './components/Stake';
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-import { Bank as BankEntity } from '../../basis-cash';
+import { Bank as BankEntity } from '../../jam-cash';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));

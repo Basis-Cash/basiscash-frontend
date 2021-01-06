@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import { BigNumber } from 'ethers';
-import ERC20 from '../basis-cash/ERC20';
+import ERC20 from '../jam-cash/ERC20';
 
 const useAllowance = (token: ERC20, spender: string, pendingApproval?: boolean) => {
   const [allowance, setAllowance] = useState<BigNumber>(null);

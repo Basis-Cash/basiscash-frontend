@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import useBasisCash from './useBasisCash';
-import { TokenStat } from '../basis-cash/types';
+import { TokenStat } from '../jam-cash/types';
 import config from '../config';
 
 const useCashStats = () => {

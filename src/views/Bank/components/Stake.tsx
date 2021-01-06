@@ -22,7 +22,7 @@ import { getDisplayBalance } from '../../../utils/formatBalance';
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import TokenSymbol from '../../../components/TokenSymbol';
-import { Bank } from '../../../basis-cash';
+import { Bank } from '../../../jam-cash';
 
 interface StakeProps {
   bank: Bank;

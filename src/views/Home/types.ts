@@ -1,4 +1,4 @@
-import { TokenStat } from '../../basis-cash/types';
+import { TokenStat } from '../../jam-cash/types';
 
 export interface OverviewData {
   cash?: TokenStat;

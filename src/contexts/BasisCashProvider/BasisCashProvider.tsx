@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
-import BasisCash from '../../basis-cash';
+import BasisCash from '../../jam-cash';
 import config from '../../config';
 
 export interface BasisCashContext {
