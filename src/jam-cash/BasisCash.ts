@@ -33,6 +33,7 @@ export class BasisCash {
 
     // loads contracts from deployments
     this.contracts = {};
+    console.log(deployments)
     for (const [name, deployment] of Object.entries(deployments)) {
       this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
     }
@@ -211,6 +212,7 @@ export class BasisCash {
     poolName: ContractName,
     account = this.myAccount,
   ): Promise<BigNumber> {
+    console.log('poolName', poolName)
     const pool = this.contracts[poolName];
     try {
       return await pool.balanceOf(account);
