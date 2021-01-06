@@ -75,7 +75,7 @@ const Boardroom: React.FC = () => {
           <PageHeader
             icon={'🤝'}
             title="Join the Boardroom"
-            subtitle="Deposit Basis Shares and earn inflationary rewards"
+            subtitle="Deposit JAZZ and earn inflationary rewards"
           />
           <LaunchCountdown
             deadline={config.boardroomLaunchesAt}
