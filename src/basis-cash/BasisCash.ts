@@ -110,39 +110,17 @@ export class BasisCash {
    * calculated by 1-day Time-Weight Averaged Price (TWAP).
    */
   async getCashStatInEstimatedTWAP(): Promise<TokenStat> {
-    const { Oracle } = this.contracts;
+    const { SeigniorageOracle } = this.contracts;
 
-    const totalSupply = await this.BAC.displayedTotalSupply();
-
-    // estimate current TWAP price
-    const cumulativePrice: BigNumber = await this.bacDai.price0CumulativeLast();
-    const cumulativePriceLast = await Oracle.price0CumulativeLast();
-
-    const denominator112 = BigNumber.from(2).pow(112);
-    const denominator1e18 = BigNumber.from(10).pow(18);
-
-    if (cumulativePrice.toString() === cumulativePriceLast.toString()) {
-      const oldTWAPOracle = await Oracle.price0Average();
-      const cashPriceTWAPOld = oldTWAPOracle.mul(denominator1e18).div(denominator112);
-      return {
-        priceInDAI: getDisplayBalance(cashPriceTWAPOld),
-        totalSupply,
-      };
-    }
-
-    const bacDaiReserves = await this.bacDai.getReserves();
-    const blockTimestampLastUniswap = BigNumber.from(bacDaiReserves[2]);
-    const elapsedSec = blockTimestampLastUniswap.sub(await Oracle.blockTimestampLast());
-
-    const cashPriceTWAP = cumulativePrice
-      .sub(cumulativePriceLast)
-      .mul(denominator1e18)
-      .div(elapsedSec)
-      .div(denominator112);
+    const expectedPrice = await SeigniorageOracle.expectedPrice(
+      this.BAC.address,
+      ethers.utils.parseEther('1'),
+    );
+    const supply = await this.BAC.displayedTotalSupply();
 
     return {
-      priceInDAI: getDisplayBalance(cashPriceTWAP),
-      totalSupply,
+      priceInDAI: getDisplayBalance(expectedPrice),
+      totalSupply: supply,
     };
   }
 
@@ -199,7 +177,10 @@ export class BasisCash {
    */
   async buyBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.buyBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
+    return await Treasury.buyBonds(
+      decimalToBalance(amount),
+      await this.getBondOraclePriceInLastTWAP(),
+    );
   }
 
   /**
@@ -208,7 +189,7 @@ export class BasisCash {
    */
   async redeemBonds(amount: string): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.redeemBonds(decimalToBalance(amount), await this.getBondOraclePriceInLastTWAP());
+    return await Treasury.redeemBonds(decimalToBalance(amount));
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
