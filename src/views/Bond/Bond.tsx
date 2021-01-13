@@ -17,7 +17,8 @@ import LaunchCountdown from '../../components/LaunchCountdown';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
-import { BigNumber } from 'ethers';
+import { BOND_REDEEM_PRICE, BOND_REDEEM_PRICE_BN } from '../../basis-cash/constants';
+import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 
 const Bond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -26,6 +27,7 @@ const Bond: React.FC = () => {
   const addTransaction = useTransactionAdder();
   const bondStat = useBondStats();
   const cashPrice = useBondOraclePriceInLastTWAP();
+  const treasuryAmount = useTreasuryAmount();
 
   const bondBalance = useTokenBalance(basisCash?.BAB);
 
@@ -43,12 +45,12 @@ const Bond: React.FC = () => {
   const handleRedeemBonds = useCallback(
     async (amount: string) => {
       const tx = await basisCash.redeemBonds(amount);
-      addTransaction(tx, { summary: `Redeem ${amount} BAB` });
+      addTransaction(tx, { summary: `Redeem ${amount} MIB` });
     },
     [basisCash, addTransaction],
   );
-  const cashIsOverpriced = useMemo(() => cashPrice.gt(BigNumber.from(10).pow(18)), [cashPrice]);
-  const cashIsUnderPriced = useMemo(() => Number(bondStat?.priceInUSDT) < 1.0, [bondStat]);
+  const isBondRedeemable = useMemo(() => cashPrice.gt(BOND_REDEEM_PRICE_BN), [cashPrice]);
+  const isBondPurchasable = useMemo(() => Number(bondStat?.priceInUSDT) < 1.0, [bondStat]);
 
   const isLaunched = Date.now() >= config.bondLaunchesAt.getTime();
   if (!isLaunched) {
@@ -88,23 +90,21 @@ const Bond: React.FC = () => {
                   toToken={basisCash.BAB}
                   toTokenName="MITH Bond"
                   priceDesc={
-                    cashIsOverpriced
+                    !isBondPurchasable
                       ? 'MIC is over $1'
-                      : cashIsUnderPriced
-                      ? `${Math.floor(
+                      : `${Math.floor(
                           100 / Number(bondStat.priceInUSDT) - 100,
                         )}% return when MIC > $1`
-                      : '-'
                   }
                   onExchange={handleBuyBonds}
-                  disabled={!bondStat || cashIsOverpriced}
+                  disabled={!bondStat || isBondRedeemable}
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
                   tokenName="MIC"
                   description="Last-Hour TWAP Price"
-                  price={getDisplayBalance(cashPrice, 18, 2)}
+                  price={getDisplayBalance(cashPrice, 18, 3)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
@@ -122,7 +122,12 @@ const Bond: React.FC = () => {
                   toTokenName="MITH Cash"
                   priceDesc={`${getDisplayBalance(bondBalance)} MIB Available`}
                   onExchange={handleRedeemBonds}
-                  disabled={!bondStat || bondBalance.eq(0) || cashIsUnderPriced}
+                  disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
+                  disabledDescription={
+                    treasuryAmount.eq(0) ? 'Treasury is empty' :
+                    bondBalance.eq(0) ? `No available MIB` :
+                    !isBondRedeemable ? `Enabled when MIC > $${BOND_REDEEM_PRICE}` : null
+                  }
                 />
               </StyledCardWrapper>
             </StyledBond>

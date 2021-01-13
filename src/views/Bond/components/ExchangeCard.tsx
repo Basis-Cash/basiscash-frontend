@@ -25,6 +25,7 @@ interface ExchangeCardProps {
   priceDesc: string;
   onExchange: (amount: string) => void;
   disabled?: boolean;
+  disabledDescription?: string;
 }
 
 const ExchangeCard: React.FC<ExchangeCardProps> = ({
@@ -36,6 +37,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
   priceDesc,
   onExchange,
   disabled = false,
+  disabledDescription,
 }) => {
   const catchError = useCatchError();
   const { contracts: { Treasury } } = useBasisCash();
@@ -89,7 +91,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
                 text={`Approve ${fromTokenName}`}
               />
             ) : (
-              <Button text={action} onClick={onPresent} disabled={disabled} />
+              <Button text={disabledDescription || action} onClick={onPresent} disabled={disabled} />
             )}
           </StyledCardActions>
         </StyledCardContentInner>
