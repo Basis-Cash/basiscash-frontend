@@ -89,7 +89,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACDAIPool',
     depositTokenName: 'DAI',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 5,
   },
   BACUSDTPool: {
@@ -97,7 +97,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACUSDTPool',
     depositTokenName: 'USDT',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 6,
   },
   BACYFIPool: {
@@ -105,7 +105,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACYFIPool',
     depositTokenName: 'YFI',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 13,
   },
   BACESDPool: {
@@ -113,7 +113,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACESDPool',
     depositTokenName: 'ESD',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 7,
   },
   BACBACPool: {
@@ -121,7 +121,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACBACPool',
     depositTokenName: 'BAC',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 8,
   },
   BACMITHPool: {
@@ -129,7 +129,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACMITHPool',
     depositTokenName: 'MITH',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 3,
   },
   BACCREAMPool: {
@@ -137,7 +137,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACCREAMPool',
     depositTokenName: 'CREAM',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 4,
   },
   BACFRAXPool: {
@@ -145,7 +145,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACFRAXPool',
     depositTokenName: 'FRAX',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 11,
   },
   BACCRVPool: {
@@ -153,7 +153,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACCRVPool',
     depositTokenName: 'CRV',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 16,
   },
   BACBUSDPool: {
@@ -161,7 +161,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACBUSDPool',
     depositTokenName: 'BUSD',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 12,
   },
   BACLINKPool: {
@@ -169,7 +169,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACLINKPool',
     depositTokenName: 'LINK',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 18,
   },
   BACCOMPPool: {
@@ -177,7 +177,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACCOMPPool',
     depositTokenName: 'COMP',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 14,
   },
   BACAAVEPool: {
@@ -185,7 +185,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACAAVEPool',
     depositTokenName: 'AAVE',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 15,
   },
   BACSUSHIPool: {
@@ -193,7 +193,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACSUSHIPool',
     depositTokenName: 'SUSHI',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 17,
   },
   BACSUSDPool: {
@@ -201,7 +201,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACSUSDPool',
     depositTokenName: 'SUSD',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 10,
   },
   BACUSDCPool: {
@@ -209,7 +209,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     contract: 'BACUSDCPool',
     depositTokenName: 'USDC',
     earnTokenName: 'MIC',
-    finished: false,
+    finished: true,
     sort: 9,
   },
 };
