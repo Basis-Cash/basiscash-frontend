@@ -15,6 +15,8 @@ const Nav: React.FC = () => {
 }
 
 const StyledNav = styled.nav`
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   display: flex;
 `
