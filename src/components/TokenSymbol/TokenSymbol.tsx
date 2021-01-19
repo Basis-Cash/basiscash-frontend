@@ -8,6 +8,8 @@ import DAILogo from '../../assets/img/DAI.png';
 import sUSDLogo from '../../assets/img/sUSD.png';
 import USDCLogo from '../../assets/img/USDC.png';
 import USDTLogo from '../../assets/img/USDT.png';
+import ACLogo from '../../assets/img/AC.png';
+import FRAXLogo from '../../assets/img/FRAX.png';
 
 const logosBySymbol: {[title: string]: string} = {
   'JAM': bacLogo,
@@ -18,7 +20,10 @@ const logosBySymbol: {[title: string]: string} = {
   'SUSD': sUSDLogo,
   'USDC': USDCLogo,
   'USDT': USDTLogo,
+  'AC': ACLogo,
+  'FRAX': FRAXLogo,
   'JAM_DAI-UNI-LPv2': bacLogo,
+  'JAM_USDC-UNI-LPv2': bacLogo,
   'JAZZ_DAI-UNI-LPv2': basLogo,
 };
 
