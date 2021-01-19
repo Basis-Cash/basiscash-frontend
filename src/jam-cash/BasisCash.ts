@@ -22,7 +22,7 @@ export class BasisCash {
   externalTokens: { [name: string]: ERC20 };
   boardroomVersionOfUser?: string;
 
-  bacDai: Contract;
+  jamUsdc: Contract;
   JAM: ERC20;
   JAZZ: ERC20;
   JAB: ERC20;
@@ -46,8 +46,8 @@ export class BasisCash {
     this.JAB = new ERC20(deployments.Bond.address, provider, 'JAB');
 
     // Uniswap V2 Pair
-    this.bacDai = new Contract(
-      externalTokens['JAM_DAI-UNI-LPv2'][0],
+    this.jamUsdc = new Contract(
+      externalTokens['JAM_USDC-UNI-LPv2'][0],
       IUniswapV2PairABI,
       provider,
     );
@@ -72,7 +72,7 @@ export class BasisCash {
     for (const token of tokens) {
       token.connect(this.signer);
     }
-    this.bacDai = this.bacDai.connect(this.signer);
+    this.jamUsdc = this.jamUsdc.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
       .then((version) => (this.boardroomVersionOfUser = version))
@@ -114,7 +114,7 @@ export class BasisCash {
     const { Oracle } = this.contracts;
 
     // estimate current TWAP price
-    const cumulativePrice: BigNumber = await this.bacDai.price0CumulativeLast();
+    const cumulativePrice: BigNumber = await this.jamUsdc.price0CumulativeLast();
     const cumulativePriceLast = await Oracle.price0CumulativeLast();
     const elapsedSec = Math.floor(Date.now() / 1000 - (await Oracle.blockTimestampLast()));
 
@@ -166,15 +166,16 @@ export class BasisCash {
     await this.provider.ready;
 
     const { chainId } = this.config;
-    const { DAI } = this.config.externalTokens;
+    const { USDC } = this.config.externalTokens;
 
-    const dai = new Token(chainId, DAI[0], 18);
+    const usdc = new Token(chainId, USDC[0], 18);
     const token = new Token(chainId, tokenContract.address, 18);
-
+    console.log('usdc', usdc)
+    console.log('token', token)
     try {
-      const daiToToken = await Fetcher.fetchPairData(dai, token, this.provider);
-      const priceInDAI = new Route([daiToToken], token);
-      return priceInDAI.midPrice.toSignificant(3);
+      const usdcToToken = await Fetcher.fetchPairData(usdc, token, this.provider);
+      const priceInUSDC = new Route([usdcToToken], token);
+      return priceInUSDC.midPrice.toSignificant(3);
     } catch (err) {
       console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
     }
@@ -290,7 +291,7 @@ export class BasisCash {
     if (version === 'v2') {
       return this.contracts.Boardroom2;
     }
-    return this.contracts.Boardroom3;
+    return this.contracts.Boardroom;
   }
 
   currentBoardroom(): Contract {
