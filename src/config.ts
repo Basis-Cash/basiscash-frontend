@@ -85,7 +85,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
   JAZZJAMPool: {
     name: 'Earn JAZZ by JAM',
-    contract: 'JAMFRAXPool',
+    contract: 'JAZZJAMPool',
     depositTokenName: 'JAM',
     earnTokenName: 'JAZZ',
     finished: false,
