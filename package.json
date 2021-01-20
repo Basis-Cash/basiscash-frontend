@@ -2,6 +2,7 @@
   "name": "basis.cash",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://jam.cash",
   "dependencies": {
     "@ethersproject/providers": "^5.0.9",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
