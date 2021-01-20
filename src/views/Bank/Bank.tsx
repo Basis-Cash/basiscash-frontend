@@ -59,8 +59,8 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let pairName: string;
   let uniswapUrl: string;
   if (bank.depositTokenName.includes('JAM')) {
-    pairName = 'JAM-DAI pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0x3449FC1Cd036255BA1EB19d65fF4BA2b8903A69a/0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    pairName = 'JAM-USDC pair';
+    uniswapUrl = 'https://app.uniswap.org/#/add/0xFa5dE5f72A2A575b2392173DAB613f588c0ba2ad/0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b';
   } else {
     pairName = 'JAZZ-DAI pair';
     uniswapUrl = 'https://app.uniswap.org/#/add/0xa7ED29B253D8B4E3109ce07c80fc570f81B63696/0x6B175474E89094C44Da98b954EedeAC495271d0F';
