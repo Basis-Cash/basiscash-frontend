@@ -8,7 +8,6 @@ import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
-import { parseUnits } from 'ethers/lib/utils';
 
 /**
  * An API module of Basis Cash contracts.

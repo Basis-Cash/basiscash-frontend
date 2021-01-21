@@ -21,6 +21,7 @@ import Updaters from './state/Updaters';
 import Boardroom from './views/Boardroom';
 import Vaults from './views/Vaults';
 import Popups from './components/Popups';
+import Monetary from './views/Monetary';
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,9 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/" exact>
             <Home />
+          </Route>
+          <Route path="/monetary">
+            <Monetary />
           </Route>
           <Route path="/bank">
             <Banks />

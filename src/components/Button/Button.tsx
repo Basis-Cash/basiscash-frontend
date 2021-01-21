@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
   let buttonColor: string
   switch (variant) {
     case 'secondary':
-      buttonColor = color.teal[200]
+      buttonColor = color.white
       break
     case 'default':
     default:
@@ -95,7 +95,7 @@ interface StyledButtonProps {
 
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background-color: ${props => props.theme.color.grey[900]};
+  background-color: #43423F;
   border: 0;
   border-radius: 12px;
   box-shadow: ${props => props.boxShadow};
@@ -113,7 +113,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   width: 100%;
   &:hover {
     background-color: ${props => props.color};
-    color: ${props => props.theme.color.grey[900]};
+    color: #43423F
   }
 `
 

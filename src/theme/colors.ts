@@ -35,3 +35,12 @@ export const bg = '#000000';
 export const teal = {
   200: '#64ffda'
 }
+
+export const oblack = '#26272D';
+
+export const mic = '#4D6756';
+export const mis = '#426687';
+export const mib = '#6D55A1';
+
+export const treasury = '#CC839D';
+export const boardroom = '#C1916E';

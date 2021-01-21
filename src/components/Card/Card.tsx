@@ -9,7 +9,7 @@ const Card: React.FC = ({ children }) => (
 
 const StyledCard = styled.div`
   background-color: ${props => props.theme.color.oblack};
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   flex: 1;
   flex-direction: column;

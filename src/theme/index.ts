@@ -1,4 +1,7 @@
-import { black, purple, teal, grey, red, white, gold } from './colors'
+import {
+  black, boardroom, purple, teal, grey,
+  mib, mic, mis, red, white, gold, oblack, treasury,
+} from './colors'
 
 const theme = {
   borderRadius: 12,
@@ -16,6 +19,12 @@ const theme = {
     },
     white,
     teal,
+    oblack,
+    mib,
+    mic,
+    mis,
+    treasury,
+    boardroom,
   },
   siteWidth: 1200,
   spacing: {
