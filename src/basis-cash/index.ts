@@ -1,2 +1,2 @@
 export { BasisCash as default } from './BasisCash';
-export type { Bank, BankInfo, ContractName } from './types';
+export type { Bank, BankInfo, ContractName, Vault, VaultInfo } from './types';

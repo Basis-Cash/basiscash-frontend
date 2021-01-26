@@ -272,6 +272,19 @@ export class BasisCash {
     }
   }
 
+  async depositedBalanceOnVault(
+    vaultName: ContractName,
+    account = this.myAccount,
+  ): Promise<BigNumber> {
+    const vault = this.contracts[vaultName];
+    try {
+      return await vault.balanceOf(account);
+    } catch (err) {
+      console.error(`Failed to call balanceOf() on vault ${vault.address}: ${err.stack}`);
+      return BigNumber.from(0);
+    }
+  }
+
   /**
    * Deposits token to given pool.
    * @param poolName A name of pool contract.
@@ -282,6 +295,18 @@ export class BasisCash {
     const pool = this.contracts[poolName];
     const gas = await pool.estimateGas.stake(amount);
     return await pool.stake(amount, this.gasOptions(gas));
+  }
+
+  /**
+   * Deposits token to given vault.
+   * @param vaultName A name of pool contract.
+   * @param amount Number of tokens with decimals applied. (e.g. 1.45 DAI * 10^18)
+   * @returns {string} Transaction hash
+   */
+  async deposit(vaultName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
+    const vault = this.contracts[vaultName];
+    const gas = await vault.estimateGas.deposit(amount);
+    return await vault.deposit(amount, this.gasOptions(gas));
   }
 
   /**

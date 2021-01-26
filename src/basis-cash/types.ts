@@ -17,6 +17,19 @@ export interface Bank extends BankInfo {
   earnToken: ERC20;
 }
 
+export interface VaultInfo {
+  name: string;
+  contract: ContractName;
+  tokenName: ContractName;
+  sort: number;
+  finished: boolean;
+}
+
+export interface Vault extends VaultInfo {
+  address: string;
+  token: ERC20;
+}
+
 export type TokenStat = {
   priceInUSDT: string;
   totalSupply: string;

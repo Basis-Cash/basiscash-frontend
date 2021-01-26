@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import { UseWalletProvider } from 'use-wallet';
 
 import BanksProvider from './contexts/Banks';
+import VaultsProvider from './contexts/Vaults';
 import BasisCashProvider from './contexts/BasisCashProvider';
 import ModalsProvider from './contexts/Modals';
 
@@ -18,6 +19,7 @@ import theme from './theme';
 import config from './config';
 import Updaters from './state/Updaters';
 import Boardroom from './views/Boardroom';
+import Vaults from './views/Vaults';
 import Popups from './components/Popups';
 
 const App: React.FC = () => {
@@ -40,6 +42,9 @@ const App: React.FC = () => {
           <Route path="/info">
             <Info />
           </Route>
+          <Route path="/vault">
+            <Vaults />
+          </Route>
         </Switch>
       </Router>
     </Providers>
@@ -55,10 +60,12 @@ const Providers: React.FC = ({ children }) => {
           <BasisCashProvider>
             <ModalsProvider>
               <BanksProvider>
-                <>
-                  <Popups />
-                  {children}
-                </>
+                <VaultsProvider>
+                  <>
+                    <Popups />
+                    {children}
+                  </>
+                </VaultsProvider>
               </BanksProvider>
             </ModalsProvider>
           </BasisCashProvider>
