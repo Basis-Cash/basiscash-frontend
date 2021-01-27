@@ -24,7 +24,7 @@ const Nav: React.FC = () => {
         <StyledLinkGroup>
           <StyledLinkGroupName>Rules</StyledLinkGroupName>
           <StyledLink href="https://sauron.gitbook.io/mith-cash" target="_blank">Docs</StyledLink>
-          <StyledLink href="./Cybersecurity-report-Mith-Cash-CTDSec.pdf" target="_blank">Audit</StyledLink>
+          <StyledLink href="/Cybersecurity-report-Mith-Cash-CTDSec.pdf" target="_blank">Audit</StyledLink>
         </StyledLinkGroup>
       </StyledLinkGroupWrapper>
     </StyledNav>

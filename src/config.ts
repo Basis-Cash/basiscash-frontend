@@ -1,6 +1,6 @@
 import { ChainId } from '@uniswap/sdk';
 import { Configuration } from './basis-cash/config';
-import { BankInfo } from './basis-cash';
+import { BankInfo, VaultInfo } from './basis-cash';
 
 const configurations: { [env: string]: Configuration } = {
   development: {
@@ -212,6 +212,16 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     finished: true,
     sort: 9,
   },
+};
+
+export const vaultDefinitions: { [contractName: string]: VaultInfo } = {
+  MICUSDTVault: {
+    name: 'MIC-USDT-LP',
+    contract: 'MICUSDTVault',
+    tokenName: 'MIC_USDT-SUSHI-LPv2',
+    finished: false,
+    sort: 1,
+  }
 };
 
 export default configurations[process.env.NODE_ENV || "development"];
