@@ -10,26 +10,21 @@ import { getDisplayBalance } from '../../../utils/formatBalance';
 import { BigNumber } from 'ethers';
 
 interface WithdrawModalProps extends ModalProps {
-  max: BigNumber,
+  max: string,
   onConfirm: (amount: string) => void,
-  tokenName?: string,
-  decimals?: number,
+  tokenName?: string
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '', decimals = 18 }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
   const [val, setVal] = useState('')
-
-  const fullBalance = useMemo(() => {
-    return getDisplayBalance(max, decimals, 6)
-  }, [max])
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
   }, [setVal])
 
   const handleSelectMax = useCallback(() => {
-    setVal(fullBalance)
-  }, [fullBalance, setVal])
+    setVal(max);
+  }, [max, setVal])
 
   return (
     <Modal>
@@ -38,7 +33,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={val}
-        max={fullBalance}
+        max={max}
         symbol={tokenName}
       />
       <ModalActions>

@@ -23,6 +23,7 @@ import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import TokenSymbol from '../../../components/TokenSymbol';
 import { Vault } from '../../../basis-cash';
+import useAPY from '../../../hooks/useAPY';
 
 interface DepositProps {
   vault: Vault;
@@ -33,7 +34,16 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
 
   // TODO: reactive update of token balance
   const tokenBalance = useTokenBalance(vault.token);
-  const depositedBalance = useDepositedBalance(vault.contract);
+  const shares = useDepositedBalance(vault.contract);
+  const shareText = getDisplayBalance(shares, vault.token.decimal, 6);
+  const { apy, tvl, pricePerToken, ratio } = useAPY(
+    vault.contract,
+    vault.token.address,
+  );
+  const apyText = apy ? `${apy.toFixed(2)}%` : '';
+  const tvlText = tvl ? `$${tvl.toFixed(0)}` : '';
+
+  const balanceText = (parseFloat(shareText) * ratio).toFixed(6);
 
   const { onDeposit } = useDeposit(vault);
   const { onWithdraw } = useVaultWithdraw(vault);
@@ -52,8 +62,7 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
 
   const [onPresentWithdraw, onDismissWithdraw] = useModal(
     <WithdrawModal
-      max={depositedBalance}
-      decimals={vault.token.decimal}
+      max={balanceText}
       onConfirm={(amount) => {
         onWithdraw(amount);
         onDismissWithdraw();
@@ -67,12 +76,28 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
+            <StyledCardContent>
+              <HeaderValue>{apyText}</HeaderValue>
+              {!!apy && <Label text="APY (after fees)" />}
+            </StyledCardContent>
             <CardIcon>
               <TokenSymbol symbol={vault.token.symbol} size={54} />
             </CardIcon>
-            <Value value={getDisplayBalance(depositedBalance, vault.token.decimal, 6)} />
-            <Label text={`${vault.tokenName} Depositd`} />
+            <StyledCardContent>
+              <HeaderValue>{tvlText}</HeaderValue>
+              {!!tvl && <Label text="TVL" />}
+            </StyledCardContent>
           </StyledCardHeader>
+          <StyledCardContent>
+            <Value value={balanceText} />
+            <Label text={`${vault.tokenName} Balance`} />
+          </StyledCardContent>
+          {pricePerToken && (
+            <StyledCardContentValue>
+              <Value value={`$${(parseFloat(balanceText) * pricePerToken).toFixed(2)}`} />
+              <Label text={`Value`} />
+            </StyledCardContentValue>
+          )}
           <StyledCardActions>
             {approveStatus !== ApprovalState.APPROVED ? (
               <Button
@@ -104,15 +129,35 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
   );
 };
 
+const HeaderValue = styled.div`
+  color: ${(props) => props.theme.color.grey[200]};
+  font-size: 28px;
+  font-weight: 700;
+`;
+
 const StyledCardHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledCardContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
 `;
+
+const StyledCardContentValue = styled.div`
+  margin-top: ${(props) => props.theme.spacing[3]}px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`;
+
 const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: ${(props) => props.theme.spacing[6]}px;
+  margin-top: ${(props) => props.theme.spacing[3]}px;
   width: 100%;
 `;
 

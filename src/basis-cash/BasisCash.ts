@@ -28,6 +28,7 @@ export class BasisCash {
   BAC: ERC20;
   BAS: ERC20;
   BAB: ERC20;
+  USDT: ERC20;
 
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
@@ -45,6 +46,7 @@ export class BasisCash {
     this.BAC = new ERC20(deployments.Cash.address, provider, 'MIC');
     this.BAS = new ERC20(deployments.Share.address, provider, 'MIS');
     this.BAB = new ERC20(deployments.Bond.address, provider, 'MIB');
+    this.USDT = new ERC20(externalTokens['USDT'][0], provider, 'USDT');
 
     // SushiSwap Pair
     this.bacDai = new Contract(
@@ -285,6 +287,18 @@ export class BasisCash {
     }
   }
 
+  async totalBalanceOfVault(
+    vaultName: ContractName
+  ): Promise<BigNumber> {
+    const vault = this.contracts[vaultName];
+    try {
+      return await vault.balance();
+    } catch (err) {
+      console.error(`Failed to call balance() on vault ${vault.address}: ${err.stack}`);
+      return BigNumber.from(0);
+    }
+  }
+
   /**
    * Deposits token to given pool.
    * @param poolName A name of pool contract.
@@ -307,6 +321,38 @@ export class BasisCash {
     const vault = this.contracts[vaultName];
     const gas = await vault.estimateGas.deposit(amount);
     return await vault.deposit(amount, this.gasOptions(gas));
+  }
+
+  /**
+   * Get reward rate of a given pool.
+   * @param poolName A name of pool contract.
+   * @returns {BigNumber} reward rate
+   */
+  async rewardRate(poolName: ContractName): Promise<BigNumber> {
+    const pool = this.contracts[poolName];
+
+    try {
+      return await pool.rewardRate();
+    } catch (err) {
+      console.error(`Failed to call rewardRate() on vault ${pool.address}: ${err.stack}`);
+      return BigNumber.from(0);
+    }
+  }
+
+  /**
+   * Get total supply of a given pool.
+   * @param poolName A name of pool contract.
+   * @returns {BigNumber} total supply
+   */
+  async totalSupply(poolName: ContractName): Promise<BigNumber> {
+    const pool = this.contracts[poolName];
+
+    try {
+      return await pool.totalSupply();
+    } catch (err) {
+      console.error(`Failed to call totalSupply() on contract ${pool.address}: ${err.stack}`);
+      return BigNumber.from(0);
+    }
   }
 
   /**

@@ -53,3 +53,10 @@ export type ShareMetric = {
   USDTMISPoolBalance: string;
   unstakedBalance: string;
 }
+
+export type APY = {
+  apy?: number;
+  tvl?: number;
+  pricePerToken?: number;
+  ratio: number;
+};
