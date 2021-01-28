@@ -33,11 +33,6 @@ const Bond: React.FC = () => {
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
-      const tx = await basisCash.buyBonds(amount);
-      const bondAmount = Number(amount) / Number(getDisplayBalance(cashPrice));
-      addTransaction(tx, {
-        summary: `Buy ${bondAmount.toFixed(2)} MIB with ${amount} MIC`,
-      });
     },
     [basisCash, addTransaction, cashPrice],
   );
@@ -89,15 +84,9 @@ const Bond: React.FC = () => {
                   fromTokenName="MITH Cash"
                   toToken={basisCash.BAB}
                   toTokenName="MITH Bond"
-                  priceDesc={
-                    !isBondPurchasable
-                      ? 'MIC is over $1'
-                      : `${Math.floor(
-                          100 / Number(bondStat.priceInUSDT) - 100,
-                        )}% return when MIC > $1`
-                  }
+                  priceDesc="Purchasing bonds has been disabled."
                   onExchange={handleBuyBonds}
-                  disabled={!bondStat || isBondRedeemable}
+                  disabled="true"
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>
