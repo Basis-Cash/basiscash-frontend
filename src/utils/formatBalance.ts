@@ -10,6 +10,10 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
   return new BN(balance.toString()).div(10 ** decimals).toFixed(decimals);
 };
 
-export function getBalance(balance: BigNumber, decimals = 18) : number {
+export function getBalance(balance: BigNumber, decimals = 18): number {
   return balance.div(BigNumber.from(10).pow(decimals)).toNumber();
 }
+
+export const getFullBalance = (balance: BigNumber, decimals = 18) => {
+  return parseFloat(getFullDisplayBalance(balance, decimals));
+};

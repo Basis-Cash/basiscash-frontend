@@ -17,7 +17,7 @@ import useDepositedBalance from '../../../hooks/useDepositedBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 import useVaultWithdraw from '../../../hooks/useVaultWithdraw';
 
-import { getDisplayBalance } from '../../../utils/formatBalance';
+import { getFullBalance } from '../../../utils/formatBalance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
@@ -34,16 +34,14 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
 
   // TODO: reactive update of token balance
   const tokenBalance = useTokenBalance(vault.token);
-  const shares = useDepositedBalance(vault.contract);
-  const shareText = getDisplayBalance(shares, vault.token.decimal, 6);
-  const { apy, tvl, pricePerToken, ratio } = useAPY(
-    vault.contract,
-    vault.token.address,
-  );
+  const sharesBN = useDepositedBalance(vault.contract);
+  const shares = getFullBalance(sharesBN);
+  const { apy, tvl, pricePerToken, ratio } = useAPY(vault.contract, vault.token.address);
   const apyText = apy ? `${apy.toFixed(2)}%` : '';
   const tvlText = tvl ? `$${tvl.toFixed(0)}` : '';
 
-  const balanceText = (parseFloat(shareText) * ratio).toFixed(6);
+  const balance = shares * ratio;
+  const balanceText = balance.toString().match(/^-?\d+(?:\.\d{0,6})?/)[0];
 
   const { onDeposit } = useDeposit(vault);
   const { onWithdraw } = useVaultWithdraw(vault);
@@ -94,7 +92,7 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
           </StyledCardContent>
           {pricePerToken && (
             <StyledCardContentValue>
-              <Value value={`$${(parseFloat(balanceText) * pricePerToken).toFixed(2)}`} />
+              <Value value={`$${(balance * pricePerToken).toFixed(2)}`} />
               <Label text={`Value`} />
             </StyledCardContentValue>
           )}

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useBasisCash from './useBasisCash';
 import { ContractName } from '../basis-cash';
 import useShareStats from './useShareStats';
-import { getDisplayBalance } from '../utils/formatBalance';
+import { getFullBalance } from '../utils/formatBalance';
 import useCashStats from './useCashStats';
 import { APY } from '../basis-cash/types';
 
@@ -30,7 +30,7 @@ const useAPY = (vaultName: ContractName, poolAddr: string) => {
         const priceMIC = parseFloat(micStats.priceInUSDT);
 
         const misRewardRateBN = await basisCash.rewardRate(poolName);
-        const misRewardRate = parseFloat(getDisplayBalance(misRewardRateBN));
+        const misRewardRate = getFullBalance(misRewardRateBN);
         const misRewardsPerYear = misRewardRate * (365 * 24 * 60 * 60);
         const valueRewardedPerYear = priceMIS * misRewardsPerYear;
 
@@ -39,8 +39,8 @@ const useAPY = (vaultName: ContractName, poolAddr: string) => {
         const numMInPairBN = await token.balanceOf(poolAddr);
         const numUSDTInPairBN = await basisCash.USDT.balanceOf(poolAddr);
 
-        const numMInPair = parseFloat(getDisplayBalance(numMInPairBN));
-        const numUSDTInPair = parseFloat(getDisplayBalance(numUSDTInPairBN, 6));
+        const numMInPair = getFullBalance(numMInPairBN);
+        const numUSDTInPair = getFullBalance(numUSDTInPairBN, 6);
 
         const totalValueStaked = priceM * numMInPair + priceUSDT * numUSDTInPair;
 
@@ -50,10 +50,10 @@ const useAPY = (vaultName: ContractName, poolAddr: string) => {
         const balanceBN = await basisCash.totalBalanceOfVault(vaultName);
         const vaultTotalSupplyBN = await basisCash.totalSupply(vaultName);
 
-        const balance = parseFloat(getDisplayBalance(balanceBN));
-        const ratio = balance / parseFloat(getDisplayBalance(vaultTotalSupplyBN));
+        const balance = getFullBalance(balanceBN);
+        const ratio = balance / getFullBalance(vaultTotalSupplyBN);
 
-        const pricePerToken = totalValueStaked / parseFloat(getDisplayBalance(totalSupplyBN));
+        const pricePerToken = totalValueStaked / getFullBalance(totalSupplyBN);
         const tvl = pricePerToken * balance;
 
         setApy({ apy: getCompoundingAPY(misAPY * 0.85), tvl, pricePerToken, ratio });
