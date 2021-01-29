@@ -62,7 +62,9 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
     <WithdrawModal
       max={balanceText}
       onConfirm={(amount) => {
-        onWithdraw(amount);
+        // By doing this, we're sure users can withdraw maximum amount of shares exactly.
+        // When amount === balanceText, they will withdraw all shares.
+        onWithdraw(`${parseFloat(amount) / parseFloat(balanceText) * shares}`);
         onDismissWithdraw();
       }}
       tokenName={vault.tokenName}
