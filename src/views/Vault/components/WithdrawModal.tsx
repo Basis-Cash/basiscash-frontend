@@ -6,9 +6,6 @@ import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
 
-import { getDisplayBalance } from '../../../utils/formatBalance';
-import { BigNumber } from 'ethers';
-
 interface WithdrawModalProps extends ModalProps {
   max: string,
   onConfirm: (amount: string) => void,
