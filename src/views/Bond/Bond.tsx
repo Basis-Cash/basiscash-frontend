@@ -86,7 +86,7 @@ const Bond: React.FC = () => {
                   toTokenName="MITH Bond"
                   priceDesc="Purchasing bonds has been disabled."
                   onExchange={handleBuyBonds}
-                  disabled="true"
+                  disabled
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>

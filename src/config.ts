@@ -215,6 +215,13 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
 };
 
 export const vaultDefinitions: { [contractName: string]: VaultInfo } = {
+  MISUSDTVault: {
+    name: 'MIS-USDT-LP',
+    contract: 'MISUSDTVault',
+    tokenName: 'MIS_USDT-SUSHI-LPv2',
+    finished: false,
+    sort: 1,
+  },
   MICUSDTVault: {
     name: 'MIC-USDT-LP',
     contract: 'MICUSDTVault',

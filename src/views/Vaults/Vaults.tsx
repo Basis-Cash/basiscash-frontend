@@ -22,7 +22,7 @@ const Vaults: React.FC = () => {
           anywhere else, and as a bonus, contribute to the growth of the MITH Cash ecosystem.
           <AuditsArea>
             Check the Audits here.{' '}
-            <a href="/artl-dev-protocol-simple-audit.pdf" target="_blank">
+            <a href="/artl-dev-protocol_simple_audit_20200201.pdf" target="_blank">
               Steaker Audit
             </a>{' '}
           </AuditsArea>

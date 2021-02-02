@@ -37,11 +37,12 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
   const sharesBN = useDepositedBalance(vault.contract);
   const shares = getFullBalance(sharesBN);
   const { apy, tvl, pricePerToken, ratio } = useAPY(vault.contract, vault.token.address);
-  const apyText = apy ? `${apy.toFixed(2)}%` : '';
-  const tvlText = tvl ? `$${tvl.toFixed(0)}` : '';
+  const apyText = apy !== undefined ? `${parseFloat(apy.toFixed(2)).toLocaleString()}%` : '';
+  const tvlText = tvl !== undefined ? `$${parseInt(`${tvl}`).toLocaleString()}` : '';
 
   const balance = shares * ratio;
-  const balanceText = balance.toString().match(/^-?\d+(?:\.\d{0,6})?/)[0];
+  const balance6Digit = balance.toString().match(/^-?\d+(?:\.\d{0,6})?/);
+  const balanceText = balance6Digit ? balance6Digit[0] : '0';
 
   const { onDeposit } = useDeposit(vault);
   const { onWithdraw } = useVaultWithdraw(vault);
@@ -76,17 +77,17 @@ const Deposit: React.FC<DepositProps> = ({ vault }) => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <StyledCardContent>
+            <StyledCardHeaderContent>
               <HeaderValue>{apyText}</HeaderValue>
               {!!apy && <Label text="APY (after fees)" />}
-            </StyledCardContent>
+            </StyledCardHeaderContent>
             <CardIcon>
               <TokenSymbol symbol={vault.token.symbol} size={54} />
             </CardIcon>
-            <StyledCardContent>
+            <StyledCardHeaderContent>
               <HeaderValue>{tvlText}</HeaderValue>
-              {!!tvl && <Label text="TVL" />}
-            </StyledCardContent>
+              {tvl !== undefined && <Label text="TVL" />}
+            </StyledCardHeaderContent>
           </StyledCardHeader>
           <StyledCardContent>
             <Value value={balanceText} />
@@ -145,6 +146,13 @@ const StyledCardContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+`;
+
+const StyledCardHeaderContent = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
 `;
 
 const StyledCardContentValue = styled.div`

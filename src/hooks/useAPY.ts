@@ -51,7 +51,8 @@ const useAPY = (vaultName: ContractName, poolAddr: string) => {
         const vaultTotalSupplyBN = await basisCash.totalSupply(vaultName);
 
         const balance = getFullBalance(balanceBN);
-        const ratio = balance / getFullBalance(vaultTotalSupplyBN);
+        const vaultTotalSupply = getFullBalance(vaultTotalSupplyBN);
+        const ratio = vaultTotalSupply ? balance / vaultTotalSupply : 1;
 
         const pricePerToken = totalValueStaked / getFullBalance(totalSupplyBN);
         const tvl = pricePerToken * balance;
