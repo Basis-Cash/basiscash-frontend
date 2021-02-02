@@ -74,7 +74,7 @@ const Vaults: React.FC = () => {
               </ComparisonBodyMainItem>
               <ComparisonBodyMainItem>
                 Steaker Audit Passed DefiYield in progress Vault is a fork of the Picklejar
-                0.99f
+                0.99g
               </ComparisonBodyMainItem>
               <ComparisonBodyMainItem>Yes</ComparisonBodyMainItem>
               <ComparisonBodyMainItem>Yes</ComparisonBodyMainItem>
