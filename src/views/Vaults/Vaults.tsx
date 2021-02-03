@@ -22,7 +22,7 @@ const Vaults: React.FC = () => {
           anywhere else, and as a bonus, contribute to the growth of the MITH Cash ecosystem.
           <AuditsArea>
             Check the Audits here.{' '}
-            <a href="/artl-dev-protocol-simple-audit.pdf" target="_blank">
+            <a href="/artl-dev-protocol_simple_audit_20200201.pdf" target="_blank">
               Steaker Audit
             </a>{' '}
           </AuditsArea>
@@ -74,7 +74,7 @@ const Vaults: React.FC = () => {
               </ComparisonBodyMainItem>
               <ComparisonBodyMainItem>
                 Steaker Audit Passed DefiYield in progress Vault is a fork of the Picklejar
-                0.99f
+                0.99g
               </ComparisonBodyMainItem>
               <ComparisonBodyMainItem>Yes</ComparisonBodyMainItem>
               <ComparisonBodyMainItem>Yes</ComparisonBodyMainItem>
