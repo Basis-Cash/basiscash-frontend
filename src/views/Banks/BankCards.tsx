@@ -163,6 +163,7 @@ const StyledRow = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
   flex-flow: row wrap;
   width: 100%;
+  align-items: flex-start;
   
   > * {
     margin: 0 ${(props) => props.theme.spacing[4]}px;
@@ -170,7 +171,7 @@ const StyledRow = styled.div`
   
   @media (max-width: 768px) {
     flex-flow: column nowrap;
-    align-items: center;
+    align-items: flex-start;
   }
 `;
 
