@@ -8,7 +8,6 @@ import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import moment from 'moment';
-import Phase from './components/Phase';
 import Button from '../../components/Button';
 import styled from 'styled-components';
 import Container from '../../components/Container';
@@ -43,7 +42,6 @@ const Monetary: React.FC = () => {
       <Page>
         {!!account ? (
           <Container size='lg'>
-            <Phase />
             <StyledStats>
               <Stat
                 title={cashStat ? commify(cashStat.totalSupply) : '-'}

@@ -8,7 +8,6 @@ import useBasisCash from '../../hooks/useBasisCash';
 
 import micCardBorder from '../../assets/img/mic-card-border.svg';
 import misCardBorder from '../../assets/img/mis-card-border.svg';
-import mibCardBorder from '../../assets/img/mib-card-border.svg';
 import useCashStats from '../../hooks/useCashStats';
 import useBondStats from '../../hooks/useBondStats';
 import useShareStats from '../../hooks/useShareStats';
@@ -16,18 +15,16 @@ import useShareStats from '../../hooks/useShareStats';
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
   const cashStat = useCashStats();
-  const bondStat = useBondStats();
   const shareStat = useShareStats();
 
   const cashAddr = useMemo(() => basisCash?.BAC.address, [basisCash]);
   const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
-  const bondAddr = useMemo(() => basisCash?.BAB.address, [basisCash]);
 
   return (
     <Page>
       <PageHeader
         title="Welcome to MITH Cash!"
-        subtitle="Buy, sell, and provide liquidity for MITH Cash and MITH Shares on SushiSwap"
+        subtitle="Buy, sell, and provide liquidity for MITH Cash and MITH Shares on SushiSwap and Curve Stableswap"
       />
       <Spacer size="md" />
       <CardWrapper>
