@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Link } from 'react-router-dom';
+import pool from '../../../assets/img/pool.png';
 
 interface MonetaryCardHeaderProps {
   color: string;
@@ -18,7 +19,7 @@ export const MonetaryCardHeader: React.FC<MonetaryCardHeaderProps> = ({
   return (
     <HeaderWrapper>
       <HeaderLogoWrapper>
-        <HeaderLogo src={icon}/>
+        <HeaderLogo src={icon} />
         <HeaderTitle color={color}>{title}</HeaderTitle>
       </HeaderLogoWrapper>
       <HeaderDescription>
@@ -30,6 +31,7 @@ export const MonetaryCardHeader: React.FC<MonetaryCardHeaderProps> = ({
 
 const HeaderWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding: ${props => props.theme.spacing[4]}px;
   border-bottom: ${props => props.theme.color.grey[800]} 1px solid;
@@ -90,32 +92,42 @@ export const MonetaryCardEffectiveBalance: React.FC<MonetaryCardEffectiveBalance
   return (
     <BodyWrapper>
       <BodyTitle>{title}</BodyTitle>
-      <BodyValue>{value}</BodyValue>
+      <BodyValue2>{value}</BodyValue2>
     </BodyWrapper>
   )
 }
 
 const BodyWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: ${props => props.theme.spacing[4]}px;
   border-bottom: ${props => props.theme.color.grey[800]} 1px solid;
 `
 
 const BodyTitle = styled.div`
+  text-align: left;
+  flex-grow: 1;
 `
 
 const BodyValue = styled.div`
   color: ${props => props.theme.color.white};
   font-size: 24px;
-  text-align: right;
+  text-align: left;
   flex-grow: 1;
+`
+
+const BodyValue2 = styled.div`
+  color: ${props => props.theme.color.white};
+  font-size: 24px;
+  text-align: left;
+  flex-grow: 1;
+  margin-left: -180px;
 `
 
 const BodyChildren = styled.div`
   display: flex;
   margin-left: ${props => props.theme.spacing[3]}px;
+  text-align: left;
 `
 
 interface MonetaryCardFootProps {
@@ -205,12 +217,12 @@ export const MonetaryCardButton: React.FC<MonetaryCardButtonProps> = ({
 
   return (
     <Button onClick={onClick} disabled={disabled} padding={buttonPadding}>
-      {icon && <ButtonIcon src={icon}/>}
+      {icon && <ButtonIcon src={icon} />}
       {to ? (
         <StyledLink to={to}>{text}</StyledLink>
       ) : (
-        <ButtonText>{text}</ButtonText>
-      )}
+          <ButtonText>{text}</ButtonText>
+        )}
     </Button>
   )
 }
@@ -253,4 +265,52 @@ const ButtonText = styled.span`
 const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;
+`
+interface MonetaryStakeCardProps {
+  day: string;
+  fee: string;
+  button: React.ReactNode;
+  disabledReason?: string;
+}
+
+export const MonetaryStakeCard: React.FC<MonetaryStakeCardProps> = ({
+  day,
+  fee,
+  button
+}) => {
+  return (
+    <StakeWrapper>
+      <StakeTitle>{day}</StakeTitle>
+      <StakeTitle>{fee}</StakeTitle>
+      <StakeLogo src={pool} />
+      <StakeRewards>1000 MIC</StakeRewards>
+      <StakeButton>{button}</StakeButton>
+    </StakeWrapper>
+  )
+}
+
+const StakeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const StakeLogo = styled.img`
+  margin: 0 ${props => props.theme.spacing[2]}px;
+`
+
+const StakeTitle = styled.h4`
+  font-size: 14px;
+  text-algn: center;
+  margin: 0;
+`
+
+const StakeRewards = styled.h3`
+  text-algn: center;
+  margin: 0;
+  color: ${props => props.theme.color.gold};
+`
+
+const StakeButton = styled.div`
+  margin-top: ${props => props.theme.spacing[2]}px;
 `

@@ -7,6 +7,7 @@ import {
   MonetaryCardFoot,
   MonetaryCardFootCell,
   MonetaryCardHeader,
+  MonetaryStakeCard
 } from './MonetaryCard';
 import boardroom from '../../../assets/img/boardroom.svg';
 import { getDisplayBalance } from '../../../utils/formatBalance';
@@ -87,14 +88,14 @@ const MonetaryBoardroomCard: React.FC = () => {
             : '-'
         }
         children={approveStatus !== ApprovalState.APPROVED ? (
-          <MonetaryCardButton text='Approve MIS' onClick={approve}/>
-        ): (
-          <>
-            <MonetaryCardButton text='+' size='sm' onClick={onPresentDeposit}/>
-            <div style={{width: '8px'}} />
-            <MonetaryCardButton text='−' size='sm' onClick={onPresentWithdraw}/>
-          </>
-        )}
+          <MonetaryCardButton text='Approve MIS' onClick={approve} />
+        ) : (
+            <>
+              <MonetaryCardButton text='+' size='sm' onClick={onPresentDeposit} />
+              <div style={{ width: '8px' }} />
+              <MonetaryCardButton text='−' size='sm' onClick={onPresentWithdraw} />
+            </>
+          )}
       />
       <MonetaryCardEffectiveBalance
         title='Effective Balance'
@@ -112,9 +113,17 @@ const MonetaryBoardroomCard: React.FC = () => {
               ? `${getDisplayBalance(earnedMIC)} MIC`
               : '-'
           }
-          button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)}/>}
+          button={<MonetaryCardButton text='Claim all MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}
         />
       </MonetaryCardFoot>
+      <StyledRow>
+        <MonetaryStakeCard day={'Day 1'} fee={'(50% fee)'} button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}/>
+        <MonetaryStakeCard day={'Day 2'} fee={'(40% fee)'} button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}/>
+        <MonetaryStakeCard day={'Day 3'} fee={'(30% fee)'} button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}/>
+        <MonetaryStakeCard day={'Day 4'} fee={'(20% fee)'} button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}/>
+        <MonetaryStakeCard day={'Day 5'} fee={'(10% fee)'} button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}/>
+        <MonetaryStakeCard day={'>Day 5'} fee={'(0% fee)'} button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} />}/>
+      </StyledRow>
     </Wrapper>
   )
 };
@@ -124,6 +133,24 @@ const Wrapper = styled.div`
   color: ${props => props.theme.color.grey[500]};
   background-color: ${props => props.theme.color.oblack};
   border-radius: 20px;
+`
+
+const StyledRow = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-right: -${(props) => props.theme.spacing[4]}px;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
+  flex-flow: row wrap;
+  width: 100%;
+  
+  > * {
+    margin: 0 ${(props) => props.theme.spacing[4]}px;
+  }
+  
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: center;
+  }
 `
 
 export default MonetaryBoardroomCard

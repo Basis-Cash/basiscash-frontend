@@ -133,7 +133,7 @@ const StyledStats = styled.div`
 
 const StyledCardsWrapper = styled.div`
   display: flex;
-  width: 75%;
+  width: 100%;
   margin: 0 -${props => props.theme.spacing[2]}px;
   flex-wrap: wrap;
   
