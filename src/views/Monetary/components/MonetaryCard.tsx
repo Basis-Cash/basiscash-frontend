@@ -56,13 +56,13 @@ const HeaderDescription = styled.span`
   font-size: 14px;
 `
 
-interface MonetaryCardBodyProps {
+interface MonetaryCardStakedBalanceProps {
   title: string;
   value: string;
   children?: React.ReactNode;
 }
 
-export const MonetaryCardBody: React.FC<MonetaryCardBodyProps> = ({
+export const MonetaryCardStakedBalance: React.FC<MonetaryCardStakedBalanceProps> = ({
   title,
   value,
   children,
@@ -74,6 +74,23 @@ export const MonetaryCardBody: React.FC<MonetaryCardBodyProps> = ({
       <BodyChildren>
         {children}
       </BodyChildren>
+    </BodyWrapper>
+  )
+}
+
+interface MonetaryCardEffectiveBalanceProps {
+  title: string;
+  value: string;
+}
+
+export const MonetaryCardEffectiveBalance: React.FC<MonetaryCardEffectiveBalanceProps> = ({
+  title,
+  value,
+}) => {
+  return (
+    <BodyWrapper>
+      <BodyTitle>{title}</BodyTitle>
+      <BodyValue>{value}</BodyValue>
     </BodyWrapper>
   )
 }
@@ -144,7 +161,7 @@ export const MonetaryCardFootCell: React.FC<MonetaryCardFootCellProps> = ({
 const Foot = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 0 1 50%;
+  flex: 0 1 100%;
   align-items: center;
   padding: ${props => props.theme.spacing[4]}px;
   &:first-child {

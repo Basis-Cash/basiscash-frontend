@@ -76,7 +76,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
   return (
     <StyledWrapper>
       <StyledContent>
-      <StyledTitle>Sushiswap</StyledTitle>
+      <StyledTitle>Curve Stableswap</StyledTitle>
         <StyledTitle>{bank.name}</StyledTitle>
         <StyledSubtitle>Earn {bank.earnTokenName}</StyledSubtitle>
         <StyledReward>
@@ -84,39 +84,35 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           &nbsp;
           <StyledRewardToken>{bank.earnTokenName}</StyledRewardToken>
         </StyledReward>
-        <CardButton  text="Claim MIS" onClick={onReward} disabled={earnings.eq(0)}/>
+        <CardButton text="Claim MIS" onClick={onReward} disabled={earnings.eq(0)} />
       </StyledContent>
+      <StyledStat>
+        <StyledFootTitle>Current {currency} Price</StyledFootTitle>
+        <StyledFootValue>{
+          currencyStats ? (
+            `$${currencyStats.priceInUSDT}`
+          ) : (
+              `-`
+            )}</StyledFootValue>
+        <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} />
+      </StyledStat>
       <StyledFoot>
         <StyledLeftFoot>
-          <StyledFootTitle>Current {currency} Price</StyledFootTitle>
+          <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{
             currencyStats ? (
               `$${currencyStats.priceInUSDT}`
             ) : (
-              `-`
-            )}</StyledFootValue>
-          <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink}/>
+                `-`
+              )}</StyledFootValue>
+          <CardButton text={`Withdraw`} to={purchaseLink} />
         </StyledLeftFoot>
         <StyledRightFoot>
           <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
           <StyledButtonGroup>
-            {approveStatus !== ApprovalState.APPROVED ? (
-              <CardButton
-                size='sm'
-                disabled={
-                  approveStatus === ApprovalState.PENDING ||
-                  approveStatus === ApprovalState.UNKNOWN
-                }
-                onClick={approve}
-                text={`Approve ${bank.depositTokenName}`}
-              />
-            ) : (
-              <>
-                <CardButton size='sm' text='Deposit' onClick={onPresentDeposit} disabled={tokenBalance.eq(0)}/>
-                <CardButton size='sm' text='Withdraw' onClick={onPresentWithdraw} disabled={stakedBalance.eq(0)}/>
-              </>
-            )}
+          <CardButton text={`Deposit`} to={purchaseLink} />
+          <CardButton text={`Withdraw`} to={purchaseLink} />
           </StyledButtonGroup>
         </StyledRightFoot>
       </StyledFoot>
@@ -167,6 +163,17 @@ const StyledContent = styled.div`
   padding: ${props => props.theme.spacing[4]}px;
   border-bottom: ${props => props.theme.color.grey[800]} 1px solid;
 `;
+
+const StyledStat = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: ${props => props.theme.color.grey[800]} 1px solid;
+  padding: ${props => props.theme.spacing[4]}px;
+`
 
 const StyledFoot = styled.div`
   display: flex;
@@ -234,12 +241,12 @@ const CardButton: React.FC<CardButtonProps> = ({
 
   return (
     <Button onClick={onClick} disabled={disabled} padding={buttonPadding}>
-      {icon && <ButtonIcon src={icon}/>}
+      {icon && <ButtonIcon src={icon} />}
       {to ? (
         <StyledLink href={to}>{text}</StyledLink>
       ) : (
-        <ButtonText>{text}</ButtonText>
-      )}
+          <ButtonText>{text}</ButtonText>
+        )}
     </Button>
   )
 }

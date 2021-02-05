@@ -10,7 +10,6 @@ import Page from '../../components/Page';
 import { commify } from 'ethers/lib/utils';
 import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import { ShareMetric } from '../../basis-cash/types';
-import { BigNumber } from 'ethers';
 
 function shareDistStatsFromMetric(metric: ShareMetric): ShareDistStats {
   const pct = (x: string, y: string): string => {
@@ -27,7 +26,7 @@ function shareDistStatsFromMetric(metric: ShareMetric): ShareDistStats {
 const Info: React.FC = () => {
   const basisCash = useBasisCash();
 
-  const [{ cash, bond, share, shareMetric }, setStats] = useState<OverviewData>({});
+  const [{ cash, share, shareMetric }, setStats] = useState<OverviewData>({});
   const [shareDist, setShareDistStats] = useState<ShareDistStats>({
     USDTMISPoolPct: '-', boardroomPct: '-', unstakedPct: '-'
   });
@@ -71,15 +70,13 @@ const Info: React.FC = () => {
           left={
             <>
               <SectionHeader text="Supply" />
-              <SectionData title="MIS Circ. Supply" value={shareMetric ? commify(shareMetric.circulatingSupply): '-'} />
-              <SectionData title="MIB Supply" value={bond ? commify(bond.totalSupply) : '-'} />
+              <SectionData title="MIS Circ. Supply" value={shareMetric ? commify(shareMetric.circulatingSupply) : '-'} />
             </>
           }
           right={
             <>
               <SectionHeader text="Price" />
               <SectionData title="MIS Price" value={share ? `$${commify(share.priceInUSDT)} USDT` : '-'} />
-              <SectionData title="MIB Price" value={bond ? `$${commify(bond.priceInUSDT)} USDT` : '-'} />
             </>
           }
         />
@@ -94,7 +91,7 @@ const Info: React.FC = () => {
           right={
             <>
               <SectionData title="MIS in USDT/MIS Pool" value={shareDist.USDTMISPoolPct} />
-              <SectionData title="Total MIS Supply" value={share ? commify(share.totalSupply): '-'} />
+              <SectionData title="Total MIS Supply" value={share ? commify(share.totalSupply) : '-'} />
             </>
           }
         />
@@ -114,6 +111,13 @@ const Info: React.FC = () => {
         {/*  }*/}
         {/*/>*/}
       </InfoWrapper>
+      <InfoWrapper>
+        <div>Timelock Contract Queue</div>
+        <div>
+          <span>ethersacn.com/abcd    </span>
+          <span>timer</span>
+        </div>
+      </InfoWrapper>
     </Page>
   );
 };
@@ -124,6 +128,7 @@ const InfoWrapper = styled.div`
   background-color: #26272D;
   padding: ${(props) => props.theme.spacing[3]}px;
   color: ${(props) => props.theme.color.grey[200]};
+  margin: ${props => props.theme.spacing[2]}px;
 `;
 
 export default Info;

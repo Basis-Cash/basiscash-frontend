@@ -1,7 +1,8 @@
 import React, { useContext, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import {
-  MonetaryCardBody,
+  MonetaryCardStakedBalance,
+  MonetaryCardEffectiveBalance,
   MonetaryCardButton,
   MonetaryCardFoot,
   MonetaryCardFootCell,
@@ -78,7 +79,7 @@ const MonetaryBoardroomCard: React.FC = () => {
         title='Boardroom'
         description='Stakeholders in the boardroom can earn rewards from MIC seigniorage.'
       />
-      <MonetaryCardBody
+      <MonetaryCardStakedBalance
         title='Staked Balance'
         value={
           stakedBalance
@@ -95,20 +96,23 @@ const MonetaryBoardroomCard: React.FC = () => {
           </>
         )}
       />
+      <MonetaryCardEffectiveBalance
+        title='Effective Balance'
+        value={
+          stakedBalance
+            ? `${getDisplayBalance(stakedBalance)} MIS`
+            : '-'
+        }
+      />
       <MonetaryCardFoot>
         <MonetaryCardFootCell
-          title='Your MIC Rewards'
+          title='Your total MIC Rewards'
           value={
             earnedMIC
               ? `${getDisplayBalance(earnedMIC)} MIC`
               : '-'
           }
           button={<MonetaryCardButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)}/>}
-        />
-        <MonetaryCardFootCell
-          title='Your MIS Rewards'
-          value={getDisplayBalance(earnedMIS)}
-          button={<MonetaryCardButton text='Claim MIS' to='/bank/' disabled={earnedMIS.eq(0)}/>}
         />
       </MonetaryCardFoot>
     </Wrapper>

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import useCashPriceInEstimatedTWAP from '../../../hooks/useCashPriceInEstimatedTWAP';
-import useBondOraclePriceInLastTWAP from '../../../hooks/useBondOraclePriceInLastTWAP';
 import useBondStats from '../../../hooks/useBondStats';
 
 const Phase: React.FC = () => {

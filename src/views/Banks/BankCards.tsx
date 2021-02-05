@@ -9,6 +9,7 @@ import CardIcon from '../../components/CardIcon';
 import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
+import MICCard from './MICCard';
 import MISCard from './MISCard';
 import Container from '../../components/Container';
 
@@ -47,7 +48,9 @@ const BankCards: React.FC = () => {
       <StyledRow>
         {activeBanks.map((bank, i) => (
           <React.Fragment key={bank.name}>
-            {bank.earnTokenName === 'MIS' ? (<MISCard bank={bank} />) : (<BankCard bank={bank} />)}
+            {bank.earnTokenName === 'MIS' ? 
+            bank.name === 'MIC-USDT Pool' ? (<MICCard bank={bank} />) : (<MISCard bank={bank} />) 
+            : (<BankCard bank={bank} />)}
           </React.Fragment>
         ))}
       </StyledRow>

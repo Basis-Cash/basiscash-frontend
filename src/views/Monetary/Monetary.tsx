@@ -12,7 +12,6 @@ import Phase from './components/Phase';
 import Button from '../../components/Button';
 import styled from 'styled-components';
 import Container from '../../components/Container';
-import MonetaryTreasuryCard from './components/MonetaryTreasuryCard';
 import MonetaryBoardroomCard from './components/MonetaryBoardroomCard';
 import { commify } from 'ethers/lib/utils';
 import ProgressCountdown from '../Boardroom/components/ProgressCountdown';
@@ -81,9 +80,6 @@ const Monetary: React.FC = () => {
             <StyledMonetary>
               <StyledCardsWrapper>
                 <StyledCardWrapper>
-                  <MonetaryTreasuryCard />
-                </StyledCardWrapper>
-                <StyledCardWrapper>
                   <MonetaryBoardroomCard />
                 </StyledCardWrapper>
               </StyledCardsWrapper>
@@ -134,7 +130,7 @@ const StyledStats = styled.div`
 
 const StyledCardsWrapper = styled.div`
   display: flex;
-  width: 100%;
+  width: 75%;
   margin: 0 -${props => props.theme.spacing[2]}px;
   flex-wrap: wrap;
   

@@ -49,6 +49,9 @@ const App: React.FC = () => {
           <Route path="/vault">
             <Vaults />
           </Route>
+          <Route path="/migration">
+            {/* <Migrations /> */}
+          </Route>
         </Switch>
       </Router>
     </Providers>
