@@ -9,6 +9,8 @@ import CardIcon from '../../components/CardIcon';
 import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
+import MISCard from './MISCard';
+import Container from '../../components/Container';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
@@ -32,7 +34,7 @@ const BankCards: React.FC = () => {
   );
 
   return (
-    <StyledCards>
+    <Container size='lg'>
       {inactiveRows[0].length > 0 && (
         <StyledInactiveNoticeContainer>
           <Notice color="grey">
@@ -45,8 +47,7 @@ const BankCards: React.FC = () => {
       <StyledRow>
         {activeBanks.map((bank, i) => (
           <React.Fragment key={bank.name}>
-            <BankCard bank={bank} />
-            {i < activeBanks.length - 1 && i % 3 !== 2 && <StyledSpacer />}
+            {bank.earnTokenName === 'MIS' ? (<MISCard bank={bank} />) : (<BankCard bank={bank} />)}
           </React.Fragment>
         ))}
       </StyledRow>
@@ -65,7 +66,7 @@ const BankCards: React.FC = () => {
           ))}
         </>
       )}
-    </StyledCards>
+    </Container>
   );
 };
 
@@ -171,10 +172,17 @@ const StyledLoadingWrapper = styled.div`
 const StyledRow = styled.div`
   display: flex;
   justify-content: center;
+  margin-left: -${(props) => props.theme.spacing[4]}px;
+  margin-right: -${(props) => props.theme.spacing[4]}px;
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
   flex-flow: row wrap;
+  width: 100%;
+  
+  > * {
+    margin: 0 ${(props) => props.theme.spacing[4]}px;
+  }
+  
   @media (max-width: 768px) {
-    width: 100%;
     flex-flow: column nowrap;
     align-items: center;
   }
@@ -194,6 +202,9 @@ const StyledTitle = styled.h4`
   text-align: center;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
   padding: 0;
+`;
+
+const StyledSubtitle = styled.div`
 `;
 
 const StyledContent = styled.div`

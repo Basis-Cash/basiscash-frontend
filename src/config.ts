@@ -69,7 +69,7 @@ const configurations: { [env: string]: Configuration } = {
 
 export const bankDefinitions: { [contractName: string]: BankInfo } = {
   DAIBACLPTokenSharePool: {
-    name: 'Earn MIS by MIC-USDT-LP',
+    name: 'MIC-USDT Pool',
     contract: 'USDTMICLPTokenSharePool',
     depositTokenName: 'MIC_USDT-SUSHI-LPv2',
     earnTokenName: 'MIS',
@@ -77,7 +77,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 1,
   },
   DAIBASLPTokenSharePool: {
-    name: 'Earn MIS by MIS-USDT-LP',
+    name: 'MIS-USDT Pool',
     contract: 'USDTMISLPTokenSharePool',
     depositTokenName: 'MIS_USDT-SUSHI-LPv2',
     earnTokenName: 'MIS',

@@ -7,7 +7,7 @@ import {
   MonetaryCardFootCell,
   MonetaryCardHeader,
 } from './MonetaryCard';
-import mis from '../../../assets/img/mis-logo.svg';
+import boardroom from '../../../assets/img/boardroom.svg';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import useEarningsOnBoardroom from '../../../hooks/useEarningsOnBoardroom';
 import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardroom';
@@ -20,6 +20,8 @@ import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
 import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
 import WithdrawModal from './WithdrawModal';
 import DepositModal from './DepositModal';
+import useBoardroomVersion from '../../../hooks/useBoardroomVersion';
+import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 
 const MonetaryBoardroomCard: React.FC = () => {
   const { color } = useContext(ThemeContext);
@@ -29,6 +31,12 @@ const MonetaryBoardroomCard: React.FC = () => {
   const tokenBalance = useTokenBalance(basisCash.BAS);
   const stakedBalance = useStakedBalanceOnBoardroom();
   const earnedMIC = useEarningsOnBoardroom();
+
+  const boardroomVersion = useBoardroomVersion();
+  const [approveStatus, approve] = useApprove(
+    basisCash.BAS,
+    basisCash.boardroomByVersion(boardroomVersion).address,
+  );
 
   const micUSDTEarnings = useEarnings('USDTMICLPTokenSharePool');
   const misUSDTEarnings = useEarnings('USDTMISLPTokenSharePool');
@@ -66,7 +74,7 @@ const MonetaryBoardroomCard: React.FC = () => {
     <Wrapper color={color.boardroom}>
       <MonetaryCardHeader
         color={color.boardroom}
-        icon={mis}
+        icon={boardroom}
         title='Boardroom'
         description='Stakeholders in the boardroom can earn rewards from MIC seigniorage.'
       />
@@ -77,13 +85,15 @@ const MonetaryBoardroomCard: React.FC = () => {
             ? `${getDisplayBalance(stakedBalance)} MIS`
             : '-'
         }
-        children={
+        children={approveStatus !== ApprovalState.APPROVED ? (
+          <MonetaryCardButton text='Approve MIS' onClick={approve}/>
+        ): (
           <>
             <MonetaryCardButton text='+' size='sm' onClick={onPresentDeposit}/>
             <div style={{width: '8px'}} />
             <MonetaryCardButton text='−' size='sm' onClick={onPresentWithdraw}/>
           </>
-        }
+        )}
       />
       <MonetaryCardFoot>
         <MonetaryCardFootCell
