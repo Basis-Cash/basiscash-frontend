@@ -125,7 +125,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
 }
 
 const StyledWrapper = styled.div`
-  border: 1px solid ${props => props.color};
+  border: 1px solid ${'#8DB5DA'};
   color: ${props => props.theme.color.grey[500]};
   background-color: ${props => props.theme.color.oblack};
   border-radius: 20px;
@@ -146,9 +146,9 @@ const StyledRewardToken = styled.div`
 `
 
 const StyledType = styled.h4`
-  border: 1px solid ${props => props.color};
+  border: 1px solid ${'#8DB5DA'};
   border-radius: 20px;
-  color: ${(props) => props.theme.color.grey[200]};
+  color: ${'#8DB5DA'};
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
   position: absolute;
   left: 10px;
@@ -156,7 +156,7 @@ const StyledType = styled.h4`
 `;
 
 const StyledTitle = styled.h4`
-  color: ${(props) => props.theme.color.grey[200]};
+  color: ${'#8DB5DA'};
   font-size: 24px;
   font-weight: 700;
   text-align: center;

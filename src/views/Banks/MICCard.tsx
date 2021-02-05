@@ -16,6 +16,8 @@ import useTokenBalance from '../../hooks/useTokenBalance';
 import useStake from '../../hooks/useStake';
 import useWithdraw from '../../hooks/useWithdraw';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
+import lock from '../../assets/img/lock.png';
+import unlock from '../../assets/img/unlock.png';
 
 interface MISCardProps {
   bank: Bank;
@@ -98,6 +100,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
       </StyledStat>
       <StyledFoot>
         <StyledLeftFoot>
+          <HeaderImg src={lock} />
           <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{
             currencyStats ? (
@@ -108,6 +111,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           <CardButton text={`Withdraw`} to={purchaseLink} />
         </StyledLeftFoot>
         <StyledRightFoot>
+          <HeaderImg src={unlock} />
           <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
           <StyledButtonGroup>
@@ -120,8 +124,12 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
   )
 }
 
+const HeaderImg = styled.img`
+  margin: 0 ${props => props.theme.spacing[2]}px;
+`
+
 const StyledWrapper = styled.div`
-  border: 1px solid ${props => props.color};
+  border: 1px solid ${'#8DB5DA'};
   color: ${props => props.theme.color.grey[500]};
   background-color: ${props => props.theme.color.oblack};
   border-radius: 20px;
@@ -142,9 +150,9 @@ const StyledRewardToken = styled.div`
 `
 
 const StyledType = styled.h4`
-  border: 1px solid ${props => props.color};
+  border: 1px solid ${'#beffab'};
   border-radius: 20px;
-  color: ${(props) => props.theme.color.grey[200]};
+  color: ${'#beffab'};
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
   position: absolute;
   left: 10px;
@@ -152,7 +160,7 @@ const StyledType = styled.h4`
 `;
 
 const StyledTitle = styled.h4`
-  color: ${(props) => props.theme.color.grey[200]};
+  color: ${'#beffab'};
   font-size: 24px;
   font-weight: 700;
   text-align: center;
