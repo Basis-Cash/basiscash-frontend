@@ -18,6 +18,8 @@ import useWithdraw from '../../hooks/useWithdraw';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
 import lock from '../../assets/img/lock.png';
 import unlock from '../../assets/img/unlock.png';
+import gift from '../../assets/img/gift.png';
+import MIC_green from '../../assets/img/MIC_green.png';
 
 interface MISCardProps {
   bank: Bank;
@@ -86,7 +88,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           &nbsp;
           <StyledRewardToken>{bank.earnTokenName}</StyledRewardToken>
         </StyledReward>
-        <CardButton text="Claim MIS" onClick={onReward} disabled={earnings.eq(0)} />
+        <CardButton text="Claim MIS" onClick={onReward} disabled={earnings.eq(0)} icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />
       </StyledContent>
       <StyledStat>
         <StyledFootTitle>Current {currency} Price</StyledFootTitle>
@@ -96,12 +98,11 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           ) : (
               `-`
             )}</StyledFootValue>
-        <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} />
+        <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} width='auto' icon={MIC_green} backgroundColor="#4D6756" colorHover="#A1C7AE" backgroundColorHover="#4D6756" color="#A1C7AE" />
       </StyledStat>
       <StyledFoot>
         <StyledLeftFoot>
-          <HeaderImg src={lock} />
-          <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
+          <StyledFootTitle><HeaderImg src={lock} />Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{
             currencyStats ? (
               `$${currencyStats.priceInUSDT}`
@@ -111,11 +112,10 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           <CardButton text={`Withdraw`} to={purchaseLink} />
         </StyledLeftFoot>
         <StyledRightFoot>
-          <HeaderImg src={unlock} />
-          <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
+          <StyledFootTitle><HeaderImg src={unlock} />Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
           <StyledButtonGroup>
-            <CardButton size='sm' text={`Deposit`} to={purchaseLink} />
+            <CardButton size='sm' text={`Deposit`} to={purchaseLink}  />
             <CardButton size='sm' text={`Withdraw`} to={purchaseLink} />
           </StyledButtonGroup>
         </StyledRightFoot>
@@ -125,7 +125,8 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
 }
 
 const HeaderImg = styled.img`
-  margin: 0 ${props => props.theme.spacing[2]}px;
+  width: 24px;
+  height: 24px;
 `
 
 const StyledWrapper = styled.div`
@@ -133,43 +134,68 @@ const StyledWrapper = styled.div`
   color: ${props => props.theme.color.grey[500]};
   background-color: ${props => props.theme.color.oblack};
   border-radius: 20px;
+  background: #26272D;
+  border: 1px solid #426687;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px rgba(77, 103, 86, 0.25), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  flex: 1;
+  margin-right: 37px;
 `
 
 const StyledReward = styled.div`
   display: flex;
   align-items: baseline;
+  margin: 20px 0;
 `
 
 const StyledRewardValue = styled.div`
   font-size: 40px;
+  font-weight: 600;
+  line-height: 51px;
   color: ${(props) => props.theme.color.white};
 `
 
 const StyledRewardToken = styled.div`
-  color: ${(props) => props.theme.color.grey[700]};
+  color: #8D8F9B;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
 `
 
 const StyledType = styled.h4`
-  border: 1px solid ${'#beffab'};
+  border: 1px solid ${'#A1C7AE'};
   border-radius: 20px;
-  color: ${'#beffab'};
+  color: ${'#A1C7AE'};
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
   position: absolute;
   left: 10px;
-  top: 27px;
+  top: 23px;
+  padding: 7px 12px;
+  font-size: 14px;
+  background: #26272D;
+  border: 1px solid #4D6756;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px rgba(77, 103, 86, 0.25), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
 `;
 
 const StyledTitle = styled.h4`
-  color: ${'#beffab'};
-  font-size: 24px;
+  color: ${'#A1C7AE'};
+  font-size: 22px;
   font-weight: 700;
   text-align: center;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
-  padding-left: 70px;
+  // padding-left: 70px;
 `;
 
 const StyledSubtitle = styled.div`
-  color: ${(props) => props.theme.color.grey[700]};
+  color: #8D8F9B;
+  font-family: Lora;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
 `;
 
 const StyledContent = styled.div`
@@ -200,7 +226,10 @@ const StyledFoot = styled.div`
 
 const StyledFootTitle = styled.div`
   font-size: 14px;
-  color: ${props => props.theme.color.grey[700]};
+  color: #8D8F9B;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 `;
 
 const StyledFootValue = styled.div`
@@ -214,6 +243,7 @@ const StyledLeftFoot = styled.div`
   align-items: center;
   border-right: 1px solid #414244;
   padding: ${props => props.theme.spacing[4]}px;
+  flex: 1;
 `
 
 const StyledRightFoot = styled.div`
@@ -221,6 +251,7 @@ const StyledRightFoot = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${props => props.theme.spacing[4]}px;
+  flex: 1;
 `
 
 const StyledButtonGroup = styled.div`
@@ -236,6 +267,11 @@ interface CardButtonProps {
   onClick?: () => void;
   to?: string;
   size?: 'sm' | 'md',
+  color?: string,
+  width?: string,
+  backgroundColor?: string,
+  colorHover?: string,
+  backgroundColorHover?: string
 }
 
 const CardButton: React.FC<CardButtonProps> = ({
@@ -245,6 +281,11 @@ const CardButton: React.FC<CardButtonProps> = ({
   onClick,
   to,
   size,
+  color,
+  width = '100%',
+  backgroundColor,
+  colorHover = '#43423F',
+  backgroundColorHover
 }) => {
   const { spacing } = useContext(ThemeContext)
 
@@ -259,24 +300,25 @@ const CardButton: React.FC<CardButtonProps> = ({
   }
 
   return (
-    <Button onClick={onClick} disabled={disabled} padding={buttonPadding}>
-      {icon && <ButtonIcon src={icon} />}
+    <Button onClick={onClick} disabled={disabled} padding={buttonPadding} width={width} colorHover={colorHover} backgroundColor={backgroundColor} backgroundColorHover={backgroundColorHover} color={color} >
+      {icon && <ButtonIcon src={icon}  />}
       {to ? (
         <StyledLink href={to}>{text}</StyledLink>
       ) : (
-          <ButtonText>{text}</ButtonText>
+          <ButtonText color={color}>{text}</ButtonText>
         )}
     </Button>
   )
 }
 
 const ButtonIcon = styled.img`
-  margin-right: ${props => props.theme.spacing[3]}px;
-  width: 20px;
+  margin-right: ${props => props.theme.spacing[2]}px;
   height: 20px;
 `
 
 const ButtonText = styled.span`
+  font-size: 14px;
+  color: ${props => props.color};
 `
 
 const StyledLink = styled.a`
@@ -287,26 +329,32 @@ const StyledLink = styled.a`
 interface ButtonProps {
   padding: number;
   disabled?: boolean;
+  width?: string;
+  colorHover?: string;
+  color?: string;
+  backgroundColor?: any;
+  backgroundColorHover?: string;
 }
 
 const Button = styled.button<ButtonProps>`
-  background-color: ${props => !props.disabled ? '#43423F' : '#303030'};
+  background-color: ${props => props.backgroundColor || (!props.disabled ? '#43423F' : '#303030')};
   border-radius: 10px;
   border: 0;
-  color: ${props => !props.disabled ? props.theme.color.gold : '#4F4F4F'};
-  padding-top: ${props => props.theme.spacing[2]}px;
-  padding-bottom: ${props => props.theme.spacing[2]}px;
-  padding-left: ${props => props.padding}px;
-  padding-right: ${props => props.padding}px;
+  color: ${props => props.color || (!props.disabled ? props.theme.color.gold : '#4F4F4F')};
   display: flex;
   align-items: center;
   cursor: pointer;
   pointer-events: ${props => !props.disabled ? undefined : 'none'};
   font-weight: 700;
+  padding: 9px 21px;
+  width: ${props => props.width};
+  text-align: center;
+  justify-content:center;
+  margin: 7px 5px 0 5px;
 
   &:hover {
-    background-color: ${props => props.theme.color.gold};
-    color: #43423F;
+    background-color: ${props => props.backgroundColorHover || props.theme.color.gold};
+    color: ${props => props.colorHover};
   }
 `
 

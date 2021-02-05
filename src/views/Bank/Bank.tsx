@@ -100,10 +100,6 @@ const StyledBank = styled.div`
   }
 `;
 
-const StyledUniswapLPGuide = styled.div`
-  margin: -24px auto 48px;
-`;
-
 const StyledLink = styled.a`
   font-weight: 700;
   text-decoration: none;

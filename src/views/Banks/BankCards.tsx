@@ -158,16 +158,10 @@ const StyledCardSuperAccent = styled.div`
 const StyledRow = styled.div`
   display: flex;
   justify-content: center;
-  margin-left: -${(props) => props.theme.spacing[4]}px;
-  margin-right: -${(props) => props.theme.spacing[4]}px;
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
   flex-flow: row wrap;
   width: 100%;
   align-items: flex-start;
-  
-  > * {
-    margin: 0 ${(props) => props.theme.spacing[4]}px;
-  }
   
   @media (max-width: 768px) {
     flex-flow: column nowrap;

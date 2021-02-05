@@ -42,7 +42,12 @@ const Banks: React.FC = () => {
 const Header = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: ${props => props.theme.spacing[4]}px;
+  margin: 61px 0;
+  font-family: Lora;
+  font-style: normal;
+  font-weight: 550;
+  font-size: 36px;
+  line-height: 46px;
 `
 
 const HeaderImg = styled.img`
