@@ -45,6 +45,10 @@ const Monetary: React.FC = () => {
           <Container size='lg'>
             <Phase />
             <StyledStats>
+              <Stat
+                title={cashStat ? commify(cashStat.totalSupply) : '-'}
+                description="Circulating MIC"
+              />
               <ProgressCountdown
                 base={prevEpoch}
                 deadline={nextEpoch}
@@ -62,19 +66,20 @@ const Monetary: React.FC = () => {
                     ? `$${getDisplayBalance(cash1HrPrice, 18, 3)}`
                     : '-'
                 }
-                description="1H TWAP MIC Price"
+                description="MIC 15 min TWAP Price for Value Reallocation Calculation"
               />
               <Stat
-                title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
-                description="24H TWAP Est. MIC Price"
+                // title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
+                title="84.7%"
+                description="MIC Sell Value Reallocation Fee"
               />
               <Stat
                 title={scalingFactor ? `x${scalingFactor}` : '-'}
                 description="Scaling Factor"
               />
               <Stat
-                title={cashStat ? commify(cashStat.totalSupply) : '-'}
-                description="Circulating MIC"
+                title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
+                description="24H TWAP Est. MIC Price"
               />
             </StyledStats>
             <StyledMonetary>
@@ -86,8 +91,8 @@ const Monetary: React.FC = () => {
             </StyledMonetary>
           </Container>
         ) : (
-          <UnlockWallet />
-        )}
+            <UnlockWallet />
+          )}
       </Page>
     </Switch>
   );
