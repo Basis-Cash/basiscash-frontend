@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { ShareDistStats, OverviewData } from './types';
 import useBasisCash from '../../hooks/useBasisCash';
@@ -10,6 +10,9 @@ import Page from '../../components/Page';
 import { commify } from 'ethers/lib/utils';
 import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import { ShareMetric } from '../../basis-cash/types';
+import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
+import moment from 'moment';
+import ProgressCountdown from './components/ProgressCountdown';
 
 function shareDistStatsFromMetric(metric: ShareMetric): ShareDistStats {
   const pct = (x: string, y: string): string => {
@@ -58,6 +61,15 @@ const Info: React.FC = () => {
     }
   }, [shareMetric])
 
+  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
+  const prevEpoch = useMemo(
+    () =>
+      nextAllocation.getTime() <= Date.now()
+        ? moment().utc().startOf('day').toDate()
+        : prevAllocation,
+    [prevAllocation, nextAllocation],
+  );
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(6, 'hours').toDate(), [prevEpoch]);
   return (
     <Page>
       <InfoWrapper>
@@ -114,8 +126,12 @@ const Info: React.FC = () => {
       <InfoWrapper>
         <div>Timelock Contract Queue</div>
         <div>
-          <span>ethersacn.com/abcd    </span>
-          <span>timer</span>
+          ethersacn.com/abcd
+          <ProgressCountdown
+            base={prevEpoch}
+            deadline={nextEpoch}
+            description="Timeleft on timelock"
+          />
         </div>
       </InfoWrapper>
     </Page>
