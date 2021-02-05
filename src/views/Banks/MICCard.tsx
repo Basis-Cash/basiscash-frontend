@@ -76,7 +76,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
   return (
     <StyledWrapper>
       <StyledContent>
-      <StyledTitle>Curve Stableswap</StyledTitle>
+        <StyledType>Curve Stableswap</StyledType>
         <StyledTitle>{bank.name}</StyledTitle>
         <StyledSubtitle>Earn {bank.earnTokenName}</StyledSubtitle>
         <StyledReward>
@@ -111,8 +111,8 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
           <StyledButtonGroup>
-          <CardButton text={`Deposit`} to={purchaseLink} />
-          <CardButton text={`Withdraw`} to={purchaseLink} />
+            <CardButton size='sm' text={`Deposit`} to={purchaseLink} />
+            <CardButton size='sm' text={`Withdraw`} to={purchaseLink} />
           </StyledButtonGroup>
         </StyledRightFoot>
       </StyledFoot>
@@ -141,13 +141,23 @@ const StyledRewardToken = styled.div`
   color: ${(props) => props.theme.color.grey[700]};
 `
 
+const StyledType = styled.h4`
+  border: 1px solid ${props => props.color};
+  border-radius: 20px;
+  color: ${(props) => props.theme.color.grey[200]};
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  position: absolute;
+  left: 10px;
+  top: 27px;
+`;
+
 const StyledTitle = styled.h4`
   color: ${(props) => props.theme.color.grey[200]};
   font-size: 24px;
   font-weight: 700;
   text-align: center;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
-  padding: 0;
+  padding-left: 70px;
 `;
 
 const StyledSubtitle = styled.div`
@@ -162,6 +172,7 @@ const StyledContent = styled.div`
   justify-content: space-between;
   padding: ${props => props.theme.spacing[4]}px;
   border-bottom: ${props => props.theme.color.grey[800]} 1px solid;
+  position: relative;
 `;
 
 const StyledStat = styled.div`

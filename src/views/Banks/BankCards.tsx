@@ -155,23 +155,6 @@ const StyledCardSuperAccent = styled.div`
   z-index: -1;
 `;
 
-const StyledCards = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 900px;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const StyledLoadingWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-`;
-
 const StyledRow = styled.div`
   display: flex;
   justify-content: center;
@@ -205,9 +188,6 @@ const StyledTitle = styled.h4`
   text-align: center;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
   padding: 0;
-`;
-
-const StyledSubtitle = styled.div`
 `;
 
 const StyledContent = styled.div`
