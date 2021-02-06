@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { Bank } from '../../basis-cash';
@@ -39,6 +39,8 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
 
   const { onStake } = useStake(bank);
   const { onWithdraw } = useWithdraw(bank);
+
+  const [ isDetailsShow, setDetailsShow ] = useState(false);
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -90,36 +92,40 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
         </StyledReward>
         <CardButton text="Claim MIS" onClick={onReward} disabled={earnings.eq(0)} icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />
       </StyledContent>
-      <StyledStat>
-        <StyledFootTitle>Current {currency} Price</StyledFootTitle>
-        <StyledFootValue>{
-          currencyStats ? (
-            `$${currencyStats.priceInUSDT}`
-          ) : (
-              `-`
-            )}</StyledFootValue>
-        <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} width='auto' icon={MIC_green} backgroundColor="#4D6756" colorHover="#A1C7AE" backgroundColorHover="#4D6756" color="#A1C7AE" />
-      </StyledStat>
       <StyledFoot>
         <StyledLeftFoot>
-          <StyledFootTitle><HeaderImg src={lock} />Your staked LP Balance</StyledFootTitle>
+          <StyledFootTitle>Current {currency} Price</StyledFootTitle>
           <StyledFootValue>{
             currencyStats ? (
               `$${currencyStats.priceInUSDT}`
             ) : (
                 `-`
               )}</StyledFootValue>
-          <CardButton text={`Withdraw`} to={purchaseLink} />
+          <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} width='auto' icon={MIC_green} backgroundColor="#4D6756" colorHover="#A1C7AE" backgroundColorHover="#4D6756" color="#A1C7AE" />
         </StyledLeftFoot>
         <StyledRightFoot>
-          <StyledFootTitle><HeaderImg src={unlock} />Your staked LP Balance</StyledFootTitle>
+          <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
           <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
-          <StyledButtonGroup>
-            <CardButton size='sm' text={`Deposit`} to={purchaseLink}  />
-            <CardButton size='sm' text={`Withdraw`} to={purchaseLink} />
-          </StyledButtonGroup>
+          <CardButton text={!isDetailsShow ? `More Details` : `Less Details`} onClick={() => setDetailsShow(!isDetailsShow)} />
         </StyledRightFoot>
       </StyledFoot>
+      {isDetailsShow && (
+        <StyledFoot>
+          <StyledLeftFoot>
+            <StyledFootTitle><HeaderImg src={lock} />Your staked LP Balance</StyledFootTitle>
+            <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
+            <CardButton text={`00:00:00`} to={purchaseLink} />
+          </StyledLeftFoot>
+          <StyledRightFoot>
+            <StyledFootTitle><HeaderImg src={unlock} />Your staked LP Balance</StyledFootTitle>
+            <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
+            <StyledButtonGroup>
+              <CardButton size='sm' text={`Deposit`} to={purchaseLink}  />
+              <CardButton size='sm' text={`Withdraw`} to={purchaseLink} />
+            </StyledButtonGroup>
+          </StyledRightFoot>
+        </StyledFoot>
+      )}
     </StyledWrapper>
   )
 }
