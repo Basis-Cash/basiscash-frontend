@@ -117,6 +117,7 @@ const Home: React.FC = () => {
 };
 
 const ShowCards = styled.div`
+  cursor: pointer;
 `;
 
 const CardWrapper = styled.div`

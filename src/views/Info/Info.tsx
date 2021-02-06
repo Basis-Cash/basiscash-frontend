@@ -127,21 +127,25 @@ const Info: React.FC = () => {
         <StyledTitle>Timelock Contract Queue</StyledTitle>
         <StyledQueues>
           <StyledUrl>ethersacn.com/abcd</StyledUrl>
-          <ProgressCountdown
-            base={prevEpoch}
-            deadline={nextEpoch}
-            // description="Timeleft on timelock"
-            description=""
-          />
+          <StyledProgressCountdown>
+            <ProgressCountdown
+              base={prevEpoch}
+              deadline={nextEpoch}
+              // description="Timeleft on timelock"
+              description=""
+            />
+          </StyledProgressCountdown>
         </StyledQueues>
         <StyledQueues>
           <StyledUrl>ethersacn.com/1234</StyledUrl>
-          <ProgressCountdown
-            base={prevEpoch}
-            deadline={nextEpoch}
-            // description="Timeleft on timelock"
-            description=""
-          />
+          <StyledProgressCountdown>
+            <ProgressCountdown
+              base={prevEpoch}
+              deadline={nextEpoch}
+              // description="Timeleft on timelock"
+              description=""
+            />
+          </StyledProgressCountdown>
         </StyledQueues>
       </InfoWrapper>
     </Page>
@@ -176,6 +180,17 @@ const StyledUrl = styled.div`
   font-size: 14px;
   text-align: center;
   width: 50%;
+`;
+
+const StyledProgressCountdown = styled.div`
+  position: relative;
+  margin-top: ${props => props.theme.spacing[3]}px;
+  background: #26272D;
+  border: 1px solid #DBC087;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 30%;
 `;
 
 export default Info;
