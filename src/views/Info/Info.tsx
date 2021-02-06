@@ -127,25 +127,37 @@ const Info: React.FC = () => {
         <StyledTitle>Timelock Contract Queue</StyledTitle>
         <StyledQueues>
           <StyledUrl>ethersacn.com/abcd</StyledUrl>
-          <StyledProgressCountdown>
+          <ProgressCountdown
+            base={prevEpoch}
+            deadline={nextEpoch}
+            // description="Timeleft on timelock"
+            description=""
+          />
+          {/* <StyledProgressCountdown>
             <ProgressCountdown
               base={prevEpoch}
               deadline={nextEpoch}
               // description="Timeleft on timelock"
               description=""
             />
-          </StyledProgressCountdown>
+          </StyledProgressCountdown> */}
         </StyledQueues>
         <StyledQueues>
           <StyledUrl>ethersacn.com/1234</StyledUrl>
-          <StyledProgressCountdown>
+          <ProgressCountdown
+            base={prevEpoch}
+            deadline={nextEpoch}
+            // description="Timeleft on timelock"
+            description=""
+          />
+          {/* <StyledProgressCountdown>
             <ProgressCountdown
               base={prevEpoch}
               deadline={nextEpoch}
               // description="Timeleft on timelock"
               description=""
             />
-          </StyledProgressCountdown>
+          </StyledProgressCountdown> */}
         </StyledQueues>
       </InfoWrapper>
     </Page>
