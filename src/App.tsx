@@ -22,6 +22,7 @@ import Boardroom from './views/Boardroom';
 import Vaults from './views/Vaults';
 import Popups from './components/Popups';
 import Monetary from './views/Monetary';
+import Migration from './views/Migration';
 
 const App: React.FC = () => {
   return (
@@ -50,7 +51,7 @@ const App: React.FC = () => {
             <Vaults />
           </Route>
           <Route path="/migration">
-            {/* <Migrations /> */}
+            <Migration />
           </Route>
         </Switch>
       </Router>

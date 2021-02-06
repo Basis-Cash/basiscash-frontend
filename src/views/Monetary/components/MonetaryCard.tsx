@@ -121,7 +121,7 @@ const BodyValue2 = styled.div`
   font-size: 24px;
   text-align: left;
   flex-grow: 1;
-  margin-left: -180px;
+  margin-left: -280px;
 `
 
 const BodyChildren = styled.div`
@@ -179,6 +179,7 @@ const Foot = styled.div`
   &:first-child {
     border-right: ${props => props.theme.color.grey[800]} 1px solid;
   }
+  width: 100%;
 `
 const FootTitle = BodyTitle;
 const FootValue = BodyValue;
@@ -227,9 +228,116 @@ export const MonetaryCardButton: React.FC<MonetaryCardButtonProps> = ({
   )
 }
 
+interface MonetaryClaimButtonProps {
+  icon?: string;
+  text: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  to?: string;
+  size?: 'sm' | 'md',
+  color?: string,
+  width?: string,
+  backgroundColor?: string,
+  colorHover?: string,
+  backgroundColorHover?: string
+}
+
+export const MonetaryClaimButton: React.FC<MonetaryClaimButtonProps> = ({
+  icon,
+  text,
+  disabled,
+  onClick,
+  to,
+  size,
+  color,
+  width = '100%',
+  backgroundColor,
+  colorHover = '#43423F',
+  backgroundColorHover
+}) => {
+  const { spacing } = useContext(ThemeContext)
+
+  let buttonPadding: number;
+  switch (size) {
+    case 'sm':
+      buttonPadding = spacing[3]
+      break
+    case 'md':
+    default:
+      buttonPadding = spacing[5]
+  }
+
+  return (
+    <ClaimButton onClick={onClick} disabled={disabled} padding={buttonPadding} width={width} colorHover={colorHover} backgroundColor={backgroundColor} backgroundColorHover={backgroundColorHover} color={color} >
+      {icon && <ButtonIcon src={icon} />}
+      {to ? (
+        <StyledLink to={to}>{text}</StyledLink>
+      ) : (
+          <ButtonText color={color}>{text}</ButtonText>
+        )}
+    </ClaimButton>
+  )
+}
+
+interface MonetaryClaimAllButtonProps {
+  icon?: string;
+  text: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  to?: string;
+  size?: 'sm' | 'md',
+  color?: string,
+  width?: string,
+  backgroundColor?: string,
+  colorHover?: string,
+  backgroundColorHover?: string
+}
+
+export const MonetaryClaimAllButton: React.FC<MonetaryClaimAllButtonProps> = ({
+  icon,
+  text,
+  disabled,
+  onClick,
+  to,
+  size,
+  color,
+  width = '100%',
+  backgroundColor,
+  colorHover = '#43423F',
+  backgroundColorHover
+}) => {
+  const { spacing } = useContext(ThemeContext)
+
+  let buttonPadding: number;
+  switch (size) {
+    case 'sm':
+      buttonPadding = spacing[3]
+      break
+    case 'md':
+    default:
+      buttonPadding = spacing[5]
+  }
+
+  return (
+    <ClaimAllButton onClick={onClick} disabled={disabled} padding={buttonPadding} width={width} colorHover={colorHover} backgroundColor={backgroundColor} backgroundColorHover={backgroundColorHover} color={color} >
+      {icon && <ButtonIcon src={icon} />}
+      {to ? (
+        <StyledLink to={to}>{text}</StyledLink>
+      ) : (
+          <ButtonText color={color}>{text}</ButtonText>
+        )}
+    </ClaimAllButton>
+  )
+}
+
 interface ButtonProps {
   padding: number;
   disabled?: boolean;
+  width?: string;
+  colorHover?: string;
+  color?: string;
+  backgroundColor?: any;
+  backgroundColorHover?: string;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -253,8 +361,55 @@ const Button = styled.button<ButtonProps>`
   }
 `
 
+const ClaimButton = styled.button<ButtonProps>`
+  background-color: ${props => !props.disabled ? '#43423F' : '#303030'};
+  border-radius: 10px;
+  border: 0;
+  color: ${props => !props.disabled ? props.theme.color.gold : '#4F4F4F'};
+  padding-top: ${props => props.theme.spacing[2]}px;
+  padding-bottom: ${props => props.theme.spacing[2]}px;
+  padding-left: ${props => props.padding}px;
+  padding-right: ${props => props.padding}px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: ${props => !props.disabled ? undefined : 'none'};
+  font-weight: 700;
+
+  &:hover {
+    background-color: ${props => props.theme.color.gold};
+    color: #43423F;
+  }
+  width: 140px;
+  justify-content: space-between;
+`
+
+const ClaimAllButton = styled.button<ButtonProps>`
+  background-color: ${props => !props.disabled ? '#43423F' : '#303030'};
+  border-radius: 10px;
+  border: 0;
+  color: ${props => !props.disabled ? props.theme.color.gold : '#4F4F4F'};
+  padding-top: ${props => props.theme.spacing[2]}px;
+  padding-bottom: ${props => props.theme.spacing[2]}px;
+  padding-left: ${props => props.padding}px;
+  padding-right: ${props => props.padding}px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: ${props => !props.disabled ? undefined : 'none'};
+  font-weight: 700;
+
+  &:hover {
+    background-color: ${props => props.theme.color.gold};
+    color: #43423F;
+  }
+  width: 1050px;
+  justify-content: center;
+`
+
 const ButtonIcon = styled.img`
-  margin-right: ${props => props.theme.spacing[3]}px;
+  margin-left: -${props => props.theme.spacing[4]}px;
+  margin-right: ${props => props.theme.spacing[2]}px;
   width: 20px;
   height: 20px;
 `

@@ -47,11 +47,13 @@ const Monetary: React.FC = () => {
                 title={cashStat ? commify(cashStat.totalSupply) : '-'}
                 description="Circulating MIC"
               />
-              <ProgressCountdown
-                base={prevEpoch}
-                deadline={nextEpoch}
-                description="Next Epoch"
-              />
+              <StyledProgressCountdown>
+                <ProgressCountdown
+                  base={prevEpoch}
+                  deadline={nextEpoch}
+                  description="Next Epoch"
+                />
+              </StyledProgressCountdown>
               {/*<Stat*/}
               {/*  title={cashStat ? `${cashStat.priceInUSDT}` : '-'}*/}
               {/*  description="Expected MIC Received during seigniorage"*/}
@@ -64,7 +66,7 @@ const Monetary: React.FC = () => {
                     ? `$${getDisplayBalance(cash1HrPrice, 18, 3)}`
                     : '-'
                 }
-                description="MIC 15 min TWAP Price for Value Reallocation Calculation"
+                description="MIC Price for Value Reallocation Calculation"
               />
               <Stat
                 // title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
@@ -129,6 +131,16 @@ const StyledStats = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
+`;
+
+const StyledProgressCountdown = styled.div`
+  height: 100%;
+  padding: ${(props) => props.theme.spacing[2]}px ${(props) => props.theme.spacing[4]}px;
+  background: #26272D;
+  border: 2px solid #DBC087;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px rgba(77, 103, 86, 0.25), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
 `;
 
 const StyledCardsWrapper = styled.div`

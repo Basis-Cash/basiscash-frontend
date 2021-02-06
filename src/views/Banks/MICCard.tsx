@@ -21,11 +21,11 @@ import unlock from '../../assets/img/unlock.png';
 import gift from '../../assets/img/gift.png';
 import MIC_green from '../../assets/img/MIC_green.png';
 
-interface MISCardProps {
+interface MICCardProps {
   bank: Bank;
 }
 
-const MISCard: React.FC<MISCardProps> = ({ bank }) => {
+const MICCard: React.FC<MICCardProps> = ({ bank }) => {
   const [approveStatus, approve] = useApprove(bank.depositToken, bank.address);
 
   const earnings = useEarnings(bank.contract);
@@ -164,7 +164,6 @@ const StyledRewardToken = styled.div`
 `
 
 const StyledType = styled.h4`
-  border: 1px solid ${'#A1C7AE'};
   border-radius: 20px;
   color: ${'#A1C7AE'};
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
@@ -358,4 +357,4 @@ const Button = styled.button<ButtonProps>`
   }
 `
 
-export default MISCard;
+export default MICCard;

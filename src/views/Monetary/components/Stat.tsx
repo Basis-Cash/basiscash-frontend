@@ -27,6 +27,7 @@ const StyledCardTitle = styled.div`
 const StyledDesc = styled.span`
   font-size: 12px;
   color: ${(props) => props.theme.color.grey[400]};
+  text-align: center;
 `;
 
 const StyledCardContentInner = styled.div`
