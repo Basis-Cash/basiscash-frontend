@@ -104,7 +104,7 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
           <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} width='auto' icon={MIC_green} backgroundColor="#4D6756" colorHover="#A1C7AE" backgroundColorHover="#4D6756" color="#A1C7AE" />
         </StyledLeftFoot>
         <StyledRightFoot>
-          <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
+          <StyledFootTitle>Your Staked LP Balance</StyledFootTitle>
           <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
           <CardButton text={!isDetailsShow ? `More Details` : `Less Details`} onClick={() => setDetailsShow(!isDetailsShow)} />
         </StyledRightFoot>
@@ -112,7 +112,7 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
       {isDetailsShow && (
         <StyledFoot>
           <StyledLeftFoot>
-            <StyledFootTitle><HeaderImg src={lock} />Your staked LP Balance</StyledFootTitle>
+            <StyledFootTitle><HeaderImg src={lock} />Your Staked LP Balance</StyledFootTitle>
             <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
             <CardButton text={`00:00:00`} disabled />
           </StyledLeftFoot>
@@ -120,8 +120,8 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
             <StyledFootTitle><HeaderImg src={unlock} />Your staked LP Balance</StyledFootTitle>
             <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
             <StyledButtonGroup>
-              <CardButton size='sm' text={`Deposit`} to={purchaseLink}  />
-              <CardButton size='sm' text={`Withdraw`} to={purchaseLink} />
+              <CardButton size='sm' text={`Deposit`} onClick={onPresentDeposit} />
+              <CardButton size='sm' text={`Withdraw`} onClick={onPresentWithdraw} />
             </StyledButtonGroup>
           </StyledRightFoot>
         </StyledFoot>
