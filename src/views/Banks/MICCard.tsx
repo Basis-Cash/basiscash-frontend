@@ -210,7 +210,6 @@ const StyledContent = styled.div`
   flex: 1;
   justify-content: space-between;
   padding: ${props => props.theme.spacing[4]}px;
-  border-bottom: ${props => props.theme.color.grey[800]} 1px solid;
   position: relative;
 `;
 
@@ -227,6 +226,7 @@ const StyledStat = styled.div`
 
 const StyledFoot = styled.div`
   display: flex;
+  border-top: ${props => props.theme.color.grey[800]} 1px solid;
 `;
 
 const StyledFootTitle = styled.div`
