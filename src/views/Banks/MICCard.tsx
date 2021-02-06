@@ -114,7 +114,7 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
           <StyledLeftFoot>
             <StyledFootTitle><HeaderImg src={lock} />Your staked LP Balance</StyledFootTitle>
             <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
-            <CardButton text={`00:00:00`} to={purchaseLink} />
+            <CardButton text={`00:00:00`} disabled />
           </StyledLeftFoot>
           <StyledRightFoot>
             <StyledFootTitle><HeaderImg src={unlock} />Your staked LP Balance</StyledFootTitle>
