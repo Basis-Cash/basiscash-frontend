@@ -139,7 +139,7 @@ const StyledProgressCountdown = styled.div`
   background: #26272D;
   border: 2px solid #DBC087;
   box-sizing: border-box;
-  box-shadow: 0px 0px 20px rgba(77, 103, 86, 0.25), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
 `;
 

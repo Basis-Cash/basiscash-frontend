@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import Label from '../../../components/Label';
 import { Link } from 'react-router-dom';
+import useTreasuryAllocationTimes from '../../../hooks/useTreasuryAllocationTimes';
+import moment from 'moment';
+import ProgressCountdown from '../../Boardroom/components/ProgressCountdown';
 
 interface HomeCardProps {
   title: string;
@@ -17,6 +19,15 @@ export const HomeCard: React.FC<HomeCardProps> = ({
   button
 }) => {
   const { color } = useContext(ThemeContext);
+  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
+  const prevEpoch = useMemo(
+    () =>
+      nextAllocation.getTime() <= Date.now()
+        ? moment().utc().startOf('day').toDate()
+        : prevAllocation,
+    [prevAllocation, nextAllocation],
+  );
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(6, 'hours').toDate(), [prevEpoch]);
 
   return (
     <Wrapper>
@@ -40,6 +51,13 @@ export const HomeCard: React.FC<HomeCardProps> = ({
           </CardContent>
         </CardBody>
       </StyledCards>
+      <StyledProgressCountdown>
+        <ProgressCountdown
+          base={prevEpoch}
+          deadline={nextEpoch}
+          description="Next Epoch"
+        />
+      </StyledProgressCountdown>
     </Wrapper>
   );
 };
@@ -57,9 +75,18 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
   backgroundImg,
   headerColor,
   button1,
-  button2
+  button2,
 }) => {
   const { color } = useContext(ThemeContext);
+  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
+  const prevEpoch = useMemo(
+    () =>
+      nextAllocation.getTime() <= Date.now()
+        ? moment().utc().startOf('day').toDate()
+        : prevAllocation,
+    [prevAllocation, nextAllocation],
+  );
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(6, 'hours').toDate(), [prevEpoch]);
 
   return (
     <Wrapper>
@@ -68,8 +95,8 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
       <StyledCards>
         <CardBody backgroundImg={backgroundImg}>
           <CardContent>
-              <StyledBalanceLabel>Your Balance</StyledBalanceLabel>
-              <StyledBalanceLabel2>Staked LP Balance</StyledBalanceLabel2>
+            <StyledBalanceLabel>Your Balance</StyledBalanceLabel>
+            <StyledBalanceLabel2>Staked LP Balance</StyledBalanceLabel2>
             <CardSection>
               <StyledV1Label>V1:</StyledV1Label>
               <StyledV1Value>1,000</StyledV1Value>
@@ -83,6 +110,13 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
           </CardContent>
         </CardBody>
       </StyledCards>
+      <StyledProgressCountdown>
+        <ProgressCountdown
+          base={prevEpoch}
+          deadline={nextEpoch}
+          description="Next Epoch"
+        />
+      </StyledProgressCountdown>
     </Wrapper>
   );
 };
@@ -94,6 +128,15 @@ export const HomeCard3: React.FC<HomeCardProps> = ({
   button
 }) => {
   const { color } = useContext(ThemeContext);
+  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
+  const prevEpoch = useMemo(
+    () =>
+      nextAllocation.getTime() <= Date.now()
+        ? moment().utc().startOf('day').toDate()
+        : prevAllocation,
+    [prevAllocation, nextAllocation],
+  );
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(6, 'hours').toDate(), [prevEpoch]);
 
   return (
     <Wrapper>
@@ -114,6 +157,13 @@ export const HomeCard3: React.FC<HomeCardProps> = ({
           </CardContent>
         </CardBody>
       </StyledCards2>
+      <StyledProgressCountdown2>
+        <ProgressCountdown
+          base={prevEpoch}
+          deadline={nextEpoch}
+          description="Next Epoch"
+        />
+      </StyledProgressCountdown2>
     </Wrapper>
   );
 };
@@ -154,6 +204,7 @@ const StyledCards2 = styled.div`
   }
   position: relative;
   top: 30px;
+  margin-bottom: 20px;
 `;
 
 const StyledBalanceLabel = styled.span`
@@ -333,3 +384,25 @@ export const MigrationButton: React.FC<MigrationButtonProps> = ({
     </Button>
   )
 }
+
+const StyledProgressCountdown = styled.div`
+  position: relative;
+  margin-top: ${props => props.theme.spacing[3]}px;
+  padding: ${(props) => props.theme.spacing[2]}px ${(props) => props.theme.spacing[4]}px;
+  background: #26272D;
+  border: 2px solid #DBC087;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+`;
+
+const StyledProgressCountdown2 = styled.div`
+  position: relative;
+  margin-top: ${props => props.theme.spacing[6]}px;
+  padding: ${(props) => props.theme.spacing[2]}px ${(props) => props.theme.spacing[4]}px;
+  background: #26272D;
+  border: 2px solid #DBC087;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+`;
