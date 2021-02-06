@@ -22,12 +22,12 @@ const Nav: React.FC = () => {
           <StyledLink href="https://medium.com/mith-cash" target="_blank">Medium</StyledLink>
           <StyledLink href="https://mithcash.substack.com/p/end-of-the-week-2" target="_blank">Newsletter</StyledLink>
           <StyledLink href="https://mithcash.xyz/" target="_blank">Forum</StyledLink>
-          <StyledLink href="https://snapshot.page/#/mithcash.eth" target="_blank">Governance</StyledLink>
         </StyledLinkGroup>
         <StyledLinkGroup>
           <StyledLinkGroupName>Rules</StyledLinkGroupName>
           <StyledLink href="https://sauron.gitbook.io/mith-cash" target="_blank">Docs</StyledLink>
           <StyledLink href="/Cybersecurity-report-Mith-Cash-CTDSec.pdf" target="_blank">Audit</StyledLink>
+          <StyledLink href="https://snapshot.page/#/mithcash.eth" target="_blank">Governance</StyledLink>
         </StyledLinkGroup>
       </StyledLinkGroupWrapper>
     </StyledNav>
