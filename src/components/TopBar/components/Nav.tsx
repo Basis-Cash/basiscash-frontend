@@ -10,8 +10,8 @@ const Nav: React.FC = () => {
       <StyledLink exact activeClassName="active" to="/monetary">Monetary</StyledLink>
       <StyledLink exact activeClassName="active" to="/info">Info</StyledLink>
       <StyledLink exact activeClassName="active" to="/vault">Vault</StyledLink>
-      <StyledLink exact activeClassName="active" to="/migration">Migration (row 3)</StyledLink>
-      <StyledLink exact activeClassName="active" to="/migration2">Migration (row 2)</StyledLink>
+      <StyledLink exact activeClassName="active" to="/migration">Migration-row3</StyledLink>
+      <StyledLink exact activeClassName="active" to="/migration2">row2</StyledLink>
     </StyledNav>
   )
 }
