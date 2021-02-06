@@ -117,7 +117,7 @@ const MonetaryBoardroomCard: React.FC = () => {
       />
       <MonetaryCardFoot>
         <MonetaryCardFootCell
-          title='Your total MIC Rewards'
+          title='Your Total MIC Rewards'
           value={
             earnedMIC
               ? `${getDisplayBalance(earnedMIC)} MIC`

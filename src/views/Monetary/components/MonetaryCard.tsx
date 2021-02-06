@@ -56,6 +56,7 @@ const HeaderTitle = styled.div`
 
 const HeaderDescription = styled.span`
   font-size: 14px;
+  margin-top: ${props => props.theme.spacing[4]}px;
 `
 
 interface MonetaryCardStakedBalanceProps {
