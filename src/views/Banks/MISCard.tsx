@@ -17,7 +17,7 @@ import useStake from '../../hooks/useStake';
 import useWithdraw from '../../hooks/useWithdraw';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
 import gift from '../../assets/img/gift.png';
-import MICIcon from '../../assets/img/MIC.png';
+import mis from '../../assets/img/mis-logo.svg';
 
 interface MISCardProps {
   bank: Bank;
@@ -97,7 +97,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
             ) : (
                 `-`
               )}</StyledFootValue>
-          <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} icon={MICIcon} backgroundColor="#426687" colorHover="#8DB5DA" backgroundColorHover="#426687" color="#8DB5DA" />
+          <CardButton text={`Buy ${currency} with USDT`} to={purchaseLink} icon={mis} backgroundColor="#426687" colorHover="#8DB5DA" backgroundColorHover="#426687" color="#8DB5DA" />
         </StyledLeftFoot>
         <StyledRightFoot>
           <StyledFootTitle>Your staked LP Balance</StyledFootTitle>
