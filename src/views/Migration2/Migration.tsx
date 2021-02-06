@@ -19,7 +19,7 @@ import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import moment from 'moment';
 import ProgressCountdown from '../Boardroom/components/ProgressCountdown';
 
-const Migration: React.FC = () => {
+const Migration2: React.FC = () => {
   const { onReward } = useHarvestFromBoardroom();
   const earnedMIC = useEarningsOnBoardroom();
   const [isMigrationCardShow, setMigrationCardShow] = useState(false);
@@ -45,23 +45,7 @@ const Migration: React.FC = () => {
           button={<MigrationButton text='SWAP' disabled={false} />}
         />
         <Spacer size="lg" />
-        <HomeCard
-          title="MITH Shares (MIS)"
-          backgroundImg={misCardBorder}
-          headerColor="#426687"
-          button={<MigrationButton text='SWAP' disabled={false} />}
-        />
-        <Spacer size="lg" />
-        <HomeCard
-          title="MIS-USDT LP"
-          backgroundImg={misCardBorder}
-          headerColor="#426687"
-          button={<MigrationButton text='SWAP' disabled={false} />}
-        />
-        <Spacer size="lg" />
-      </CardWrapper>
-      <CardWrapper>
-        <ShowCards onClick={() => { setMigrationCardShow(!isMigrationCardShow); setMigrationCardShow2(false); }}>
+        <ShowCards onClick={() => { setMigrationCardShow(!isMigrationCardShow); }}>
           <HomeCard2
             title="MIC-USDT LP"
             backgroundImg={micCardBorder}
@@ -69,16 +53,6 @@ const Migration: React.FC = () => {
             button1={<MigrationButton2 text='SWAP Locked with Rewards' disabled={false} />}
             button2={<MigrationButton text='SWAP Unlocked' disabled={false} />}
             clickEvent={isMigrationCardShow}
-          />
-        </ShowCards>
-        <Spacer size="lg" />
-        <ShowCards onClick={() => { setMigrationCardShow(false); setMigrationCardShow2(!isMigrationCardShow2); }}>
-          <HomeCard3
-            title="MIB to MIC V2"
-            backgroundImg={micCardBorder}
-            headerColor="#4D6756"
-            button={<MigrationButton text='SWAP' disabled={false} />}
-            clickEvent={isMigrationCardShow2}
           />
         </ShowCards>
         <Spacer size="lg" />
@@ -104,6 +78,34 @@ const Migration: React.FC = () => {
           </StyledNote>
         </StyledRow>
       )}
+      <CardWrapper>
+        <HomeCard
+          title="MITH Shares (MIS)"
+          backgroundImg={misCardBorder}
+          headerColor="#426687"
+          button={<MigrationButton text='SWAP' disabled={false} />}
+        />
+        <Spacer size="lg" />
+        <HomeCard
+          title="MIS-USDT LP"
+          backgroundImg={misCardBorder}
+          headerColor="#426687"
+          button={<MigrationButton text='SWAP' disabled={false} />}
+        />
+        <Spacer size="lg" />
+      </CardWrapper>
+      <CardWrapper>
+        <ShowCards onClick={() => { setMigrationCardShow2(!isMigrationCardShow2); }}>
+          <HomeCard3
+            title="MIB to MIC V2"
+            backgroundImg={micCardBorder}
+            headerColor="#4D6756"
+            button={<MigrationButton text='SWAP' disabled={false} />}
+            clickEvent={isMigrationCardShow2}
+          />
+        </ShowCards>
+        <Spacer size="lg" />
+      </CardWrapper>
       {isMigrationCardShow2 && (
         <StyledRow>
           <MigrationCard2 day={'Day 1'} fee={'(50% fee)'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
@@ -119,7 +121,6 @@ const Migration: React.FC = () => {
 };
 
 const ShowCards = styled.div`
-  margin-top: ${(props) => props.theme.spacing[4]}px;
 `;
 
 const CardWrapper = styled.div`
@@ -176,4 +177,4 @@ const StyledNote = styled.div`
   margin: ${(props) => props.theme.spacing[4]}px;;
 `
 
-export default Migration;
+export default Migration2;

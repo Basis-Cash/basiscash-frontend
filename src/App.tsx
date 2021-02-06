@@ -23,6 +23,7 @@ import Vaults from './views/Vaults';
 import Popups from './components/Popups';
 import Monetary from './views/Monetary';
 import Migration from './views/Migration';
+import Migration2 from './views/Migration2';
 
 const App: React.FC = () => {
   return (
@@ -52,6 +53,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/migration">
             <Migration />
+          </Route>
+          <Route path="/migration2">
+            <Migration2 />
           </Route>
         </Switch>
       </Router>

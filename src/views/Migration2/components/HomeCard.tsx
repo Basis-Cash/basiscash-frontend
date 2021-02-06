@@ -236,6 +236,7 @@ export const HomeCard3: React.FC<HomeCard3Props> = ({
 };
 
 const Wrapper = styled.div`
+  margin-top: ${(props) => props.theme.spacing[4]}px;
   @media (max-width: 768px) {
     margin-top: ${(props) => props.theme.spacing[4]}px;
   }

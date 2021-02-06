@@ -180,6 +180,7 @@ const StyledUrl = styled.div`
   font-size: 14px;
   text-align: center;
   width: 50%;
+  text-decoration: underline;
 `;
 
 const StyledProgressCountdown = styled.div`
