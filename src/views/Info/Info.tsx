@@ -130,7 +130,17 @@ const Info: React.FC = () => {
           <ProgressCountdown
             base={prevEpoch}
             deadline={nextEpoch}
-            description="Timeleft on timelock"
+            // description="Timeleft on timelock"
+            description=""
+          />
+        </StyledQueues>
+        <StyledQueues>
+          <StyledUrl>ethersacn.com/1234</StyledUrl>
+          <ProgressCountdown
+            base={prevEpoch}
+            deadline={nextEpoch}
+            // description="Timeleft on timelock"
+            description=""
           />
         </StyledQueues>
       </InfoWrapper>

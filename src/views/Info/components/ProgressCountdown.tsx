@@ -35,9 +35,9 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({
       <StyledCardContentInner>
         <StyledDesc>{description}</StyledDesc>
         <Countdown date={deadline} renderer={countdownRenderer} />
-        <StyledProgressOuter>
+        {/* <StyledProgressOuter>
           <StyledProgress progress={percentage} />
-        </StyledProgressOuter>
+        </StyledProgressOuter> */}
       </StyledCardContentInner>
     </Card>
   );

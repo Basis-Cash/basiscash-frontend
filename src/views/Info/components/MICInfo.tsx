@@ -15,7 +15,7 @@ const MICInfo: React.FC<MICInfoProp> = ({
   return (
     <Wrapper>
       <MICData title='MIC Spot Price' value={spotPrice} />
-      <MICData title='MIC TWAP Price' value={twapPrice} />
+      <MICData title='MIC 24 TWAP Price' value={twapPrice} />
       <MICData title="MIC Supply" value={supply} />
     </Wrapper>
   );
