@@ -79,11 +79,17 @@ const Wrapper = styled.div`
 const DataWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  line-height: 26px;
+
+  & div:last-child {
+    font-weight: 600;
+  }
 `;
 
 const StyledHeader2 = styled.h2`
   margin-bottom: ${(props) => props.theme.spacing[2]}px;
   color: ${(props) => props.theme.color.gold};
+  margin-top: 28px;
 `;
 
 const StyledHeader4 = styled.h4`

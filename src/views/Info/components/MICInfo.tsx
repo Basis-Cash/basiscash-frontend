@@ -50,15 +50,19 @@ const MICData: React.FC<MICDataProp> = ({
 const DataWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
 `;
 
 const DataHeader = styled.h4`
-  margin-bottom: ${(props) => props.theme.spacing[2]}px;
+  margin-bottom: ${(props) => props.theme.spacing[3]}px;
   color: ${(props) => props.theme.color.gold};
 `;
 
 const DataValue = styled.div`
-  color: ${(props) => props.theme.color.grey[200]}
+  color: ${(props) => props.theme.color.grey[200]};
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
 `;
 
 export default MICInfo;

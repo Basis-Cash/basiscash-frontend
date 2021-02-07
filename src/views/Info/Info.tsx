@@ -168,28 +168,36 @@ const InfoWrapper = styled.div`
   width: 80%;
   border-radius: 20px;
   background-color: #26272D;
-  padding: ${(props) => props.theme.spacing[3]}px;
+  padding: 20px 72px 115px 72px ;
   color: ${(props) => props.theme.color.grey[200]};
   margin: ${props => props.theme.spacing[2]}px;
+  margin-top: 30px;
+
+  &:last-child {
+    padding: 20px 72px 70px 72px ;
+  }
 `;
 
 const StyledTitle = styled.h4`
   color: ${(props) => props.theme.color.gold};
-  font-size: 18px;
+  font-size: 22px;
   text-align: center;
+  padding: 30px 0;
 `;
 
 const StyledQueues = styled.div`
   color: ${(props) => props.theme.color.gold};
-  font-size: 14px;
   text-align: center;
   display: flex;
   align-items: center;
+  width: 50%;
+  margin: 30px auto;
+  font-weight: 600;
+  font-size: 16px;
 `;
 
 const StyledUrl = styled.div`
-  color: ${(props) => props.theme.color.gold};
-  font-size: 14px;
+  color: #FFF;
   text-align: center;
   width: 50%;
   text-decoration: underline;
