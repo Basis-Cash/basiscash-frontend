@@ -60,7 +60,7 @@ const MonetaryBoardroomCard: React.FC = () => {
         onStake(value);
         onDismissDeposit();
       }}
-      tokenName={'MITH Share'}
+      tokenName={'MIS'}
     />,
   );
 
@@ -71,7 +71,7 @@ const MonetaryBoardroomCard: React.FC = () => {
         onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={'MITH Share'}
+      tokenName={'MIS'}
     />,
   );
 
