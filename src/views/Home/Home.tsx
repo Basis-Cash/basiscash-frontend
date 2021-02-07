@@ -5,6 +5,7 @@ import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
 import HomeCard from './components/HomeCard';
 import useBasisCash from '../../hooks/useBasisCash';
+import HomeLogoSvg from '../../assets/img/HomeLogo.svg';
 
 import micCardBorder from '../../assets/img/mic-card-border.svg';
 import misCardBorder from '../../assets/img/mis-card-border.svg';
@@ -22,11 +23,13 @@ const Home: React.FC = () => {
 
   return (
     <Page>
+      <HomeLogo>
+        <img src={HomeLogoSvg} height="84" />
+      </HomeLogo>
       <PageHeader
         title="Welcome to MITH Cash!"
         subtitle="Buy, sell, and provide liquidity for MITH Cash and MITH Shares on SushiSwap and Curve Stableswap"
       />
-      <Spacer size="md" />
       <CardWrapper>
         <HomeCard
           title="MITH Cash"
@@ -49,6 +52,10 @@ const Home: React.FC = () => {
     </Page>
   );
 };
+
+const HomeLogo = styled.div`
+  padding: 40px 0 10px 0;
+`
 
 const CardWrapper = styled.div`
   display: flex;
