@@ -40,9 +40,9 @@ const StyledLogo = styled.img`
 `
 
 const StyledNav = styled.nav`
-  align-items: center;
   display: flex;
   width: 100%;
+  margin-top: 33px;
 `
 
 const StyledLinkGroupWrapper = styled.div`
@@ -53,16 +53,14 @@ const StyledLinkGroupWrapper = styled.div`
 
 const StyledLinkGroup = styled.div`
   display: flex;
-  margin-top: 8px;
-  &:first-child {
-    margin-top: 0;
+  padding-bottom: 36px;
   }
 `
 
 const StyledLinkGroupName = styled.div`
-  color: ${props => props.theme.color.grey[400]};
-  flex-basis: 80px;
+  color: #8D8F9B;
   white-space: nowrap;
+  min-width: 110px;
 `
 
 const StyledLink = styled.a`
