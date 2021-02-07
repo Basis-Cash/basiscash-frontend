@@ -13,6 +13,10 @@ import useCashStats from '../../hooks/useCashStats';
 import useBondStats from '../../hooks/useBondStats';
 import useShareStats from '../../hooks/useShareStats';
 
+import FrameRight from '../../assets/img/Frame-right.svg';
+import FrameLeft from '../../assets/img/Frame-left.svg';
+
+
 const Home: React.FC = () => {
   const basisCash = useBasisCash();
   const cashStat = useCashStats();
@@ -49,12 +53,22 @@ const Home: React.FC = () => {
         />
         <Spacer size="lg" />
       </CardWrapper>
+      <StyleFrame>
+        <img src={FrameLeft} width="349" />
+        <img src={FrameRight} width="349" />
+      </StyleFrame>
     </Page>
   );
 };
 
 const HomeLogo = styled.div`
   padding: 40px 0 10px 0;
+`
+
+const StyleFrame = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `
 
 const CardWrapper = styled.div`
