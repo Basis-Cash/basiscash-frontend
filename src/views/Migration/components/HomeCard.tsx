@@ -151,7 +151,7 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
           </CardContent>
         </CardBody>
       </StyledCards2> */}
-      <StyledProgressCountdown>
+      <StyledProgressCountdown clickEvent={clickEvent}>
         <ProgressCountdown
           base={prevEpoch}
           deadline={nextEpoch}
@@ -224,7 +224,7 @@ export const HomeCard3: React.FC<HomeCard3Props> = ({
           </CardBody>
         </StyledCards3_>
       }
-      <StyledProgressCountdown2>
+      <StyledProgressCountdown2 clickEvent={clickEvent}>
         <ProgressCountdown
           base={prevEpoch}
           deadline={nextEpoch}
@@ -236,9 +236,7 @@ export const HomeCard3: React.FC<HomeCard3Props> = ({
 };
 
 const Wrapper = styled.div`
-  @media (max-width: 768px) {
-    margin-top: ${(props) => props.theme.spacing[4]}px;
-  }
+  margin-top: 60px;
 `;
 
 const CardHeader = styled.h2`
@@ -255,7 +253,9 @@ const StyledCards = styled.div`
   color: ${(props) => props.theme.color.white};
   padding: ${(props) => props.theme.spacing[3]}px;
   background-color: #26272D;
+  border: 2px solid #1e1f23;
   border-radius: 20px;
+  margin-top: 25px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -265,7 +265,9 @@ const StyledCards2 = styled.div`
   color: ${(props) => props.theme.color.white};
   padding: ${(props) => props.theme.spacing[3]}px;
   background-color: #26272D;
+  border: 2px solid #1e1f23;
   border-radius: 20px;
+  margin-top: 25px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -279,7 +281,9 @@ const StyledCards2_ = styled.div`
   color: ${(props) => props.theme.color.white};
   padding: ${(props) => props.theme.spacing[3]}px;
   background-color: #26272D;
+  border: 2px solid #1e1f23;
   border-radius: 20px;
+  margin-top: 25px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -295,7 +299,9 @@ const StyledCards3 = styled.div`
   color: ${(props) => props.theme.color.white};
   padding: ${(props) => props.theme.spacing[3]}px;
   background-color: #26272D;
+  border: 2px solid #1e1f23;
   border-radius: 20px;
+  margin-top: 25px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -312,7 +318,9 @@ const StyledCards3_ = styled.div`
   color: ${(props) => props.theme.color.white};
   padding: ${(props) => props.theme.spacing[3]}px;
   background-color: #26272D;
+  border: 2px solid #1e1f23;
   border-radius: 20px;
+  margin-top: 25px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -403,7 +411,7 @@ const CardSection = styled.div`
 const SwapButton = styled.div`
   margin-top: ${props => props.theme.spacing[2]}px;
   position: relative;
-  left: 25%;
+  left: 38px;
   width: 300px;
   top: -20px;
 `
@@ -411,7 +419,6 @@ const SwapButton = styled.div`
 const SwapButton2 = styled.div`
   margin-top: ${props => props.theme.spacing[2]}px;
   position: relative;
-  left: -10px;
   width: 300px;
   top: -20px;
 `
@@ -419,7 +426,7 @@ const SwapButton2 = styled.div`
 const SwapButton3 = styled.div`
   margin-top: ${props => props.theme.spacing[2]}px;
   position: relative;
-  left: 23px;
+  left: 38px;
   width: 300px;
   top: -20px;
 `
@@ -434,15 +441,13 @@ const Button = styled.button<ButtonProps>`
   border-radius: 10px;
   border: 0;
   color: ${props => !props.disabled ? props.theme.color.gold : '#4F4F4F'};
-  padding-top: ${props => props.theme.spacing[2]}px;
-  padding-bottom: ${props => props.theme.spacing[2]}px;
-  padding-left: ${props => props.padding}px;
-  padding-right: ${props => props.padding}px;
+  padding: 5px 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
   pointer-events: ${props => !props.disabled ? undefined : 'none'};
   font-weight: 700;
+  min-width: 150px;
 
   &:hover {
     background-color: ${props => props.theme.color.gold};
@@ -455,10 +460,7 @@ const Button2 = styled.button<ButtonProps>`
   border-radius: 10px;
   border: 0;
   color: ${props => !props.disabled ? props.theme.color.gold : '#4F4F4F'};
-  padding-top: ${props => props.theme.spacing[2]}px;
-  padding-bottom: ${props => props.theme.spacing[2]}px;
-  padding-left: ${props => props.padding}px;
-  padding-right: ${props => props.padding}px;
+  padding: 5px 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -472,12 +474,14 @@ const Button2 = styled.button<ButtonProps>`
 `
 
 const ButtonIcon = styled.img`
-  margin-right: ${props => props.theme.spacing[3]}px;
+  margin-right: 5px;
   width: 20px;
   height: 20px;
 `
 
 const ButtonText = styled.span`
+  text-align: center;
+  width: 100%;
 `
 
 const StyledLink = styled(Link)`
@@ -558,24 +562,32 @@ export const MigrationButton2: React.FC<MigrationButtonProps> = ({
   )
 }
 
-const StyledProgressCountdown = styled.div`
+interface StyledProgressCountdownProps {
+  clickEvent?: boolean;
+}
+
+const StyledProgressCountdown = styled.div<StyledProgressCountdownProps>`
   position: relative;
   margin-top: ${props => props.theme.spacing[3]}px;
-  padding: ${(props) => props.theme.spacing[2]}px ${(props) => props.theme.spacing[4]}px;
+  padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
   background: #26272D;
-  border: 2px solid #DBC087;
+  border: ${props => props.clickEvent ? '2px solid #AB8D60' : '2px solid #1e1f23'};
   box-sizing: border-box;
-  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 0px 13px rgba(248, 217, 117, 0.5);
   border-radius: 20px;
 `;
 
-const StyledProgressCountdown2 = styled.div`
+interface StyledProgressCountdown2Props {
+  clickEvent?: boolean;
+}
+
+const StyledProgressCountdown2 = styled.div<StyledProgressCountdown2Props>`
   position: relative;
   margin-top: ${props => props.theme.spacing[6]}px;
-  padding: ${(props) => props.theme.spacing[2]}px ${(props) => props.theme.spacing[4]}px;
+  padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
   background: #26272D;
-  border: 2px solid #DBC087;
+  border: ${props => props.clickEvent ? '2px solid #AB8D60' : '2px solid #1e1f23'};
   box-sizing: border-box;
-  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 0px 13px rgba(248, 217, 117, 0.5);
   border-radius: 20px;
 `;

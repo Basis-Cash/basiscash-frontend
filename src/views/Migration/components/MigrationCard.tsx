@@ -44,7 +44,7 @@ export const MigrationClaimButton: React.FC<MigrationClaimButtonProps> = ({
 
   return (
     <ClaimButton onClick={onClick} disabled={disabled} padding={buttonPadding} width={width} colorHover={colorHover} backgroundColor={backgroundColor} backgroundColorHover={backgroundColorHover} color={color} >
-      {icon && <ButtonIcon src={icon} />}
+      {icon && <ButtonIcon src={icon} disabled={disabled} />}
       {to ? (
         <StyledLink to={to}>{text}</StyledLink>
       ) : (
@@ -86,11 +86,16 @@ const ClaimButton = styled.button<ButtonProps>`
   justify-content: center;
 `
 
-const ButtonIcon = styled.img`
+interface ButtonIconProps {
+  disabled?: boolean;
+}
+
+const ButtonIcon = styled.img<ButtonIconProps>`
   margin-left: -${props => props.theme.spacing[4]}px;
   margin-right: ${props => props.theme.spacing[2]}px;
   width: 20px;
   height: 20px;
+  filter: ${props => props.disabled ? 'invert(1000%) sepia(74%) saturate(02%) hue-rotate(195deg) brightness(92%) contrast(69%)': 'initial'};
 `
 
 const ButtonText = styled.span`
@@ -161,6 +166,7 @@ const StakeLogo = styled.img`
 const StakeTitle = styled.div`
   font-size: 14px;
   text-algn: center;
+  margin: 0;
   margin-top: ${props => props.theme.spacing[3]}px;
   margin-bottom: ${props => props.theme.spacing[3]}px;
 `
@@ -179,11 +185,10 @@ const StakeTitle2 = styled.div`
 
 const StakeRewards = styled.h3`
   text-algn: center;
-  margin: 0;
+  margin: 8px 0;
   color: ${props => props.theme.color.gold};
 `
 
 const StakeButton = styled.div`
-  margin-top: ${props => props.theme.spacing[3]}px;
   margin-bottom: ${props => props.theme.spacing[3]}px;
 `

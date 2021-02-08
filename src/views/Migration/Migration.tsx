@@ -18,6 +18,8 @@ import useEarningsOnBoardroom from '../../hooks/useEarningsOnBoardroom';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import moment from 'moment';
 import ProgressCountdown from '../Boardroom/components/ProgressCountdown';
+import lock from '../../assets/img/lock.png';
+import unlock from '../../assets/img/unlock.png';
 
 const Migration: React.FC = () => {
   const { onReward } = useHarvestFromBoardroom();
@@ -66,8 +68,8 @@ const Migration: React.FC = () => {
             title="MIC-USDT LP"
             backgroundImg={micCardBorder}
             headerColor="#4D6756"
-            button1={<MigrationButton2 text='SWAP Locked with Rewards' disabled={false} />}
-            button2={<MigrationButton text='SWAP Unlocked' disabled={false} />}
+            button1={<MigrationButton2 text='SWAP Locked with Rewards' disabled={false} icon={lock} />}
+            button2={<MigrationButton text='SWAP Unlocked' disabled={false} icon={unlock} />}
             clickEvent={isMigrationCardShow}
           />
         </ShowCards>
@@ -143,6 +145,7 @@ const StyledRow = styled.div`
   flex-flow: row wrap;
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
   margin-top: ${(props) => props.theme.spacing[4]}px;
+  padding: 35px 0;
   
   > * {
     margin: 0 ${(props) => props.theme.spacing[4]}px;
@@ -162,9 +165,9 @@ const StyledProgressCountdown = styled.div`
   background: #26272D;
   border: 2px solid #DBC087;
   box-sizing: border-box;
-  box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 0px 13px rgba(248, 217, 117, 0.5);
   border-radius: 20px;
-  width: 85%;
+  width: 100%;
 `;
 
 const StyledNote = styled.div`
