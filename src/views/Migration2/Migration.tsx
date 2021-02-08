@@ -139,10 +139,11 @@ const StyledRow = styled.div`
   border: 1px solid ${props => props.theme.color.gold};
   background-color: ${props => props.theme.color.oblack};
   border-radius: 20px;
-
   display: flex;
   justify-content: center;
   flex-flow: row wrap;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
+  margin-top: ${(props) => props.theme.spacing[4]}px;
   
   > * {
     margin: 0 ${(props) => props.theme.spacing[4]}px;
