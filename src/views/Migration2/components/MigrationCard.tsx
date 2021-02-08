@@ -71,8 +71,7 @@ const ClaimButton = styled.button<ButtonProps>`
   color: ${props => !props.disabled ? props.theme.color.gold : '#4F4F4F'};
   padding-top: ${props => props.theme.spacing[2]}px;
   padding-bottom: ${props => props.theme.spacing[2]}px;
-  padding-left: ${props => props.padding}px;
-  padding-right: ${props => props.padding}px;
+  padding-left: ${props => props.theme.spacing[5]}px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -84,7 +83,7 @@ const ClaimButton = styled.button<ButtonProps>`
     color: #43423F;
   }
   width: 140px;
-  justify-content: space-between;
+  justify-content: center;
 `
 
 const ButtonIcon = styled.img`
@@ -137,8 +136,8 @@ export const MigrationCard2: React.FC<MigrationCard2Props> = ({
 }) => {
   return (
     <StakeWrapper>
-      <StakeTitle>{day}</StakeTitle>
-      <StakeTitle>{fee}</StakeTitle>
+      <StakeTitle1>{day}</StakeTitle1>
+      <StakeTitle2>{fee}</StakeTitle2>
       <StakeLogo src={pool} />
       <StakeRewards>1000 MIC</StakeRewards>
       <StakeButton>{button}</StakeButton>
@@ -155,12 +154,28 @@ const StakeWrapper = styled.div`
 
 const StakeLogo = styled.img`
   margin: 0 ${props => props.theme.spacing[2]}px;
+  width: 80%;
+  height: auto;
 `
 
-const StakeTitle = styled.h4`
+const StakeTitle = styled.div`
   font-size: 14px;
   text-algn: center;
   margin: 0;
+  margin-top: ${props => props.theme.spacing[3]}px;
+  margin-bottom: ${props => props.theme.spacing[3]}px;
+`
+
+const StakeTitle1 = styled.div`
+  font-size: 14px;
+  text-algn: center;
+  margin-top: ${props => props.theme.spacing[3]}px;
+`
+
+const StakeTitle2 = styled.div`
+  font-size: 14px;
+  text-algn: center;
+  margin-bottom: ${props => props.theme.spacing[3]}px;
 `
 
 const StakeRewards = styled.h3`
@@ -170,5 +185,6 @@ const StakeRewards = styled.h3`
 `
 
 const StakeButton = styled.div`
-  margin-top: ${props => props.theme.spacing[2]}px;
+  margin-top: ${props => props.theme.spacing[3]}px;
+  margin-bottom: ${props => props.theme.spacing[3]}px;
 `

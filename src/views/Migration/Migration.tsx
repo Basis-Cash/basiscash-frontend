@@ -85,7 +85,7 @@ const Migration: React.FC = () => {
       </CardWrapper>
       {isMigrationCardShow && (
         <StyledRow>
-          <MigrationCard day={'1st Pool'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
+          <MigrationCard day={'1st Pool'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={false} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
           <MigrationCard day={'2nd Pool'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
           <MigrationCard day={'3rd Pool'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
           <MigrationCard day={'4th Pool'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
@@ -106,7 +106,7 @@ const Migration: React.FC = () => {
       )}
       {isMigrationCardShow2 && (
         <StyledRow>
-          <MigrationCard2 day={'Day 1'} fee={'(50% fee)'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
+          <MigrationCard2 day={'Day 1'} fee={'(50% fee)'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={false} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
           <MigrationCard2 day={'Day 2'} fee={'(40% fee)'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
           <MigrationCard2 day={'Day 3'} fee={'(30% fee)'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
           <MigrationCard2 day={'Day 4'} fee={'(20% fee)'} button={<MigrationClaimButton text='Claim MIC' onClick={onReward} disabled={earnedMIC.eq(0)} width="15%" icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />} />
@@ -141,9 +141,6 @@ const StyledRow = styled.div`
 
   display: flex;
   justify-content: center;
-  margin-right: -${(props) => props.theme.spacing[4]}px;
-  margin-bottom: ${(props) => props.theme.spacing[4]}px;
-  margin-top: ${(props) => props.theme.spacing[4]}px;
   flex-flow: row wrap;
   
   > * {
@@ -154,7 +151,7 @@ const StyledRow = styled.div`
     flex-flow: column nowrap;
     align-items: center;
   }
-  width: auto;
+  width: 1350px;
 `
 
 const StyledProgressCountdown = styled.div`
@@ -166,7 +163,7 @@ const StyledProgressCountdown = styled.div`
   box-sizing: border-box;
   box-shadow: 0px 0px 20px rgba(219, 192, 135, 0.5), 0px 10px 20px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  width: 90%;
+  width: 85%;
 `;
 
 const StyledNote = styled.div`
