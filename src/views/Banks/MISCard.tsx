@@ -68,11 +68,11 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
   if (bank.depositTokenName.includes('MIS')) {
     currency = 'MIS';
     currencyStats = shareStats;
-    purchaseLink = 'https://sushiswap.fi/pair/0x066F3A3B7C8Fa077c71B9184d862ed0A4D5cF3e0';
+    purchaseLink = 'https://app.sushi.com/pair/0xf9fF921E63B525A73dD3cF57463da53138358A49';
   } else if (bank.depositTokenName.includes('MIC')) {
     currency = 'MIC';
     currencyStats = cashStats;
-    purchaseLink = 'https://sushiswap.fi/pair/0xC9cB53B48A2f3A9e75982685644c1870F1405CCb';
+    purchaseLink = 'https://crv.finance/swap';
   }
 
   return (
