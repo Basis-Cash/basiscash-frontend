@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
@@ -10,7 +10,6 @@ import HomeLogoSvg from '../../assets/img/HomeLogo.svg';
 import micCardBorder from '../../assets/img/mic-card-border.svg';
 import misCardBorder from '../../assets/img/mis-card-border.svg';
 import useCashStats from '../../hooks/useCashStats';
-import useBondStats from '../../hooks/useBondStats';
 import useShareStats from '../../hooks/useShareStats';
 
 import FrameRight from '../../assets/img/Frame-right.svg';
@@ -22,8 +21,8 @@ const Home: React.FC = () => {
   const cashStat = useCashStats();
   const shareStat = useShareStats();
 
-  const cashAddr = useMemo(() => basisCash?.BAC.address, [basisCash]);
-  const shareAddr = useMemo(() => basisCash?.BAS.address, [basisCash]);
+  const cashAddr = useMemo(() => basisCash?.MIC2.address, [basisCash]);
+  const shareAddr = useMemo(() => basisCash?.MIS2.address, [basisCash]);
 
   return (
     <Page>

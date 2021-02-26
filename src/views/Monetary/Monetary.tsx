@@ -15,6 +15,7 @@ import MonetaryBoardroomCard from './components/MonetaryBoardroomCard';
 import { commify } from 'ethers/lib/utils';
 import ProgressCountdown from '../Boardroom/components/ProgressCountdown';
 import useBondOraclePriceInLastTWAP from '../../hooks/useBondOraclePriceInLastTWAP';
+import useCashStats from '../../hooks/useCashStats';
 
 const Monetary: React.FC = () => {
   const { account } = useWallet();
@@ -45,13 +46,13 @@ const Monetary: React.FC = () => {
             <StyledStats>
               <Stat
                 title={cashStat ? commify(cashStat.totalSupply) : '-'}
-                description="Circulating MIC"
+                description="Circulating MIC2"
               />
               <StyledProgressCountdown>
                 <ProgressCountdown
                   base={prevEpoch}
                   deadline={nextEpoch}
-                  description="Next Epoch"
+                  description="Next Epoch 02:00, 08:00, 14:00, 20:00 GMT Daily"
                 />
               </StyledProgressCountdown>
               {/*<Stat*/}
@@ -60,26 +61,26 @@ const Monetary: React.FC = () => {
               {/*/>*/}
             </StyledStats>
             <StyledStats>
-              <Stat
-                title={
-                  cash1HrPrice
-                    ? `$${getDisplayBalance(cash1HrPrice, 18, 3)}`
-                    : '-'
-                }
-                description="MIC Price for Value Reallocation Calculation"
-              />
-              <Stat
-                // title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
-                title="84.7%"
-                description="MIC Sell Value Reallocation Fee"
-              />
+              {/*<Stat*/}
+              {/*  title={*/}
+              {/*    cash1HrPrice*/}
+              {/*      ? `$${getDisplayBalance(cash1HrPrice, 18, 3)}`*/}
+              {/*      : '-'*/}
+              {/*  }*/}
+              {/*  description="MIC Price for Value Reallocation Calculation"*/}
+              {/*/>*/}
+              {/*<Stat*/}
+              {/*  // title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}*/}
+              {/*  title="84.7%"*/}
+              {/*  description="MIC Sell Value Reallocation Fee"*/}
+              {/*/>*/}
               <Stat
                 title={scalingFactor ? `x${scalingFactor}` : '-'}
                 description="Scaling Factor"
               />
               <Stat
                 title={cashStat ? `$${cashStat.priceInUSDT}` : '-'}
-                description="24H TWAP Est. MIC Price"
+                description="6H TWAP Est. MIC2 Price"
               />
             </StyledStats>
             <StyledMonetary>

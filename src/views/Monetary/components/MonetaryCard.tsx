@@ -439,7 +439,7 @@ export const MonetaryStakeCard: React.FC<MonetaryStakeCardProps> = ({
       <StakeTitle>{day}</StakeTitle>
       <StakeTitle>{fee}</StakeTitle>
       <StakeLogo src={pool} />
-      <StakeRewards>1000 MIC</StakeRewards>
+      {/*<StakeRewards>1000 MIC</StakeRewards>*/}
       <StakeButton>{button}</StakeButton>
     </StakeWrapper>
   )

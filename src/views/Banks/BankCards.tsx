@@ -49,7 +49,7 @@ const BankCards: React.FC = () => {
         {activeBanks.map((bank, i) => (
           <React.Fragment key={bank.name}>
             {bank.earnTokenName === 'MIS' ? 
-            bank.name === 'MIC-USDT Pool' ? (<MICCard bank={bank} />) : (<MISCard bank={bank} />) 
+            bank.name === 'MIC2-3CRV Pool' ? (<MICCard bank={bank} />) : (<MISCard bank={bank} />)
             : (<BankCard bank={bank} />)}
           </React.Fragment>
         ))}

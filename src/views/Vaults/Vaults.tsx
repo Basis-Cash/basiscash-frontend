@@ -29,7 +29,7 @@ const Vaults: React.FC = () => {
         </StyledDisclaimer>
         <Route exact path={path}>
           <PageHeader
-            title="Pick a Vault (v1)"
+            title="Pick a Vault (V1: Please do not deposit due to migration to V2)"
             subtitle="Auto-compound your yields by depositing your LP tokens in a Community Vault"
           />
           {!!account ? (

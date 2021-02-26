@@ -120,7 +120,7 @@ export const MigrationCard: React.FC<MigrationCardProps> = ({
       <StakeWrapper>
         <StakeTitle>{day}</StakeTitle>
         <StakeLogo src={pool} />
-        <StakeRewards>1000 MIC</StakeRewards>
+        {/*<StakeRewards>1000 MIC</StakeRewards>*/}
         <StakeButton>{button}</StakeButton>
       </StakeWrapper>
     </>

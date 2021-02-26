@@ -6,30 +6,35 @@ import moment from 'moment';
 import ProgressCountdown from '../../Boardroom/components/ProgressCountdown';
 
 import micCardBorderClicked from '../../../assets/img/mic-card-border-clicked.png';
+import { ContractName } from '../../../basis-cash';
+import useMigrationEndTime from '../../../hooks/useMigrationEndTime';
+import useTokenBalance from '../../../hooks/useTokenBalance';
+import ERC20 from '../../../basis-cash/ERC20';
+import { getDisplayBalance } from '../../../utils/formatBalance';
 
 interface HomeCardProps {
   title: string;
   backgroundImg: string;
   headerColor: string;
   button: React.ReactNode;
+  contractName: ContractName;
+  from: ERC20;
+  to: ERC20;
 }
 
 export const HomeCard: React.FC<HomeCardProps> = ({
   title,
   backgroundImg,
   headerColor,
-  button
+  button,
+  contractName,
+  from,
+  to,
 }) => {
-  const { color } = useContext(ThemeContext);
-  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
-  const prevEpoch = useMemo(
-    () =>
-      nextAllocation.getTime() <= Date.now()
-        ? moment().utc().startOf('day').toDate()
-        : prevAllocation,
-    [prevAllocation, nextAllocation],
-  );
-  const nextEpoch = useMemo(() => moment(prevEpoch).add(6, 'hours').toDate(), [prevEpoch]);
+  const endTime = useMigrationEndTime(contractName);
+
+  const v1Balance = useTokenBalance(from);
+  const v2Balance = useTokenBalance(to);
 
   return (
     <Wrapper>
@@ -43,23 +48,26 @@ export const HomeCard: React.FC<HomeCardProps> = ({
             &nbsp;
             <CardSection>
               <StyledV1Label>V1:</StyledV1Label>
-              <StyledV1Value>1,000</StyledV1Value>
+              <StyledV1Value>{getDisplayBalance(v1Balance, 18, 6)}</StyledV1Value>
             </CardSection>
             <SwapButton>{button}</SwapButton>
             <CardSection>
               <StyledV2Label>V2:</StyledV2Label>
-              <StyledV2Value>0</StyledV2Value>
+              <StyledV2Value>{getDisplayBalance(v2Balance, 18, 6)}</StyledV2Value>
             </CardSection>
           </CardContent>
         </CardBody>
       </StyledCards>
-      <StyledProgressCountdown>
-        <ProgressCountdown
-          base={prevEpoch}
-          deadline={nextEpoch}
-          description="Next Epoch"
-        />
-      </StyledProgressCountdown>
+      {
+        endTime !== null &&
+        <StyledProgressCountdown>
+          <ProgressCountdown
+            base={new Date(Date.now())}
+            deadline={endTime}
+            description="End Time"
+          />
+        </StyledProgressCountdown>
+      }
     </Wrapper>
   );
 };
@@ -71,6 +79,9 @@ interface HomeCard2Props {
   button1: React.ReactNode;
   button2: React.ReactNode;
   clickEvent: boolean;
+  contractName: ContractName;
+  from: ERC20;
+  to: ERC20;
 }
 
 export const HomeCard2: React.FC<HomeCard2Props> = ({
@@ -79,18 +90,15 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
   headerColor,
   button1,
   button2,
-  clickEvent
+  clickEvent,
+  contractName,
+  from,
+  to,
 }) => {
-  const { color } = useContext(ThemeContext);
-  const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
-  const prevEpoch = useMemo(
-    () =>
-      nextAllocation.getTime() <= Date.now()
-        ? moment().utc().startOf('day').toDate()
-        : prevAllocation,
-    [prevAllocation, nextAllocation],
-  );
-  const nextEpoch = useMemo(() => moment(prevEpoch).add(6, 'hours').toDate(), [prevEpoch]);
+  const endTime = useMigrationEndTime(contractName);
+
+  const v1Balance = useTokenBalance(from);
+  const v2Balance = useTokenBalance(to);
 
   return (
     <Wrapper>
@@ -103,13 +111,13 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
             <StyledBalanceLabel2>Staked LP Balance</StyledBalanceLabel2>
             <CardSection>
               <StyledV1Label>V1:</StyledV1Label>
-              <StyledV1Value>1,000</StyledV1Value>
+              <StyledV1Value>{getDisplayBalance(v1Balance, 18, 6)}</StyledV1Value>
             </CardSection>
             <SwapButton2>{button1}</SwapButton2>
             <SwapButton3>{button2}</SwapButton3>
             <CardSection>
               <StyledV2Label>V2:</StyledV2Label>
-              <StyledV2Value>0</StyledV2Value>
+              <StyledV2Value>{getDisplayBalance(v2Balance, 18, 6)}</StyledV2Value>
             </CardSection>
           </CardContent>
         </CardBody>
@@ -121,13 +129,13 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
               <StyledBalanceLabel2>Staked LP Balance</StyledBalanceLabel2>
               <CardSection>
                 <StyledV1Label>V1:</StyledV1Label>
-                <StyledV1Value>1,000</StyledV1Value>
+                <StyledV1Value>{getDisplayBalance(v1Balance, 18, 6)}</StyledV1Value>
               </CardSection>
               <SwapButton2>{button1}</SwapButton2>
               <SwapButton3>{button2}</SwapButton3>
               <CardSection>
                 <StyledV2Label>V2:</StyledV2Label>
-                <StyledV2Value>0</StyledV2Value>
+                <StyledV2Value>{getDisplayBalance(v2Balance, 18, 6)}</StyledV2Value>
               </CardSection>
             </CardContent>
           </CardBody>
@@ -153,9 +161,9 @@ export const HomeCard2: React.FC<HomeCard2Props> = ({
       </StyledCards2> */}
       <StyledProgressCountdown clickEvent={clickEvent}>
         <ProgressCountdown
-          base={prevEpoch}
-          deadline={nextEpoch}
-          description="Next Epoch"
+          base={new Date(Date.now())}
+          deadline={endTime}
+          description="End Time"
         />
       </StyledProgressCountdown>
     </Wrapper>

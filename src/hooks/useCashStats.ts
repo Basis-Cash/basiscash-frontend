@@ -8,11 +8,11 @@ const useCashStats = () => {
   const basisCash = useBasisCash();
 
   const fetchCashPrice = useCallback(async () => {
-    setStat(await basisCash.getCashStatFromSushiSwap());
+    setStat(await basisCash.getCashStatFrom3CrvPool());
   }, [basisCash]);
 
   useEffect(() => {
-    fetchCashPrice().catch((err) => console.error(`Failed to fetch MIC price: ${err.stack}`));
+    fetchCashPrice().catch((err) => console.error(`Failed to fetch MIC2 price: ${err.stack}`));
     const refreshInterval = setInterval(fetchCashPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
   }, [setStat, basisCash]);

@@ -39,23 +39,17 @@ const App: React.FC = () => {
           <Route path="/bank">
             <Banks />
           </Route>
-          <Route path="/bonds">
-            <Bond />
-          </Route>
           <Route path="/boardroom">
             <Boardroom />
           </Route>
-          <Route path="/info">
-            <Info />
-          </Route>
+          {/*<Route path="/info">*/}
+          {/*  <Info />*/}
+          {/*</Route>*/}
           <Route path="/vault">
             <Vaults />
           </Route>
           <Route path="/migration">
             <Migration />
-          </Route>
-          <Route path="/migration2">
-            <Migration2 />
           </Route>
         </Switch>
       </Router>

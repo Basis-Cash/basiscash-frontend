@@ -36,6 +36,7 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
 
   const tokenBalance = useTokenBalance(bank.depositToken);
   const stakedBalance = useStakedBalance(bank.contract);
+  const stakedLockedBalance = useStakedBalance('MIC23CRVLockPool');
 
   const { onStake } = useStake(bank);
   const { onWithdraw } = useWithdraw(bank);
@@ -105,7 +106,7 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
         </StyledLeftFoot>
         <StyledRightFoot>
           <StyledFootTitle>Your Staked LP Balance</StyledFootTitle>
-          <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
+          <StyledFootValue>{getDisplayBalance(stakedLockedBalance.add(stakedBalance), bank.depositToken.decimal, 6)}</StyledFootValue>
           <CardButton text={!isDetailsShow ? `More Details` : `Less Details`} onClick={() => setDetailsShow(!isDetailsShow)} />
         </StyledRightFoot>
       </StyledFoot>
@@ -113,8 +114,8 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
         <StyledFoot>
           <StyledLeftFoot>
             <StyledFootTitle><HeaderImg src={lock} />Your Staked LP Balance</StyledFootTitle>
-            <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
-            <CardButton text={`00:00:00`} disabled />
+            <StyledFootValue>{getDisplayBalance(stakedLockedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
+            {/*<CardButton text={`00:00:00`} disabled />*/}
           </StyledLeftFoot>
           <StyledRightFoot>
             <StyledFootTitle><HeaderImg src={unlock} />Your Staked LP Balance</StyledFootTitle>

@@ -33,13 +33,13 @@ const MonetaryBoardroomCard: React.FC = () => {
   const { onReward } = useHarvestFromBoardroom();
 
   const basisCash = useBasisCash();
-  const tokenBalance = useTokenBalance(basisCash.BAS);
+  const tokenBalance = useTokenBalance(basisCash.MIS2);
   const stakedBalance = useStakedBalanceOnBoardroom();
   const earnedMIC = useEarningsOnBoardroom();
 
   const boardroomVersion = useBoardroomVersion();
   const [approveStatus, approve] = useApprove(
-    basisCash.BAS,
+    basisCash.MIS2,
     basisCash.boardroomByVersion(boardroomVersion).address,
   );
 
@@ -60,7 +60,7 @@ const MonetaryBoardroomCard: React.FC = () => {
         onStake(value);
         onDismissDeposit();
       }}
-      tokenName={'MIS'}
+      tokenName={'MIS2'}
     />,
   );
 
@@ -71,7 +71,7 @@ const MonetaryBoardroomCard: React.FC = () => {
         onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={'MIS'}
+      tokenName={'MIS2'}
     />,
   );
 
@@ -87,40 +87,29 @@ const MonetaryBoardroomCard: React.FC = () => {
         title='Staked Balance'
         value={
           stakedBalance
-            ? `${getDisplayBalance(stakedBalance)} MIS`
+            ? `${getDisplayBalance(stakedBalance)} MIS2`
             : '-'
         }
-        // children={approveStatus !== ApprovalState.APPROVED ? (
-        //   <MonetaryCardButton text='Approve MIS' onClick={approve} />
-        // ) : (
-        //     <>
-        //       <MonetaryCardButton text='+' size='sm' onClick={onPresentDeposit} />
-        //       <div style={{ width: '8px' }} />
-        //       <MonetaryCardButton text='−' size='sm' onClick={onPresentWithdraw} />
-        //     </>
-        //   )}
-        children={
-          <>
-            <MonetaryCardButton text='+' size='md' onClick={onPresentDeposit} />
-            <div style={{ width: '8px' }} />
-            <MonetaryCardButton text='−' size='md' onClick={onPresentWithdraw} />
-          </>
-        }
+        children={approveStatus !== ApprovalState.APPROVED ? (
+          <MonetaryCardButton text='Approve MIS2' onClick={approve} />
+        ) : (
+            <>
+              <MonetaryCardButton text='+' size='sm' onClick={onPresentDeposit} />
+              <div style={{ width: '8px' }} />
+              <MonetaryCardButton text='−' size='sm' onClick={onPresentWithdraw} />
+            </>
+          )}
       />
       <MonetaryCardEffectiveBalance
         title='Effective Balance (for Epoch)'
-        value={
-          stakedBalance
-            ? `${getDisplayBalance(stakedBalance)} MIS`
-            : '-'
-        }
+        value={'Calculating...'}
       />
       <MonetaryCardFoot>
         <MonetaryCardFootCell
-          title='Your Total MIC Rewards'
+          title='Your Total MIC2 Rewards'
           value={
             earnedMIC
-              ? `${getDisplayBalance(earnedMIC)} MIC`
+              ? `${getDisplayBalance(earnedMIC)} MIC2`
               : '-'
           }
           button={<MonetaryClaimAllButton text='Claim all MIC (subject to fee if within fee period)' onClick={onReward} disabled={earnedMIC.eq(0)} icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />}

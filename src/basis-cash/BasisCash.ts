@@ -8,6 +8,7 @@ import ERC20 from './ERC20';
 import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
+import curvPoolABI from './3crvPool.abi.json';
 
 /**
  * An API module of Basis Cash contracts.
@@ -29,6 +30,11 @@ export class BasisCash {
   BAB: ERC20;
   USDT: ERC20;
 
+  MIC2: ERC20;
+  MIS2: ERC20;
+  mic3crv: Contract;
+  mis2Usdt: Contract;
+
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
     const provider = getDefaultProvider();
@@ -47,6 +53,9 @@ export class BasisCash {
     this.BAB = new ERC20(deployments.Bond.address, provider, 'MIB');
     this.USDT = new ERC20(externalTokens['USDT'][0], provider, 'USDT');
 
+    this.MIC2 = new ERC20(deployments.MIC2.address, provider, 'MIC2');
+    this.MIS2 = new ERC20(deployments.MIS2.address, provider, 'MIS2');
+
     // SushiSwap Pair
     this.bacDai = new Contract(
       externalTokens['MIC_USDT-SUSHI-LPv2'][0],
@@ -56,6 +65,16 @@ export class BasisCash {
     this.basDai = new Contract(
       externalTokens['MIS_USDT-SUSHI-LPv2'][0],
       IUniswapV2PairABI,
+      provider,
+    )
+    this.mis2Usdt = new Contract(
+      externalTokens['MIS2_USDT-SUSHI-LPv2'][0],
+      IUniswapV2PairABI,
+      provider,
+    )
+    this.mic3crv = new Contract(
+      externalTokens['MICv2_3CRV'][0],
+      curvPoolABI,
       provider,
     )
 
@@ -75,7 +94,7 @@ export class BasisCash {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    const tokens = [this.BAC, this.BAS, this.BAB, ...Object.values(this.externalTokens)];
+    const tokens = [this.BAC, this.BAS, this.BAB, this.MIC2, this.MIS2, ...Object.values(this.externalTokens)];
     for (const token of tokens) {
       token.connect(this.signer);
     }
@@ -113,6 +132,14 @@ export class BasisCash {
     };
   }
 
+  async getCashStatFrom3CrvPool(): Promise<TokenStat> {
+    const supply = await this.MIC2.displayedTotalSupply();
+    return {
+      priceInUSDT: await this.getMIC2PriceFromCurv(),
+      totalSupply: supply,
+    };
+  }
+
   /**
    * @returns Estimated Basis Cash (BAC) price data,
    * calculated by 1-day Time-Weight Averaged Price (TWAP).
@@ -120,22 +147,13 @@ export class BasisCash {
   async getCashStatInEstimatedTWAP(): Promise<TokenStat> {
     const { Oracle } = this.contracts;
 
-    // estimate current TWAP price
-    const cumulativePrice: BigNumber = await this.bacDai.price0CumulativeLast();
-    const cumulativePriceLast = await Oracle.price0CumulativeLast();
-    const elapsedSec = Math.floor(Date.now() / 1000 - (await Oracle.blockTimestampLast()));
+    const spotPrice: BigNumber = await this.mic3crv.get_dy(0, 1, ethers.constants.WeiPerEther);
+    const oracleLastPrice = await Oracle.price0Last();
+    const avgPrice = spotPrice.add(oracleLastPrice).div(2);
 
-    const denominator112 = BigNumber.from(2).pow(112);
-    const denominator1e18 = BigNumber.from(10).pow(18);
-    const cashPriceTWAP = cumulativePrice
-      .sub(cumulativePriceLast)
-      .mul(denominator1e18)
-      .div(elapsedSec)
-      .div(denominator112);
-
-    const totalSupply = await this.BAC.displayedTotalSupply();
+    const totalSupply = await this.MIC2.displayedTotalSupply();
     return {
-      priceInUSDT: getDisplayBalance(cashPriceTWAP, 6),
+      priceInUSDT: getDisplayBalance(avgPrice, 18),
       totalSupply,
     };
   }
@@ -209,8 +227,8 @@ export class BasisCash {
 
   async getShareStat(): Promise<TokenStat> {
     return {
-      priceInUSDT: await this.getTokenPriceFromSushiSwap(this.BAS),
-      totalSupply: await this.BAS.displayedTotalSupply(),
+      priceInUSDT: await this.getTokenPriceFromSushiSwap(this.MIS2),
+      totalSupply: await this.MIS2.displayedTotalSupply(),
     };
   }
 
@@ -230,6 +248,13 @@ export class BasisCash {
     } catch (err) {
       console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
     }
+  }
+
+  async getMIC2PriceFromCurv(): Promise<string> {
+    await this.provider.ready;
+
+    const priceInUSDT = await this.mic3crv.get_dy(0, 1, ethers.constants.WeiPerEther);
+    return getDisplayBalance(priceInUSDT, 18)
   }
 
   /**
@@ -453,5 +478,45 @@ export class BasisCash {
     const nextAllocation = new Date(nextEpochTimestamp.mul(1000).toNumber());
     const prevAllocation = new Date(nextAllocation.getTime() - period.toNumber() * 1000);
     return { prevAllocation, nextAllocation };
+  }
+
+  async migrateMicV1ToV2() {
+    const MicV1Migrate = this.contracts['MICV1Migrate'];
+    const balance = await this.BAC.balanceOf(this.myAccount);
+    return await MicV1Migrate.exchangeCash(balance);
+  }
+
+  async migrateMisV1ToV2() {
+    const MisV1Migrate = this.contracts['MISV1Migrate'];
+    const balance = await this.BAS.balanceOf(this.myAccount);
+    return await MisV1Migrate.exchangeShares(balance);
+  }
+
+  async migrateMisUsdtV1ToV2() {
+    const MisUsdtV1Migrate = this.contracts['MISUSDTV1Migrate'];
+    return await MisUsdtV1Migrate.migrateShareLP();
+  }
+
+  async migrateMicUsdtV1ToV2(lock: boolean = false) {
+    const MicUsdtV1Migrate = this.contracts['MICUSDTV1Migrate'];
+    if (lock) {
+      return await MicUsdtV1Migrate.migrateLockedCashLP();
+    } else {
+      return await MicUsdtV1Migrate.migrateCashLP();
+    }
+  }
+
+  async migrateMibV1ToV2() {
+  }
+
+  async getMigrationEndTime(contract: ContractName): Promise<Date> {
+    // share exchange does not have endTime method
+    const migrationContract = this.contracts[contract];
+    try {
+      const time: BigNumber = await migrationContract.endTime();
+      return new Date(time.toNumber() * 1000);
+    } catch {
+      return null
+    }
   }
 }

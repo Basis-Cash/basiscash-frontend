@@ -86,7 +86,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
           &nbsp;
           <StyledRewardToken>{bank.earnTokenName}</StyledRewardToken>
         </StyledReward>
-          <CardButton text="Claim MIS" onClick={onReward} disabled={earnings.eq(1)} icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />
+          <CardButton text="Claim MIS" onClick={onReward} disabled={earnings.eq(0)} icon={gift} backgroundColor="#43423F" colorHover="#DBC087" backgroundColorHover="#43423F" color="#DBC087" />
         </StyledContent>
       <StyledFoot>
         <StyledLeftFoot>
