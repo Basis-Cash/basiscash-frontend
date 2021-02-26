@@ -23,7 +23,7 @@ const Vault: React.FC = () => {
     <>
       <PageHeader
         subtitle={`Deposit ${vault?.tokenName} and earn ${vault?.tokenName}`}
-        title={vault?.name}
+        title={vault?.name + ' (v1)'}
       />
       <StyledVault>
         <StyledCardsWrapper>
