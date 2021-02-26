@@ -123,43 +123,43 @@ const Info: React.FC = () => {
         {/*  }*/}
         {/*/>*/}
       </InfoWrapper>
-      <InfoWrapper>
-        <StyledTitle>Timelock Contract Queue</StyledTitle>
-        <StyledQueues>
-          <StyledUrl>ethersacn.com/abcd</StyledUrl>
-          <ProgressCountdown
-            base={prevEpoch}
-            deadline={nextEpoch}
-            // description="Timeleft on timelock"
-            description=""
-          />
-          {/* <StyledProgressCountdown>
-            <ProgressCountdown
-              base={prevEpoch}
-              deadline={nextEpoch}
-              // description="Timeleft on timelock"
-              description=""
-            />
-          </StyledProgressCountdown> */}
-        </StyledQueues>
-        <StyledQueues>
-          <StyledUrl>ethersacn.com/1234</StyledUrl>
-          <ProgressCountdown
-            base={prevEpoch}
-            deadline={nextEpoch}
-            // description="Timeleft on timelock"
-            description=""
-          />
-          {/* <StyledProgressCountdown>
-            <ProgressCountdown
-              base={prevEpoch}
-              deadline={nextEpoch}
-              // description="Timeleft on timelock"
-              description=""
-            />
-          </StyledProgressCountdown> */}
-        </StyledQueues>
-      </InfoWrapper>
+      {/*<InfoWrapper>*/}
+      {/*  <StyledTitle>Timelock Contract Queue</StyledTitle>*/}
+      {/*  <StyledQueues>*/}
+      {/*    <StyledUrl>ethersacn.com/abcd</StyledUrl>*/}
+      {/*    <ProgressCountdown*/}
+      {/*      base={prevEpoch}*/}
+      {/*      deadline={nextEpoch}*/}
+      {/*      // description="Timeleft on timelock"*/}
+      {/*      description=""*/}
+      {/*    />*/}
+      {/*    /!* <StyledProgressCountdown>*/}
+      {/*      <ProgressCountdown*/}
+      {/*        base={prevEpoch}*/}
+      {/*        deadline={nextEpoch}*/}
+      {/*        // description="Timeleft on timelock"*/}
+      {/*        description=""*/}
+      {/*      />*/}
+      {/*    </StyledProgressCountdown> *!/*/}
+      {/*  </StyledQueues>*/}
+      {/*  <StyledQueues>*/}
+      {/*    <StyledUrl>ethersacn.com/1234</StyledUrl>*/}
+      {/*    <ProgressCountdown*/}
+      {/*      base={prevEpoch}*/}
+      {/*      deadline={nextEpoch}*/}
+      {/*      // description="Timeleft on timelock"*/}
+      {/*      description=""*/}
+      {/*    />*/}
+      {/*    /!* <StyledProgressCountdown>*/}
+      {/*      <ProgressCountdown*/}
+      {/*        base={prevEpoch}*/}
+      {/*        deadline={nextEpoch}*/}
+      {/*        // description="Timeleft on timelock"*/}
+      {/*        description=""*/}
+      {/*      />*/}
+      {/*    </StyledProgressCountdown> *!/*/}
+      {/*  </StyledQueues>*/}
+      {/*</InfoWrapper>*/}
     </Page>
   );
 };
