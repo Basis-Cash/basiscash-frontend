@@ -10,8 +10,8 @@ const Nav: React.FC = () => {
       <StyledLinkGroupWrapper>
         <StyledLinkGroup>
           <StyledLinkGroupName>Tokens</StyledLinkGroupName>
-          <StyledLink href="https://sushiswap.fi/pair/0x066F3A3B7C8Fa077c71B9184d862ed0A4D5cF3e0" target="_blank">Get MIS</StyledLink>
-          <StyledLink href="https://sushiswap.fi/pair/0xC9cB53B48A2f3A9e75982685644c1870F1405CCb" target="_blank">Get MIC</StyledLink>
+          <StyledLink href="https://app.sushi.com/pair/0xf9fF921E63B525A73dD3cF57463da53138358A49" target="_blank">Get MIS2</StyledLink>
+          <StyledLink href="https://crv.finance/swap" target="_blank">Get MIC2</StyledLink>
         </StyledLinkGroup>
         <StyledLinkGroup>
           <StyledLinkGroupName>Follow Us</StyledLinkGroupName>
