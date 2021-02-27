@@ -27,6 +27,7 @@ import DepositModal from './DepositModal';
 import useBoardroomVersion from '../../../hooks/useBoardroomVersion';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import gift from '../../../assets/img/gift.png';
+import useStakedEffectiveBalanceOnBoardroom from '../../../hooks/useStakedEffectiveBalanceOnBoardroom';
 
 const MonetaryBoardroomCard: React.FC = () => {
   const { color } = useContext(ThemeContext);
@@ -35,6 +36,7 @@ const MonetaryBoardroomCard: React.FC = () => {
   const basisCash = useBasisCash();
   const tokenBalance = useTokenBalance(basisCash.MIS2);
   const stakedBalance = useStakedBalanceOnBoardroom();
+  const stakedEffectiveBalance = useStakedEffectiveBalanceOnBoardroom();
   const earnedMIC = useEarningsOnBoardroom();
 
   const boardroomVersion = useBoardroomVersion();
@@ -102,7 +104,11 @@ const MonetaryBoardroomCard: React.FC = () => {
       />
       <MonetaryCardEffectiveBalance
         title='Effective Balance (for Epoch)'
-        value={'Calculating...'}
+        value={
+          stakedEffectiveBalance
+            ? `${getDisplayBalance(stakedEffectiveBalance)} MIS2`
+            : '-'
+        }
       />
       <MonetaryCardFoot>
         <MonetaryCardFootCell

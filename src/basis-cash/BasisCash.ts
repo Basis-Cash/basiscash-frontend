@@ -444,6 +444,12 @@ export class BasisCash {
     return await Boardroom.balanceOf(this.myAccount);
   }
 
+  async getStakedEffectiveSharesOnBoardroom(): Promise<BigNumber> {
+    const Boardroom = this.currentBoardroom();
+    const epoch = await Boardroom.getCheckpointEpoch();
+    return await Boardroom.getEpochUserBalance(this.myAccount, epoch);
+  }
+
   async getEarningsOnBoardroom(): Promise<BigNumber> {
     const Boardroom = this.currentBoardroom();
     if (this.boardroomVersionOfUser === 'v1') {
