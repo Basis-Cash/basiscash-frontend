@@ -99,50 +99,50 @@ const Migration: React.FC = () => {
         />
         <Spacer size="lg" />
       </CardWrapper>
-      {/*<CardWrapper>*/}
-      {/*  <ShowCards onClick={() => {}}>*/}
-      {/*    {micUsdtApproveStatus === ApprovalState.APPROVED ? (*/}
-      {/*      <HomeCard2*/}
-      {/*        title="MIC-USDT LP"*/}
-      {/*        backgroundImg={micCardBorder}*/}
-      {/*        headerColor="#4D6756"*/}
-      {/*        button1={<MigrationButton2 text='SWAP Locked with Rewards'*/}
-      {/*                                   disabled={false}*/}
-      {/*                                   icon={lock}*/}
-      {/*                                   onClick={() => {basisCash.migrateMicUsdtV1ToV2(true)}}/>}*/}
-      {/*        button2={<MigrationButton text='SWAP Unlocked'*/}
-      {/*                                  disabled={false}*/}
-      {/*                                  icon={unlock}*/}
-      {/*                                  onClick={() => {basisCash.migrateMicUsdtV1ToV2(false)}}/>}*/}
-      {/*        clickEvent={isMigrationCardShow}*/}
-      {/*        contractName="MICUSDTV1Migrate"*/}
-      {/*        from={basisCash.externalTokens['MIC_USDT-SUSHI-LPv2']}*/}
-      {/*        to={basisCash.externalTokens['MICv2_3CRV']}*/}
-      {/*      />*/}
-      {/*    ) : (*/}
-      {/*      <HomeCard*/}
-      {/*        title="MIC-USDT LP"*/}
-      {/*        backgroundImg={micCardBorder}*/}
-      {/*        headerColor="#4D6756"*/}
-      {/*        button={<MigrationButton text='APPROVE' disabled={false} onClick={micUsdtApprove} />}*/}
-      {/*        contractName="MICUSDTV1Migrate"*/}
-      {/*        from={basisCash.externalTokens['MIC_USDT-SUSHI-LPv2']}*/}
-      {/*        to={basisCash.externalTokens['MICv2_3CRV']}*/}
-      {/*      />*/}
-      {/*    )}*/}
-      {/*  </ShowCards>*/}
-      {/*  /!*<Spacer size="lg" />*!/*/}
-      {/*  /!*<ShowCards onClick={() => { setMigrationCardShow(false); setMigrationCardShow2(!isMigrationCardShow2); }}>*!/*/}
-      {/*  /!*  <HomeCard3*!/*/}
-      {/*  /!*    title="MIB to MIC V2"*!/*/}
-      {/*  /!*    backgroundImg={micCardBorder}*!/*/}
-      {/*  /!*    headerColor="#4D6756"*!/*/}
-      {/*  /!*    button={<MigrationButton text='SWAP' disabled={false} />}*!/*/}
-      {/*  /!*    clickEvent={isMigrationCardShow2}*!/*/}
-      {/*  /!*  />*!/*/}
-      {/*  /!*</ShowCards>*!/*/}
-      {/*  /!*<Spacer size="lg" />*!/*/}
-      {/*</CardWrapper>*/}
+      <CardWrapper>
+        <ShowCards onClick={() => {}}>
+          {micUsdtApproveStatus === ApprovalState.APPROVED ? (
+            <HomeCard2
+              title="MIC-USDT LP"
+              backgroundImg={micCardBorder}
+              headerColor="#4D6756"
+              button1={<MigrationButton2 text='SWAP Locked with Rewards'
+                                         disabled={false}
+                                         icon={lock}
+                                         onClick={() => {basisCash.migrateMicUsdtV1ToV2(true)}}/>}
+              button2={<MigrationButton text='SWAP Unlocked'
+                                        disabled={false}
+                                        icon={unlock}
+                                        onClick={() => {basisCash.migrateMicUsdtV1ToV2(false)}}/>}
+              clickEvent={isMigrationCardShow}
+              contractName="MICUSDTV1Migrate"
+              from={basisCash.externalTokens['MIC_USDT-SUSHI-LPv2']}
+              to={basisCash.externalTokens['MICv2_3CRV']}
+            />
+          ) : (
+            <HomeCard
+              title="MIC-USDT LP"
+              backgroundImg={micCardBorder}
+              headerColor="#4D6756"
+              button={<MigrationButton text='APPROVE' disabled={false} onClick={micUsdtApprove} />}
+              contractName="MICUSDTV1Migrate"
+              from={basisCash.externalTokens['MIC_USDT-SUSHI-LPv2']}
+              to={basisCash.externalTokens['MICv2_3CRV']}
+            />
+          )}
+        </ShowCards>
+        {/*<Spacer size="lg" />*/}
+        {/*<ShowCards onClick={() => { setMigrationCardShow(false); setMigrationCardShow2(!isMigrationCardShow2); }}>*/}
+        {/*  <HomeCard3*/}
+        {/*    title="MIB to MIC V2"*/}
+        {/*    backgroundImg={micCardBorder}*/}
+        {/*    headerColor="#4D6756"*/}
+        {/*    button={<MigrationButton text='SWAP' disabled={false} />}*/}
+        {/*    clickEvent={isMigrationCardShow2}*/}
+        {/*  />*/}
+        {/*</ShowCards>*/}
+        {/*<Spacer size="lg" />*/}
+      </CardWrapper>
 
       {/*{isMigrationCardShow && (*/}
       {/*  <StyledRow>*/}
