@@ -489,26 +489,31 @@ export class BasisCash {
   async migrateMicV1ToV2() {
     const MicV1Migrate = this.contracts['MICV1Migrate'];
     const balance = await this.BAC.balanceOf(this.myAccount);
-    return await MicV1Migrate.exchangeCash(balance);
+    const gas = await MicV1Migrate.estimateGas.exchangeCash(balance);
+    return await MicV1Migrate.exchangeCash(balance, this.gasOptions(gas));
   }
 
   async migrateMisV1ToV2() {
     const MisV1Migrate = this.contracts['MISV1Migrate'];
     const balance = await this.BAS.balanceOf(this.myAccount);
-    return await MisV1Migrate.exchangeShares(balance);
+    const gas = await MisV1Migrate.estimateGas.exchangeShares(balance);
+    return await MisV1Migrate.exchangeShares(balance, this.gasOptions(gas));
   }
 
   async migrateMisUsdtV1ToV2() {
     const MisUsdtV1Migrate = this.contracts['MISUSDTV1Migrate'];
-    return await MisUsdtV1Migrate.migrateShareLP();
+    const gas = await MisUsdtV1Migrate.estimateGas.migrateShareLP();
+    return await MisUsdtV1Migrate.migrateShareLP(this.gasOptions(gas));
   }
 
   async migrateMicUsdtV1ToV2(lock: boolean = false) {
     const MicUsdtV1Migrate = this.contracts['MICUSDTV1Migrate'];
     if (lock) {
-      return await MicUsdtV1Migrate.migrateLockedCashLP();
+      const gas = await MicUsdtV1Migrate.estimateGas.migrateLockedCashLP();
+      return await MicUsdtV1Migrate.migrateLockedCashLP(this.gasOptions(gas));
     } else {
-      return await MicUsdtV1Migrate.migrateCashLP();
+      const gas = await MicUsdtV1Migrate.estimateGas.migrateCashLP();
+      return await MicUsdtV1Migrate.migrateCashLP(this.gasOptions(gas));
     }
   }
 

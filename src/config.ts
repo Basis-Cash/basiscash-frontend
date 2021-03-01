@@ -88,6 +88,14 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     finished: false,
     sort: 2,
   },
+  MISLPTokenSharePool2: {
+    name: 'MIS2-USDT Pool 2',
+    contract: 'MISLPTokenSharePool2',
+    depositTokenName: 'MIS2_USDT-SUSHI-LPv2',
+    earnTokenName: 'MIS',
+    finished: false,
+    sort: 3,
+  },
   BACDAIPool: {
     name: 'Earn MIC by DAI',
     contract: 'BACDAIPool',

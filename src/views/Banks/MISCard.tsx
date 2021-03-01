@@ -118,7 +118,7 @@ const MISCard: React.FC<MISCardProps> = ({ bank }) => {
                   <CardButton size='sm' text='Deposit' onClick={onPresentDeposit} disabled={tokenBalance.eq(0)} />
                   <CardButton size='sm' text='Withdraw' onClick={onPresentWithdraw} disabled={stakedBalance.eq(0)} />
                 </>
-              )}
+            )}
           </StyledButtonGroup>
         </StyledRightFoot>
       </StyledFoot>
