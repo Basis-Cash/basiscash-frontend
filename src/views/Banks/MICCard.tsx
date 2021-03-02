@@ -121,8 +121,22 @@ const MICCard: React.FC<MICCardProps> = ({ bank }) => {
             <StyledFootTitle><HeaderImg src={unlock} />Your Staked LP Balance</StyledFootTitle>
             <StyledFootValue>{getDisplayBalance(stakedBalance, bank.depositToken.decimal, 6)}</StyledFootValue>
             <StyledButtonGroup>
-              <CardButton size='sm' text={`Deposit`} onClick={onPresentDeposit} />
-              <CardButton size='sm' text={`Withdraw`} onClick={onPresentWithdraw} />
+              {approveStatus !== ApprovalState.APPROVED ? (
+                <CardButton
+                  size='sm'
+                  disabled={
+                    approveStatus === ApprovalState.PENDING ||
+                    approveStatus === ApprovalState.UNKNOWN
+                  }
+                  onClick={approve}
+                  text={`Approve ${bank.depositTokenName}`}
+                />
+              ) : (
+                <>
+                  <CardButton size='sm' text='Deposit' onClick={onPresentDeposit} disabled={tokenBalance.eq(0)} />
+                  <CardButton size='sm' text='Withdraw' onClick={onPresentWithdraw} disabled={stakedBalance.eq(0)} />
+                </>
+              )}
             </StyledButtonGroup>
           </StyledRightFoot>
         </StyledFoot>
