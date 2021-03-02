@@ -2,6 +2,12 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Link } from 'react-router-dom';
 import pool from '../../../assets/img/pool.png';
+import gift from '../../../assets/img/gift.png';
+import useHarvestFromBoardroom from '../../../hooks/useHarvestFromBoardroom';
+import useHarvestEpochFromBoardroom from '../../../hooks/useHarvestEpochFromBoardroom';
+import useEarningsOnBoardroom from '../../../hooks/useEarningsOnBoardroom';
+import useEpochEarningsOnBoardroom from '../../../hooks/useEpochEarningsOnBoardroom';
+import { getDisplayBalance } from '../../../utils/formatBalance';
 
 interface MonetaryCardHeaderProps {
   color: string;
@@ -425,22 +431,36 @@ const StyledLink = styled(Link)`
 interface MonetaryStakeCardProps {
   day: string;
   fee: string;
-  button: React.ReactNode;
+  epoch: number;
   disabledReason?: string;
 }
 
 export const MonetaryStakeCard: React.FC<MonetaryStakeCardProps> = ({
   day,
   fee,
-  button
+  epoch,
 }) => {
+  const { onReward } = useHarvestEpochFromBoardroom(epoch);
+  const earnedMIC = useEpochEarningsOnBoardroom(epoch);
+
   return (
     <StakeWrapper>
       <StakeTitle>{day}</StakeTitle>
       <StakeTitle>{fee}</StakeTitle>
       <StakeLogo src={pool} />
-      {/*<StakeRewards>1000 MIC</StakeRewards>*/}
-      <StakeButton>{button}</StakeButton>
+      <StakeRewards>{getDisplayBalance(earnedMIC, 18, 3) + ' MIC2'}</StakeRewards>
+      <StakeButton>
+        {<MonetaryClaimButton
+          text='Claim MIC2'
+          onClick={onReward}
+          disabled={earnedMIC.eq(0)}
+          width="15%"
+          icon={gift}
+          backgroundColor="#43423F"
+          colorHover="#DBC087"
+          backgroundColorHover="#43423F"
+          color="#DBC087" />}
+      </StakeButton>
     </StakeWrapper>
   )
 }

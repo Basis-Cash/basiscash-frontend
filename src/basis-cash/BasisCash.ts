@@ -452,10 +452,12 @@ export class BasisCash {
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
     const Boardroom = this.currentBoardroom();
-    if (this.boardroomVersionOfUser === 'v1') {
-      return await Boardroom.getCashEarningsOf(this.myAccount);
-    }
     return await Boardroom.earned(this.myAccount);
+  }
+
+  async getEpochEarningsOnBoardroom(epoch: number): Promise<BigNumber> {
+    const Boardroom = this.currentBoardroom();
+    return await Boardroom.calculateClaimableRewardsForEpoch(this.myAccount, epoch);
   }
 
   async withdrawShareFromBoardroom(amount: string): Promise<TransactionResponse> {
@@ -465,10 +467,14 @@ export class BasisCash {
 
   async harvestCashFromBoardroom(): Promise<TransactionResponse> {
     const Boardroom = this.currentBoardroom();
-    if (this.boardroomVersionOfUser === 'v1') {
-      return await Boardroom.claimDividends();
-    }
-    return await Boardroom.claimReward();
+    const earned = await Boardroom.earned(this.myAccount);
+    return await Boardroom.claimReward(earned);
+  }
+
+  async harvestEpochCashFromBoardroom(epoch: number): Promise<TransactionResponse> {
+    const Boardroom = this.currentBoardroom();
+    const earned = await Boardroom.calculateClaimableRewardsForEpoch(this.myAccount, epoch);
+    return await Boardroom.claimRewardsForEpoch(earned);
   }
 
   async exitFromBoardroom(): Promise<TransactionResponse> {
