@@ -9,6 +9,7 @@ import { getDisplayBalance } from '../utils/formatBalance';
 import { getDefaultProvider } from '../utils/provider';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
 import curvPoolABI from './3crvPool.abi.json';
+import curvDepositorABI from './curvDepositor.json';
 
 /**
  * An API module of Basis Cash contracts.
@@ -34,6 +35,8 @@ export class BasisCash {
   MIS2: ERC20;
   mic3crv: Contract;
   mis2Usdt: Contract;
+
+  curvDepositor: Contract;
 
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
@@ -78,6 +81,12 @@ export class BasisCash {
       provider,
     )
 
+    this.curvDepositor = new Contract(
+      cfg.curvDepositor,
+      curvDepositorABI,
+      provider,
+    )
+
     this.config = cfg;
     this.provider = provider;
   }
@@ -94,11 +103,12 @@ export class BasisCash {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    const tokens = [this.BAC, this.BAS, this.BAB, this.MIC2, this.MIS2, ...Object.values(this.externalTokens)];
+    const tokens = [this.BAC, this.BAS, this.BAB, this.MIC2, this.MIS2, this.USDT, ...Object.values(this.externalTokens)];
     for (const token of tokens) {
       token.connect(this.signer);
     }
     this.bacDai = this.bacDai.connect(this.signer);
+    this.curvDepositor = this.curvDepositor.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
       .then((version) => (this.boardroomVersionOfUser = version))
@@ -535,5 +545,20 @@ export class BasisCash {
     } catch {
       return null
     }
+  }
+
+  async depositCurvPool(mic2Amount: BigNumber, usdtAmount: BigNumber): Promise<TransactionResponse> {
+    const fn = 'add_liquidity(address,uint256[4],uint256)';
+    const gas = await this.curvDepositor.estimateGas[fn](
+      '0x0F8c89d3fB0b502732b338f1dfb3c465Dc856C8e',
+      [mic2Amount, '0', '0', usdtAmount],
+      '1',
+    );
+    return await this.curvDepositor[fn](
+      '0x0F8c89d3fB0b502732b338f1dfb3c465Dc856C8e',
+      [mic2Amount, '0', '0', usdtAmount],
+      '1',
+      this.gasOptions(gas),
+    )
   }
 }

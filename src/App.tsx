@@ -24,6 +24,7 @@ import Popups from './components/Popups';
 import Monetary from './views/Monetary';
 import Migration from './views/Migration';
 import Migration2 from './views/Migration2';
+import CurvPool from './views/CurvPool';
 
 const App: React.FC = () => {
   return (
@@ -50,6 +51,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/migration">
             <Migration />
+          </Route>
+          <Route path="/pool">
+            <CurvPool />
           </Route>
         </Switch>
       </Router>
